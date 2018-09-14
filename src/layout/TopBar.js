@@ -12,7 +12,7 @@ const styles = theme => ({
   },
   button: {
     marginLeft: 12,
-    marginRight: 20,
+    marginRight: 12,
   },
   });
 
@@ -36,9 +36,10 @@ const styles = theme => ({
               <Menu />
             </IconButton>
           </Tooltip>
-          <Typography style={{ flex: 1 }}  variant="title" color="inherit" noWrap>
+          <Typography style={{ flex: 1 }}  variant="title" color="inherit" >
             NAME
           </Typography>
+
           <Tooltip title="Tools">
             <IconButton
               className= {classes.button}
