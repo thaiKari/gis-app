@@ -5,7 +5,7 @@ import './App.css';
 import LayerBar from './layout/LayerBar';
 import ToolkitBar from './layout/ToolkitBar';
 import TopBar from './layout/TopBar';
-//import Map from './map/Map';
+import Map from './map/Map';
 
 const theme = createMuiTheme({
   palette: {
@@ -69,7 +69,7 @@ const theme = createMuiTheme({
             toolDrawerOpen={toolDrawerOpen}/>
 
           <main className={classes.content}>          
-                                 
+               <Map/>                  
           </main>
 
         </div>

@@ -30,6 +30,8 @@ const styles = theme => ({
             variant="persistent"
             open={toolDrawerOpen}
             anchor={'right'}
+            onClose={()=>{}}
+            onOpen={()=>{}}              
             classes={{
                 paper: classNames(classes.toolbarDrawerPaper),
             }}
