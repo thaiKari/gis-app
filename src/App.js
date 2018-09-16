@@ -64,6 +64,7 @@ const theme = createMuiTheme({
             handleDrawerToggle={this.handleDrawerToggle.bind(this)}
             toggleToolDrawer={this.toggleToolDrawer.bind(this)}/>
           <LayerBar
+            handleDrawerToggle={this.handleDrawerToggle.bind(this)}
             drawerOpen={drawerOpen}/>
           <ToolkitBar
             toolDrawerOpen={toolDrawerOpen}/>

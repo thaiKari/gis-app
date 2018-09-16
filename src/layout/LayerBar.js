@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Typography, Drawer, Divider } from '@material-ui/core';
+import { Typography, Drawer, Divider, List, ListItem, ListItemText, IconButton, ListItemSecondaryAction, Toolbar } from '@material-ui/core';
+import { ChevronLeft } from '@material-ui/icons'
 
 const styles = theme => ({
     drawerPaper: {
@@ -17,7 +18,7 @@ const styles = theme => ({
     
     render() {
 
-      const { classes, drawerOpen } = this.props;
+      const { classes, drawerOpen, handleDrawerToggle } = this.props;
   
       return (
         <Drawer
@@ -28,10 +29,16 @@ const styles = theme => ({
           paper: classes.drawerPaper,
         }}
       >
+
         <div className={classes.drawerHeader}>
-        <Typography variant='title'>
-            Layers
-        </Typography>  
+        <Toolbar>
+          <Typography variant='title' style={{flex: 1}}>
+              Layers
+          </Typography>  
+          <IconButton>
+            <ChevronLeft onClick={handleDrawerToggle} />
+          </IconButton>
+        </Toolbar>
             
         </div>
         <Divider />
