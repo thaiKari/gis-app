@@ -36,9 +36,8 @@ const styles = theme => ({
               <Menu />
             </IconButton>
           </Tooltip>
-          <Typography style={{ flex: 1 }}  variant="title" color="inherit" >
-            NAME
-          </Typography>
+
+          <div style={{flex: 1}}></div>
 
           <Tooltip title="Tools">
             <IconButton
@@ -49,6 +48,7 @@ const styles = theme => ({
               <Build />
             </IconButton>
           </Tooltip>
+
         </Toolbar>
       </AppBar>
       ); 
