@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, Drawer, Divider, Tooltip, List, ListItem, ListItemText, IconButton, ListItemSecondaryAction, Toolbar } from '@material-ui/core';
 import { InsertDriveFile, Edit, Delete } from '@material-ui/icons'
+import Dropzone from 'react-dropzone'
+import FileUpload from '../components/FileUpload';
 
 const styles = theme => ({
     drawerPaper: {
@@ -15,16 +17,30 @@ const styles = theme => ({
       layersToolbar: {
         paddingTop: 0,
         paddingBottom: 0,
-        //height: 10,
         minHeight: 0
-      }
+      },
+      content: {
+        flexGrow: 1,
+        padding: theme.spacing.unit * 3,
+        paddingRight: theme.spacing.unit * 5,
+      },
   });
 
   class LayerBar extends Component {
+    constructor() {
+      super()
+      this.state = { files: [] }
+    }
+  
+    onDrop(files) {
+      this.setState({
+        files
+      });
+    }
     
     render() {
 
-      const { classes, drawerOpen, handleDrawerToggle } = this.props;
+      const { classes, drawerOpen, receiveNewJson, theme } = this.props;
   
       return (
         <Drawer
@@ -36,14 +52,15 @@ const styles = theme => ({
         }}
       >
 
-
         <Divider />
         <Toolbar className={classes.layersToolbar} disableGutters={true}>
-          <Tooltip title="New Layer">
-            <IconButton>
-              <InsertDriveFile/>
-            </IconButton>
-          </Tooltip>
+          <FileUpload>
+            <Tooltip title="New Layer">
+              <IconButton>
+                <InsertDriveFile/>
+              </IconButton>
+            </Tooltip>
+          </FileUpload>
           
           <div style={{flex: 1}}></div>
 
@@ -59,7 +76,16 @@ const styles = theme => ({
           </Tooltip>
         </Toolbar>
         <Divider />
-        <Typography>sup</Typography>
+
+        
+
+        <div className={classes.content}>
+
+        <FileUpload receiveNewJson={receiveNewJson} disableClick>
+          <div style={{border: '5px solid red', width: '100%', height:200}}>yo</div>
+        </FileUpload>
+
+        </div>
 
       </Drawer>
       );
