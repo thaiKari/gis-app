@@ -84,11 +84,6 @@ const styles = theme => ({
 
         <DragNDropBox receiveNewJson={receiveNewJson}/>
 
-        <FileUpload receiveNewJson={receiveNewJson} disableClick>
-
-          <div style={{border: '5px solid red', width: '100%', height:200}}>yo</div>
-        </FileUpload>
-
         </div>
 
       </Drawer>

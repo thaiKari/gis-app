@@ -16,11 +16,13 @@ const styles = theme => ({
     
     render() {
 
-      const { classes, receiveNewJson } = this.props;
+      const { classes, receiveNewJson, theme } = this.props;
   
       return (
         <FileUpload receiveNewJson={receiveNewJson} disableClick>
-            <div className={classes.dropBox} style={{}}>
+            <div className={classes.dropBox} 
+                onDragOver={(e)=> e.target.style.backgroundColor=theme.palette.action.hover}
+                onDragLeave={(e)=> e.target.style.backgroundColor=theme.palette.background.paper}>
             </div>
         </FileUpload>
       );
