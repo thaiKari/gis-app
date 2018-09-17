@@ -4,6 +4,7 @@ import { Typography, Drawer, Divider, Tooltip, List, ListItem, ListItemText, Ico
 import { InsertDriveFile, Edit, Delete } from '@material-ui/icons'
 import Dropzone from 'react-dropzone'
 import FileUpload from '../components/FileUpload';
+import DragNDropBox from '../components/DragNDropBox';
 
 const styles = theme => ({
     drawerPaper: {
@@ -81,7 +82,10 @@ const styles = theme => ({
 
         <div className={classes.content}>
 
+        <DragNDropBox receiveNewJson={receiveNewJson}/>
+
         <FileUpload receiveNewJson={receiveNewJson} disableClick>
+
           <div style={{border: '5px solid red', width: '100%', height:200}}>yo</div>
         </FileUpload>
 
