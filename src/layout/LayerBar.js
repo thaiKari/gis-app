@@ -4,6 +4,7 @@ import { Drawer, Divider, Tooltip, IconButton, Toolbar } from '@material-ui/core
 import { InsertDriveFile, Edit, Delete } from '@material-ui/icons'
 import FileUpload from '../components/FileUpload';
 import DragNDropBox from '../components/DragNDropBox';
+import LayerList from '../components/LayerList';
 
 const styles = theme => ({
     drawerPaper: {
@@ -21,8 +22,8 @@ const styles = theme => ({
       },
       content: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
-        paddingRight: theme.spacing.unit * 5,
+        padding: theme.spacing.unit * 2,
+        paddingRight: theme.spacing.unit * 3,
       },
   });
 
@@ -40,7 +41,7 @@ const styles = theme => ({
     
     render() {
 
-      const { classes, drawerOpen, receiveNewJson} = this.props;
+      const { layers, classes, drawerOpen, receiveNewJson, setLayerColor} = this.props;
   
       return (
 
@@ -81,7 +82,7 @@ const styles = theme => ({
         
 
         <div className={classes.content}>
-
+        <LayerList layers={layers} setLayerColor={setLayerColor}/>
         <DragNDropBox receiveNewJson={receiveNewJson}/>
 
         </div>

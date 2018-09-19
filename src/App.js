@@ -6,6 +6,7 @@ import LayerBar from './layout/LayerBar';
 import ToolkitBar from './layout/ToolkitBar';
 import TopBar from './layout/TopBar';
 import Map from './map/Map';
+import colorPalette from './globalConstants/colorPalette'
 
 const theme = createMuiTheme({
   palette: {
@@ -54,20 +55,28 @@ const theme = createMuiTheme({
 
   receiveNewJson = (json, name) => {
     let layers = this.state.layers;
-    console.log('newJson',name);
     var type = this.getJsonType(json);
     var id = this.generateUniqueID(name);
+    json.color= this.getDefaultColor(layers.length)
     var layer = {
       id: id,
       type: type,
       displayName: name,
-      visible: true
+      visible: true,
+      data: json 
     }
 
     layers.push(layer);
-    console.log('layers',layers);
     this.setState({layers: layers});
   }
+
+  getDefaultColor(index) {
+    var colorChoices = Object.keys(colorPalette);
+    var scaledIndex = index * 3;
+    var colorIndex = (scaledIndex- Math.floor(scaledIndex /colorChoices.length)*colorChoices.length);
+    console.log(colorIndex, colorChoices);
+    return colorPalette[colorChoices[colorIndex]];
+}
 
   generateUniqueID(name) {
     var d = new Date();
@@ -89,10 +98,19 @@ const theme = createMuiTheme({
     return type;
   }
 
+  setLayerColor(layerId, color){
+    let layers = this.state.layers;
+    var layer = layers.find(l => l.id == layerId);
+    console.log('layer', layer.data.type);
+    layer.data.color = color;
+    //this.setState({layers: layers});
+    console.log(this.state.layers);
+  }
+
   render() {
 
     const { classes } = this.props;
-    const { drawerOpen, toolDrawerOpen } = this.state;
+    const { drawerOpen, toolDrawerOpen, layers } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -104,7 +122,9 @@ const theme = createMuiTheme({
           <LayerBar
             handleDrawerToggle={this.handleDrawerToggle.bind(this)}
             drawerOpen={drawerOpen}
-            receiveNewJson={this.receiveNewJson.bind(this)}/>
+            receiveNewJson={this.receiveNewJson.bind(this)}
+            layers={layers}
+            setLayerColor={this.setLayerColor.bind(this)}/>
           <ToolkitBar
             toolDrawerOpen={toolDrawerOpen}/>
 
