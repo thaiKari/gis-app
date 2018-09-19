@@ -28,7 +28,7 @@ const styles = theme => ({
     
     render() {
 
-      const { classes, receiveNewJson, theme } = this.props;
+      const { classes, receiveNewJson} = this.props;
       const { dropBoxActivated } = this.state;
 
       var liClasses = classNames({

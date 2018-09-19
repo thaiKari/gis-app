@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import { Typography, AppBar, Toolbar, IconButton, Tooltip } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Tooltip } from '@material-ui/core';
 import { Menu, Build } from '@material-ui/icons'
 
 const styles = theme => ({

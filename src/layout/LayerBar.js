@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Typography, Drawer, Divider, Tooltip, List, ListItem, ListItemText, IconButton, ListItemSecondaryAction, Toolbar } from '@material-ui/core';
+import { Drawer, Divider, Tooltip, IconButton, Toolbar } from '@material-ui/core';
 import { InsertDriveFile, Edit, Delete } from '@material-ui/icons'
-import Dropzone from 'react-dropzone'
 import FileUpload from '../components/FileUpload';
 import DragNDropBox from '../components/DragNDropBox';
 
@@ -41,7 +40,7 @@ const styles = theme => ({
     
     render() {
 
-      const { classes, drawerOpen, receiveNewJson, theme } = this.props;
+      const { classes, drawerOpen, receiveNewJson} = this.props;
   
       return (
 
