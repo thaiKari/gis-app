@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Typography, Drawer, Divider, Tooltip, List, ListItem, ListItemText, IconButton, ListItemSecondaryAction, Toolbar } from '@material-ui/core';
+import { Paper, Typography, Drawer, Divider, Tooltip, List, ListItem, ListItemText, IconButton, ListItemSecondaryAction, Toolbar } from '@material-ui/core';
 import { InsertDriveFile, Edit, Delete } from '@material-ui/icons'
 import Dropzone from 'react-dropzone'
 import FileUpload from '../components/FileUpload';
@@ -44,6 +44,7 @@ const styles = theme => ({
       const { classes, drawerOpen, receiveNewJson, theme } = this.props;
   
       return (
+
         <Drawer
         variant="persistent"
         anchor={'left'}
@@ -55,7 +56,7 @@ const styles = theme => ({
 
         <Divider />
         <Toolbar className={classes.layersToolbar} disableGutters={true}>
-          <FileUpload>
+          <FileUpload receiveNewJson={receiveNewJson}>
             <Tooltip title="New Layer">
               <IconButton>
                 <InsertDriveFile/>
@@ -87,6 +88,7 @@ const styles = theme => ({
         </div>
 
       </Drawer>
+
       );
   
     }
