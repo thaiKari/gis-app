@@ -46,13 +46,12 @@ import { withStyles } from '@material-ui/core/styles';;
           break;
         case 'LineString':
           iconStyles.color = color;
-          console.log(theme.palette.action.selected);
-          iconStyles.backgroundColor = theme.palette.action.selected;
+          iconStyles.backgroundColor = 'rgba(255, 255, 255, 0.1)';
           icon = <Timeline style={iconStyles}/>
           break;
         case 'Point':
           iconStyles.color = color;
-          iconStyles.backgroundColor = theme.palette.action.selected;
+          iconStyles.backgroundColor = 'rgba(255, 255, 255, 0.1)';
           icon = <FiberManualRecord style={iconStyles}/>
           break;
         default:
