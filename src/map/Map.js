@@ -98,7 +98,7 @@ class Map extends Component {
               this.addPolygonLayer(layer);
               break;
             case 'LineString':
-              console.log('TODO: ADD LINESTRING TO MAP');
+              this.addLineLayer(layer);
               break;
             case 'Point':
               console.log('TODO: ADD Point TO MAP');
@@ -125,12 +125,32 @@ class Map extends Component {
       }
     }
 
+    addLineLayer(layer) {
+      let map = this._map;
+      var visibility = layer.visible ? 'visible': 'none';
+
+      map.addLayer({
+        'id': layer.id,
+        'type': 'line',
+        'source': {
+          'type': 'geojson',
+          'data': layer.data
+        },
+        'layout': {'visibility': visibility },
+        'paint': {
+          'line-color': layer.data.color,
+          'line-width': 6
+        }
+      });
+
+    }
+
     //TODO: assure correct order also in relation to basemap
     addPolygonLayer(layer) {
       let map = this._map;
       var visibility = layer.visible ? 'visible': 'none';
 
-      var mapLayer = {
+      map.addLayer({
         'id': layer.id,
         'type': 'fill',
         'source': {
@@ -142,9 +162,7 @@ class Map extends Component {
           'fill-color': layer.data.color,
           'fill-opacity': 0.8
         }
-      }
-
-      map.addLayer(mapLayer);
+      });
 
     }
 
