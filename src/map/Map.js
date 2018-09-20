@@ -101,7 +101,7 @@ class Map extends Component {
               this.addLineLayer(layer);
               break;
             case 'Point':
-              console.log('TODO: ADD Point TO MAP');
+              this.addPointLayer(layer);
               break;
             default:
               console.log('unidentified layer type', layer.type);
@@ -123,6 +123,25 @@ class Map extends Component {
           callback(layer);
         }, 200);
       }
+    }
+
+    addPointLayer(layer) {
+      let map = this._map;
+      var visibility = layer.visible ? 'visible': 'none';
+
+      map.addLayer({
+        'id': layer.id,
+        'type': 'circle',
+        'source': {
+          'type': 'geojson',
+          'data': layer.data
+        },
+        'layout': {'visibility': visibility },
+        'paint': {
+          'circle-radius': 4,
+          'circle-color': layer.data.color
+        }
+      });
     }
 
     addLineLayer(layer) {
