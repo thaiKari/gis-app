@@ -97,8 +97,14 @@ class Map extends Component {
             case 'Polygon':
               this.addPolygonLayer(layer);
               break;
+            case 'LineString':
+              console.log('TODO: ADD LINESTRING TO MAP');
+              break;
+            case 'Point':
+              console.log('TODO: ADD Point TO MAP');
+              break;
             default:
-              console.log('unidentified layer type');
+              console.log('unidentified layer type', layer.type);
           }
           
         }
