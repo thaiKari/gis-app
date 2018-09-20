@@ -6,6 +6,7 @@ import LayerBar from './layout/LayerBar';
 import ToolkitBar from './layout/ToolkitBar';
 import TopBar from './layout/TopBar';
 import Map from './map/Map';
+import colorPalette from './globalConstants/colorPalette'
 
 const theme = createMuiTheme({
   palette: {
@@ -54,20 +55,27 @@ const theme = createMuiTheme({
 
   receiveNewJson = (json, name) => {
     let layers = this.state.layers;
-    console.log('newJson',name);
     var type = this.getJsonType(json);
     var id = this.generateUniqueID(name);
+    json.color= this.getDefaultColor(layers.length)
     var layer = {
       id: id,
       type: type,
       displayName: name,
-      visible: true
+      visible: true,
+      data: json 
     }
 
     layers.push(layer);
-    console.log('layers',layers);
     this.setState({layers: layers});
   }
+
+  getDefaultColor(index) {
+    var colorChoices = Object.keys(colorPalette);
+    var scaledIndex = index * 3;
+    var colorIndex = (scaledIndex- Math.floor(scaledIndex /colorChoices.length)*colorChoices.length);
+    return colorPalette[colorChoices[colorIndex]];
+}
 
   generateUniqueID(name) {
     var d = new Date();
@@ -89,10 +97,27 @@ const theme = createMuiTheme({
     return type;
   }
 
+  //not used
+  setLayerColor(layerId, color){
+    
+    var layer = this.getLayer(layerId);
+    layer.data.color = color;
+  }
+
+  toggleVisibility(layerId) {
+    var layer = this.getLayer(layerId);
+    layer.visible = !layer.visible;
+  }
+
+  getLayer(layerId) {
+    let layers = this.state.layers;
+    return layers.find(l => l.id === layerId);
+  }
+
   render() {
 
     const { classes } = this.props;
-    const { drawerOpen, toolDrawerOpen } = this.state;
+    const { drawerOpen, toolDrawerOpen, layers } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -104,7 +129,9 @@ const theme = createMuiTheme({
           <LayerBar
             handleDrawerToggle={this.handleDrawerToggle.bind(this)}
             drawerOpen={drawerOpen}
-            receiveNewJson={this.receiveNewJson.bind(this)}/>
+            receiveNewJson={this.receiveNewJson.bind(this)}
+            layers={layers}
+            toggleVisibility={this.toggleVisibility.bind(this)}/>
           <ToolkitBar
             toolDrawerOpen={toolDrawerOpen}/>
 

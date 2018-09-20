@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Drawer, Divider, Tooltip, IconButton, Toolbar } from '@material-ui/core';
-import { InsertDriveFile, Edit, Delete } from '@material-ui/icons'
-import FileUpload from '../components/FileUpload';
+import { Drawer } from '@material-ui/core';
+
 import DragNDropBox from '../components/DragNDropBox';
+import LayerList from '../components/LayerList';
+import LayersToolbar from '../components/LayersToolbar';
 
 const styles = theme => ({
     drawerPaper: {
@@ -14,15 +15,10 @@ const styles = theme => ({
       drawerHeader: {
         height: theme.appBarHeight,
       },
-      layersToolbar: {
-        paddingTop: 0,
-        paddingBottom: 0,
-        minHeight: 0
-      },
       content: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
-        paddingRight: theme.spacing.unit * 5,
+        padding: theme.spacing.unit * 2,
+        paddingRight: theme.spacing.unit * 3,
       },
   });
 
@@ -40,7 +36,7 @@ const styles = theme => ({
     
     render() {
 
-      const { classes, drawerOpen, receiveNewJson} = this.props;
+      const { layers, classes, drawerOpen, receiveNewJson, toggleVisibility} = this.props;
   
       return (
 
@@ -53,37 +49,11 @@ const styles = theme => ({
         }}
       >
 
-        <Divider />
-        <Toolbar className={classes.layersToolbar} disableGutters={true}>
-          <FileUpload receiveNewJson={receiveNewJson}>
-            <Tooltip title="New Layer">
-              <IconButton>
-                <InsertDriveFile/>
-              </IconButton>
-            </Tooltip>
-          </FileUpload>
-          
-          <div style={{flex: 1}}></div>
-
-          <Tooltip title="Edit Layer">
-            <IconButton>
-              <Edit/>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Delete Layer">
-            <IconButton>
-              <Delete/>
-            </IconButton>
-          </Tooltip>
-        </Toolbar>
-        <Divider />
-
-        
-
+        <LayersToolbar receiveNewJson={receiveNewJson} />
+  
         <div className={classes.content}>
-
-        <DragNDropBox receiveNewJson={receiveNewJson}/>
-
+          <LayerList layers={layers} toggleVisibility={toggleVisibility}/>
+          <DragNDropBox receiveNewJson={receiveNewJson}/>
         </div>
 
       </Drawer>
