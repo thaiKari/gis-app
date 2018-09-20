@@ -40,7 +40,8 @@ const theme = createMuiTheme({
   state = {
     drawerOpen: true,
     toolDrawerOpen: false,
-    layers: []
+    layers: [],
+    visibilityChange: false //needed to get map to recognise change
   };
 
   handleDrawerToggle = () => {
@@ -107,6 +108,8 @@ const theme = createMuiTheme({
   toggleVisibility(layerId) {
     var layer = this.getLayer(layerId);
     layer.visible = !layer.visible;
+    let visibilityChange = !this.state.visibilityChange;
+    this.setState({visibilityChange: visibilityChange});
   }
 
   getLayer(layerId) {
@@ -117,7 +120,7 @@ const theme = createMuiTheme({
   render() {
 
     const { classes } = this.props;
-    const { drawerOpen, toolDrawerOpen, layers } = this.state;
+    const { drawerOpen, toolDrawerOpen, layers, visibilityChange } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -136,7 +139,9 @@ const theme = createMuiTheme({
             toolDrawerOpen={toolDrawerOpen}/>
 
           <main className={classes.content}>          
-               <Map/>                  
+               <Map 
+               layers={layers}
+               visibilityChange={visibilityChange}/>                  
           </main>
 
         </div>

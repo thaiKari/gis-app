@@ -16,7 +16,6 @@ const styles = theme => ({
       }
 
     handleListItemClick = (event, index) => {
-        console.log('click', index);
         this.setState({ selectedIndex: index });
     };
     

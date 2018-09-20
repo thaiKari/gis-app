@@ -44,8 +44,6 @@ class Map extends Component {
   constructor(props) {
     super ();
     mapboxgl.accessToken = getSetting('REACT_APP_MAPBOX_ACCESTOKEN');
-
-
     this.state = {
       
     };
@@ -54,6 +52,10 @@ class Map extends Component {
     shouldComponentUpdate(nextProps) {
         return true;
       }
+
+    componentDidUpdate(prevProps) {
+      this.updateLayerVisibility();
+    }
 
     componentDidMount() {
       var zoomLevel = 13;
@@ -67,6 +69,76 @@ class Map extends Component {
         center: centerCoords,
         zoom: zoomLevel
     });
+  }
+
+    updateLayerVisibility() {
+      
+        let layers = this.props.layers;
+    
+        layers.forEach( (layer, i) => {
+          if (!this._map.isStyleLoaded()) {
+            this.waitForStyleLoad(this.handleSingleLayerVisibility.bind(this), layer);
+          }
+          else {
+            this.handleSingleLayerVisibility(layer);
+          }
+  
+        });
+    }
+
+    handleSingleLayerVisibility(layer) {
+      if (!this._map.isStyleLoaded()) {
+        this.waitForStyleLoad(this.handleSingleLayerVisibility.bind(this), layer);
+      }
+
+      else {
+        if( !this._map.getSource(layer.id) ) {
+          switch (layer.type) {
+            case 'Polygon':
+              this.addPolygonLayer(layer);
+              break;
+            default:
+              console.log('unidentified layer type');
+          }
+          
+        }
+        if ( layer.visible ) {
+          this._map.setLayoutProperty(layer.id, 'visibility', 'visible');
+        }
+        else {
+          this._map.setLayoutProperty(layer.id, 'visibility', 'none');
+        }
+      }
+    }
+
+    waitForStyleLoad(callback, layer) {
+      if (!this._map.isStyleLoaded()) {
+        setTimeout(() => {
+          callback(layer);
+        }, 200);
+      }
+    }
+
+    //TODO: assure correct order also in relation to basemap
+    addPolygonLayer(layer) {
+      let map = this._map;
+      var visibility = layer.visible ? 'visible': 'none';
+
+      var mapLayer = {
+        'id': layer.id,
+        'type': 'fill',
+        'source': {
+          'type': 'geojson',
+          'data': layer.data
+        },
+        'layout': {'visibility': visibility },
+        'paint': {
+          'fill-color': layer.data.color,
+          'fill-opacity': 0.8
+        }
+      }
+
+      map.addLayer(mapLayer);
 
     }
 
