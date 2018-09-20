@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Drawer, Divider, Tooltip, IconButton, Toolbar } from '@material-ui/core';
+import { Drawer } from '@material-ui/core';
 
 import DragNDropBox from '../components/DragNDropBox';
 import LayerList from '../components/LayerList';
@@ -36,7 +36,7 @@ const styles = theme => ({
     
     render() {
 
-      const { layers, classes, drawerOpen, receiveNewJson, setLayerColor} = this.props;
+      const { layers, classes, drawerOpen, receiveNewJson, toggleVisibility} = this.props;
   
       return (
 
@@ -52,7 +52,7 @@ const styles = theme => ({
         <LayersToolbar receiveNewJson={receiveNewJson} />
   
         <div className={classes.content}>
-          <LayerList layers={layers} setLayerColor={setLayerColor}/>
+          <LayerList layers={layers} toggleVisibility={toggleVisibility}/>
           <DragNDropBox receiveNewJson={receiveNewJson}/>
         </div>
 

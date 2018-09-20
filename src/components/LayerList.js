@@ -22,7 +22,7 @@ const styles = theme => ({
     
     render() {
 
-      const { classes, layers, setLayerColor } = this.props;
+      const { layers, toggleVisibility } = this.props;
       const { selectedIndex } = this.state;
 
       var layersList = layers.map((layer, index) => {
@@ -32,7 +32,7 @@ const styles = theme => ({
             index={index}
             layerSelected={selectedIndex === index}
             handleListItemClick={this.handleListItemClick.bind(this)}
-            setLayerColor={setLayerColor}/>
+            toggleVisibility={toggleVisibility}/>
       })
   
       return (

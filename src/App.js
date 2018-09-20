@@ -74,7 +74,6 @@ const theme = createMuiTheme({
     var colorChoices = Object.keys(colorPalette);
     var scaledIndex = index * 3;
     var colorIndex = (scaledIndex- Math.floor(scaledIndex /colorChoices.length)*colorChoices.length);
-    console.log(colorIndex, colorChoices);
     return colorPalette[colorChoices[colorIndex]];
 }
 
@@ -98,13 +97,21 @@ const theme = createMuiTheme({
     return type;
   }
 
+  //not used
   setLayerColor(layerId, color){
-    let layers = this.state.layers;
-    var layer = layers.find(l => l.id == layerId);
-    console.log('layer', layer.data.type);
+    
+    var layer = this.getLayer(layerId);
     layer.data.color = color;
-    //this.setState({layers: layers});
-    console.log(this.state.layers);
+  }
+
+  toggleVisibility(layerId) {
+    var layer = this.getLayer(layerId);
+    layer.visible = !layer.visible;
+  }
+
+  getLayer(layerId) {
+    let layers = this.state.layers;
+    return layers.find(l => l.id === layerId);
   }
 
   render() {
@@ -124,7 +131,7 @@ const theme = createMuiTheme({
             drawerOpen={drawerOpen}
             receiveNewJson={this.receiveNewJson.bind(this)}
             layers={layers}
-            setLayerColor={this.setLayerColor.bind(this)}/>
+            toggleVisibility={this.toggleVisibility.bind(this)}/>
           <ToolkitBar
             toolDrawerOpen={toolDrawerOpen}/>
 

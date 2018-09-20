@@ -13,10 +13,8 @@ const styles = theme => ({
     
     render() {
 
-      var { layer, index, layerSelected, handleListItemClick, setLayerColor } = this.props;
+      var { layer, index, layerSelected, handleListItemClick, toggleVisibility } = this.props;
       var visibleIcon = layer.visible ? <VisibleIcon /> : <NotVisibleIcon />
-
-      console.log('selected', layer.displayName, layerSelected);
   
       return (
         <ListItem
@@ -25,11 +23,13 @@ const styles = theme => ({
         selected={layerSelected}
         onClick={event => handleListItemClick(event, index)}
       >
+
+          <ListItemIcon onClick={event => toggleVisibility(layer.id)}>
+            {visibleIcon}
+          </ListItemIcon>
+
         <ListItemIcon>
-          {visibleIcon}
-        </ListItemIcon>
-        <ListItemIcon>
-          <LayerIcon setLayerColor={setLayerColor} layer={layer} index={index}/>
+          <LayerIcon layer={layer} index={index}/>
         </ListItemIcon>
         <ListItemText disableTypography secondary={<Typography noWrap={true}>{layer.displayName}</Typography>} />
       </ListItem>

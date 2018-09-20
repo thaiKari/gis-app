@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Drawer, Divider, Tooltip, IconButton, Toolbar } from '@material-ui/core';
+import { Divider, Tooltip, IconButton, Toolbar } from '@material-ui/core';
 import { InsertDriveFile, Edit, Delete } from '@material-ui/icons'
 import FileUpload from './FileUpload';
 

@@ -12,7 +12,7 @@ import { SvgIcon } from '@material-ui/core';
     
     render() {
 
-      const { classes, layer, index, setLayerColor } = this.props;
+      const {layer} = this.props;
 
       var iconStyles = {
       };
