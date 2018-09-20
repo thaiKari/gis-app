@@ -97,8 +97,14 @@ class Map extends Component {
             case 'Polygon':
               this.addPolygonLayer(layer);
               break;
+            case 'LineString':
+              this.addLineLayer(layer);
+              break;
+            case 'Point':
+              this.addPointLayer(layer);
+              break;
             default:
-              console.log('unidentified layer type');
+              console.log('unidentified layer type', layer.type);
           }
           
         }
@@ -119,12 +125,51 @@ class Map extends Component {
       }
     }
 
+    addPointLayer(layer) {
+      let map = this._map;
+      var visibility = layer.visible ? 'visible': 'none';
+
+      map.addLayer({
+        'id': layer.id,
+        'type': 'circle',
+        'source': {
+          'type': 'geojson',
+          'data': layer.data
+        },
+        'layout': {'visibility': visibility },
+        'paint': {
+          'circle-radius': 4,
+          'circle-color': layer.data.color
+        }
+      });
+    }
+
+    addLineLayer(layer) {
+      let map = this._map;
+      var visibility = layer.visible ? 'visible': 'none';
+
+      map.addLayer({
+        'id': layer.id,
+        'type': 'line',
+        'source': {
+          'type': 'geojson',
+          'data': layer.data
+        },
+        'layout': {'visibility': visibility },
+        'paint': {
+          'line-color': layer.data.color,
+          'line-width': 6
+        }
+      });
+
+    }
+
     //TODO: assure correct order also in relation to basemap
     addPolygonLayer(layer) {
       let map = this._map;
       var visibility = layer.visible ? 'visible': 'none';
 
-      var mapLayer = {
+      map.addLayer({
         'id': layer.id,
         'type': 'fill',
         'source': {
@@ -136,9 +181,7 @@ class Map extends Component {
           'fill-color': layer.data.color,
           'fill-opacity': 0.8
         }
-      }
-
-      map.addLayer(mapLayer);
+      });
 
     }
 
