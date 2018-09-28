@@ -41,6 +41,7 @@ const theme = createMuiTheme({
     drawerOpen: true,
     toolDrawerOpen: false,
     layers: [],
+    layersChange: false, //needed to recognise change in layers
     visibilityChange: false //needed to get map to recognise change
   };
 
@@ -55,7 +56,7 @@ const theme = createMuiTheme({
   }
 
   receiveNewJson = (json, name) => {
-    let layers = this.state.layers;
+    let {layers, layersChange} = this.state;
     var type = this.getJsonType(json);
     var id = this.generateUniqueID(name);
     json.color= this.getDefaultColor(layers.length)
@@ -68,7 +69,10 @@ const theme = createMuiTheme({
     }
 
     layers.push(layer);
-    this.setState({layers: layers});
+    layersChange = !layersChange;
+    this.setState({
+      layers: layers,
+      layersChange: layersChange });
   }
 
   getDefaultColor(index) {
@@ -120,7 +124,7 @@ const theme = createMuiTheme({
   render() {
 
     const { classes } = this.props;
-    const { drawerOpen, toolDrawerOpen, layers, visibilityChange } = this.state;
+    const { drawerOpen, toolDrawerOpen, layers, visibilityChange, layersChange } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -134,6 +138,7 @@ const theme = createMuiTheme({
             drawerOpen={drawerOpen}
             receiveNewJson={this.receiveNewJson.bind(this)}
             layers={layers}
+            layersChange={layersChange}
             toggleVisibility={this.toggleVisibility.bind(this)}/>
           <ToolkitBar
             toolDrawerOpen={toolDrawerOpen}/>

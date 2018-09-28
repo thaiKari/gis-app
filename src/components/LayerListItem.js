@@ -19,10 +19,13 @@ const styles = theme => ({
   
   });
 
+
+
   class LayerListItem extends Component {
     state = {
       hoverVisible: false
     };
+
 
     render() {
     
@@ -41,14 +44,13 @@ const styles = theme => ({
       });
 
 
-
       return (
         <div >
           <ListItem
           button
           style={{padding:5, overflow:'hidden'}}
           selected={layerSelected}
-          onClick={event => handleListItemClick(event, index)}>
+          onClick={event => handleListItemClick(layer.id)}>
 
             <ListItemIcon onClick={event => toggleVisibility(layer.id)}
             className={visibleDivStyle}

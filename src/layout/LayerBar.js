@@ -36,7 +36,7 @@ const styles = theme => ({
     
     render() {
 
-      const { layers, classes, drawerOpen, receiveNewJson, toggleVisibility} = this.props;
+      const {layersChange, layers, classes, drawerOpen, receiveNewJson, toggleVisibility} = this.props;
   
       return (
 
@@ -52,7 +52,7 @@ const styles = theme => ({
         <LayersToolbar receiveNewJson={receiveNewJson} />
   
         <div className={classes.content}>
-          <LayerList layers={layers} toggleVisibility={toggleVisibility}/>
+          <LayerList layersChange={layersChange} layers={layers} toggleVisibility={toggleVisibility}/>
           <DragNDropBox receiveNewJson={receiveNewJson}/>
         </div>
 
