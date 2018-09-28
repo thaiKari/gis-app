@@ -39,11 +39,6 @@ const styles = theme => ({
         [classes.hoverBoxActive]: hoverVisible
       });
 
-      var layerItem = classNames({
-        [classes.layerDisabled]: layer.visible
-      });
-
-
       return (
         <div >
           <ListItem
