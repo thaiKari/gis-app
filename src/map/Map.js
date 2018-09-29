@@ -5,12 +5,9 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import {getSetting} from 'config';
 import {  } from '@material-ui/core';
-//mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
-
 
 const styles = theme => ({
     map: {
-      //height: `calc(100vh - ${theme.appBarHeight}px)`,
       height: `100vh`,
       width: '100vw'
 
