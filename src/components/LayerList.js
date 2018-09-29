@@ -16,7 +16,6 @@ const styles = theme => ({
 
         this.state = {
             selectedLayers: {},
-            selectedIndex: null,
             ctrlPressed: false,
             shiftPressed: false
          };
