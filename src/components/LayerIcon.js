@@ -31,7 +31,7 @@ import { withStyles } from '@material-ui/core/styles';;
     
     render() {
 
-      const {layer, theme} = this.props;
+      const {layer} = this.props;
 
       var iconStyles = {
       };

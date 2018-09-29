@@ -77,31 +77,31 @@ class Map extends Component {
     
         layers.forEach( (layer, i) => {
           if (!this._map.isStyleLoaded()) {
-            this.waitForStyleLoad(this.handleSingleLayerVisibility.bind(this), layer);
+            this.waitForStyleLoad(this.handleSingleLayerVisibility.bind(this), layer, i);
           }
           else {
-            this.handleSingleLayerVisibility(layer);
+            this.handleSingleLayerVisibility(layer, i);
           }
   
         });
     }
 
-    handleSingleLayerVisibility(layer) {
+    handleSingleLayerVisibility(layer, i) {
       if (!this._map.isStyleLoaded()) {
-        this.waitForStyleLoad(this.handleSingleLayerVisibility.bind(this), layer);
+        this.waitForStyleLoad(this.handleSingleLayerVisibility.bind(this), layer, i);
       }
 
       else {
         if( !this._map.getSource(layer.id) ) {
           switch (layer.type) {
             case 'Polygon':
-              this.addPolygonLayer(layer);
+              this.addPolygonLayer(layer, i);
               break;
             case 'LineString':
-              this.addLineLayer(layer);
+              this.addLineLayer(layer, i);
               break;
             case 'Point':
-              this.addPointLayer(layer);
+              this.addPointLayer(layer, i);
               break;
             default:
               console.log('unidentified layer type', layer.type);
@@ -117,15 +117,17 @@ class Map extends Component {
       }
     }
 
-    waitForStyleLoad(callback, layer) {
+    waitForStyleLoad(callback, layer, i) {
       if (!this._map.isStyleLoaded()) {
         setTimeout(() => {
-          callback(layer);
+          callback(layer, i);
         }, 200);
       }
     }
 
-    addPointLayer(layer) {
+    addPointLayer(layer, i) {
+      const {layers} = this.props;
+      var layerAbove = i === 0 ? null : layers[i-1].id; //Assures that layer gets rendered in correct order
       let map = this._map;
       var visibility = layer.visible ? 'visible': 'none';
 
@@ -141,10 +143,13 @@ class Map extends Component {
           'circle-radius': 4,
           'circle-color': layer.data.color
         }
-      });
+      }, layerAbove);
     }
 
-    addLineLayer(layer) {
+    addLineLayer(layer, i) {
+      const {layers} = this.props;
+      var layerAbove = i === 0 ? null : layers[i-1].id; //Assures that layer gets rendered in correct order
+
       let map = this._map;
       var visibility = layer.visible ? 'visible': 'none';
 
@@ -160,12 +165,13 @@ class Map extends Component {
           'line-color': layer.data.color,
           'line-width': 6
         }
-      });
+      }, layerAbove);
 
     }
 
-    //TODO: assure correct order also in relation to basemap
-    addPolygonLayer(layer) {
+    addPolygonLayer(layer, i) {
+      const {layers} = this.props;
+      var layerAbove = i === 0 ? null : layers[i-1].id; //Assures that layer gets rendered in correct order
       let map = this._map;
       var visibility = layer.visible ? 'visible': 'none';
 
@@ -181,7 +187,7 @@ class Map extends Component {
           'fill-color': layer.data.color,
           'fill-opacity': 0.8
         }
-      });
+      },layerAbove);
 
     }
 
