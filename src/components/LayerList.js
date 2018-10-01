@@ -64,7 +64,7 @@ const styles = theme => ({
       let {layers} = this.props;
 
       let newSelectedLayers = layers.reduce(
-        (selected, layer, index) => {
+        (selected, layer) => {
 
           if(! selected[layer.id] ) {
             selected[layer.id] = false;
