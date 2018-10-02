@@ -127,9 +127,10 @@ const theme = createMuiTheme({
 
     let layers = this.state.layers;
     let layerId = layers[startIndex].id;
-    let layerAboveId = endIndex === 0 ? null: layers[endIndex].id;
 
     layers = reorder(layers, startIndex, endIndex);
+
+    let layerAboveId = endIndex === 0 ? null: layers[endIndex-1].id;
 
     this.setState({
       moveLayerUnder: [layerId, layerAboveId],
