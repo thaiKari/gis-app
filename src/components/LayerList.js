@@ -2,12 +2,23 @@ import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import LayerListItem from './LayerListItem';
 import {List} from '@material-ui/core';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const styles = theme => ({
   
   });
 
 
+
+const getItemStyle = (theme, isDragging, draggableStyle ) => ({
+  userSelect: 'none',
+
+  // change background colour if dragging
+  background: isDragging ? theme.palette.primary.main : 'None',
+
+  // styles we need to apply on draggables
+  ...draggableStyle,
+  });
 
   class LayerList extends Component {
     constructor(props) {
@@ -17,8 +28,26 @@ const styles = theme => ({
         this.state = {
             selectedLayers: {},
             ctrlPressed: false,
-            shiftPressed: false
+            shiftPressed: false,
          };
+         this.onDragEnd = this.onDragEnd.bind(this);
+      }
+
+      onDragEnd(result) {
+        if (!result.destination) {
+          return;
+        }
+
+        const { reorderLayersList } = this.props;
+        reorderLayersList( result.source.index, result.destination.index);
+    
+        /*const newLayers = reorder(
+          layers,
+          result.source.index,
+          result.destination.index
+        );
+        console.log('on drag end', newLayers); */
+        console.log('fromTo', result.source.index, result.destination.index)
       }
 
 
@@ -141,23 +170,46 @@ const styles = theme => ({
     
     render() {
 
-      const { layers, toggleVisibility } = this.props;
+      const { layers, toggleVisibility, theme } = this.props;
       const { selectedLayers } = this.state;
 
-      var layersList = layers.map((layer, index) => {
-        return <LayerListItem 
-            key={layer.id}
-            layer={layer}
-            index={index}
-            layerSelected={selectedLayers[layer.id]}
-            handleListItemClick={this.handleListItemClick.bind(this)}
-            toggleVisibility={toggleVisibility}/>
-      })
   
       return (
-        <List>
-            {layersList}
-        </List>
+        <DragDropContext onDragEnd={this.onDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided, snapshot) => (
+            <div ref={provided.innerRef} >
+              {layers.map((layer, index) => (
+                <Draggable key={layer.id} draggableId={layer.id} index={index}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={getItemStyle(
+                        theme,
+                        snapshot.isDragging,
+                        provided.draggableProps.style
+                      )}
+                    >
+
+                    <LayerListItem 
+                      key={layer.id}
+                      layer={layer}
+                      index={index}
+                      layerSelected={selectedLayers[layer.id]}
+                      handleListItemClick={this.handleListItemClick.bind(this)}
+                      toggleVisibility={toggleVisibility}/>
+                      
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
       );
   
   
@@ -166,3 +218,10 @@ const styles = theme => ({
   }
 
 export default withStyles(styles, { withTheme: true })(LayerList);
+
+/**
+         <List>
+            {layersList}
+        </List> 
+ 
+ */

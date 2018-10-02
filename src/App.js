@@ -7,6 +7,7 @@ import ToolkitBar from './layout/ToolkitBar';
 import TopBar from './layout/TopBar';
 import Map from './map/Map';
 import colorPalette from './globalConstants/colorPalette'
+import reorder from './utils/reorderList'
 
 const theme = createMuiTheme({
   palette: {
@@ -42,7 +43,8 @@ const theme = createMuiTheme({
     toolDrawerOpen: false,
     layers: [],
     layersChange: false, //needed to recognise change in layers
-    visibilityChange: false //needed to get map to recognise change
+    visibilityChange: false, //needed to get map to recognise change
+    moveLayerUnder: [] //Array with values [layerID, layerAboveID]. Change in state prompts map
   };
 
   handleDrawerToggle = () => {
@@ -121,10 +123,24 @@ const theme = createMuiTheme({
     return layers.find(l => l.id === layerId);
   }
 
+  reorderLayersList(startIndex, endIndex) {
+
+    let layers = this.state.layers;
+    let layerId = layers[startIndex].id;
+    let layerAboveId = endIndex === 0 ? null: layers[endIndex].id;
+
+    layers = reorder(layers, startIndex, endIndex);
+
+    this.setState({
+      moveLayerUnder: [layerId, layerAboveId],
+      layers: layers
+    });
+  }
+
   render() {
 
     const { classes } = this.props;
-    const { drawerOpen, toolDrawerOpen, layers, visibilityChange, layersChange } = this.state;
+    const { moveLayerUnder, drawerOpen, toolDrawerOpen, layers, visibilityChange, layersChange } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -139,14 +155,15 @@ const theme = createMuiTheme({
             receiveNewJson={this.receiveNewJson.bind(this)}
             layers={layers}
             layersChange={layersChange}
-            toggleVisibility={this.toggleVisibility.bind(this)}/>
+            toggleVisibility={this.toggleVisibility.bind(this)}
+            reorderLayersList={this.reorderLayersList.bind(this)}/>
           <ToolkitBar
             toolDrawerOpen={toolDrawerOpen}/>
 
           <main className={classes.content}>          
                <Map 
                layers={layers}
-               visibilityChange={visibilityChange}/>                  
+               moveLayerUnder={moveLayerUnder}/>                  
           </main>
 
         </div>
