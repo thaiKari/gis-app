@@ -55,7 +55,6 @@ class Map extends Component {
         let moveLayerUnder = this.props.moveLayerUnder;
         let layerId = moveLayerUnder[0];
         let layerAbove = moveLayerUnder[1];
-        console.log(layerId, layerAbove)
         this._map.moveLayer(layerId, layerAbove);
       }
       else {

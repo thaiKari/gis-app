@@ -1,22 +1,15 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import LayerListItem from './LayerListItem';
-import {List} from '@material-ui/core';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const styles = theme => ({
   
   });
 
-
-
 const getItemStyle = (theme, isDragging, draggableStyle ) => ({
   userSelect: 'none',
-
-  // change background colour if dragging
   background: isDragging ? theme.palette.primary.main : 'None',
-
-  // styles we need to apply on draggables
   ...draggableStyle,
   });
 
@@ -41,13 +34,6 @@ const getItemStyle = (theme, isDragging, draggableStyle ) => ({
         const { reorderLayersList } = this.props;
         reorderLayersList( result.source.index, result.destination.index);
     
-        /*const newLayers = reorder(
-          layers,
-          result.source.index,
-          result.destination.index
-        );
-        console.log('on drag end', newLayers); */
-        console.log('fromTo', result.source.index, result.destination.index)
       }
 
 
@@ -158,7 +144,7 @@ const getItemStyle = (theme, isDragging, draggableStyle ) => ({
         }
         else {
           Object.keys(selectedLayers).forEach(key => {
-            selectedLayers[key] = key == layerId ?
+            selectedLayers[key] = key === layerId ?
             ! selectedLayers[key] : false;
           });
         }

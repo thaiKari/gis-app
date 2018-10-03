@@ -43,7 +43,6 @@ const theme = createMuiTheme({
     toolDrawerOpen: false,
     layers: [],
     layersChange: false, //needed to recognise change in layers
-    visibilityChange: false, //needed to get map to recognise change
     moveLayerUnder: [] //Array with values [layerID, layerAboveID]. Change in state prompts map
   };
 
@@ -97,7 +96,7 @@ const theme = createMuiTheme({
     if (json.type === 'FeatureCollection'){
       type = json.features[0].geometry.type;
     } else {
-      console.log('json type shoule be FeatureCollection');
+      console.log('json type should be FeatureCollection');
       //TODO: support more types
     }
 
@@ -112,10 +111,11 @@ const theme = createMuiTheme({
   }
 
   toggleVisibility(layerId) {
-    var layer = this.getLayer(layerId);
+    let layers = this.state.layers;
+    let layer = layers.find(l => l.id === layerId);
     layer.visible = !layer.visible;
-    let visibilityChange = !this.state.visibilityChange;
-    this.setState({visibilityChange: visibilityChange});
+
+    this.setState({layers: layers});
   }
 
   getLayer(layerId) {
@@ -141,7 +141,7 @@ const theme = createMuiTheme({
   render() {
 
     const { classes } = this.props;
-    const { moveLayerUnder, drawerOpen, toolDrawerOpen, layers, visibilityChange, layersChange } = this.state;
+    const { moveLayerUnder, drawerOpen, toolDrawerOpen, layers, layersChange } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
