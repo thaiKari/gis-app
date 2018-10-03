@@ -11,6 +11,7 @@ const styles = theme => ({
         position: 'relative',
         width: theme.drawerWidth,
         marginTop: theme.appBarHeight,
+        overflow: 'hidden'
       },
       drawerHeader: {
         height: theme.appBarHeight,
