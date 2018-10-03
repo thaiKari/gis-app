@@ -51,7 +51,16 @@ class Map extends Component {
       }
 
     componentDidUpdate(prevProps) {
-      this.updateLayerVisibility();
+      if (prevProps.moveLayerUnder !== this.props.moveLayerUnder) {
+        let moveLayerUnder = this.props.moveLayerUnder;
+        let layerId = moveLayerUnder[0];
+        let layerAbove = moveLayerUnder[1];
+        this._map.moveLayer(layerId, layerAbove);
+      }
+      else {
+        // Assume layer visibility toggled or layer added
+        this.updateLayerVisibility();
+      }
     }
 
     componentDidMount() {
