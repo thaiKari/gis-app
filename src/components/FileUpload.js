@@ -22,13 +22,11 @@ const styles = theme => ({
             // Closure to capture the file information.
             reader.onload = (function (file) {
                 return function (e) {
-                    //console.log('e readAsText = ', e);
-                    //console.log('e readAsText target = ', e.target);
                     try {
                         json = JSON.parse(e.target.result);
                         var name = file.name.replace('.json', '');
-                        var id = name + file.lastModified;
-                        receiveNewJson(json, name, id);
+
+                        receiveNewJson(json, name);
 
                     } catch (ex) {
                         console.log('error parsing JSON', ex);

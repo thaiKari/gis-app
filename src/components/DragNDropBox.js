@@ -1,49 +1,64 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import FileUpload from './FileUpload';
-import { Typography } from '../../node_modules/@material-ui/core';
+import { Typography, Button } from '../../node_modules/@material-ui/core';
 import classNames from 'classnames';
 
 const styles = theme => ({
     dropBox: {
-        border: '3px dashed white',
+        border: '3px dashed ' + theme.palette.text.primary,
         borderRadius: 20,
         width: 'calc(100%-20px)',
-        height:70,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         textAlign: 'center',
-        verticalAlign: 'middle',
-        padding: 20,
-        paddingTop: 50
+        padding: 30,
     },
     dropBoxActive: {
       backgroundColor: theme.palette.action.hover
-  }
+    },  button: {
+      margin: theme.spacing.unit,
+      marginTop: 30
+    }
   
   });
 
   class DragNDropBox extends Component {
     state = {
-      dropBoxActivated: false
+      dropBoxActivated: false,
     };
     
     render() {
 
-      const { classes, receiveNewJson} = this.props;
+      const { classes, receiveNewJson, modalDisp} = this.props;
       const { dropBoxActivated } = this.state;
 
       var liClasses = classNames({
         [classes.dropBox]: true,
         [classes.dropBoxActive]: dropBoxActivated
       });
+
+      let boxContent = modalDisp ?
+        <div>
+          <FileUpload receiveNewJson={receiveNewJson}>
+            <Button variant="contained" color="primary" className={classes.button}>
+              Choose Files
+            </Button>
+          </FileUpload>
+          <Typography> or drag and drop a geojson file here</Typography>          
+        </div>
+      :
+        <Typography> Drag and drop a geojson file here</Typography>
+
   
       return (
         <FileUpload receiveNewJson={receiveNewJson} disableClick>
             <div className={liClasses}
                 onDragOver={()=> this.setState({dropBoxActivated: true})}
                 onDragLeave={()=> this.setState({dropBoxActivated: false})}
-                onDrop={()=> this.setState({dropBoxActivated: false})}>
-                
-                <Typography> Drag and drop a geojson file here</Typography>
+                onDrop={()=> this.setState({dropBoxActivated: false})}>                
+                {boxContent}
             </div>
         </FileUpload>
       );

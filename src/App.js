@@ -6,14 +6,15 @@ import LayerBar from './layout/LayerBar';
 import ToolkitBar from './layout/ToolkitBar';
 import TopBar from './layout/TopBar';
 import Map from './map/Map';
-import colorPalette from './globalConstants/colorPalette'
 import reorder from './utils/reorderList'
+import {teal, blue, amber} from '@material-ui/core/colors';
+import createJsonLayer from './utils/createJsonLayer';
 
 const theme = createMuiTheme({
   palette: {
-      //primary: indigo,
-      //secondary: red,
-      type: 'dark'
+    primary: teal,
+    secondary: amber,
+    type: 'dark',
   },
   drawerWidth: 240,
   appBarHeight: 60,
@@ -58,16 +59,7 @@ const theme = createMuiTheme({
 
   receiveNewJson = (json, name) => {
     let {layers, layersChange} = this.state;
-    var type = this.getJsonType(json);
-    var id = this.generateUniqueID(name);
-    json.color= this.getDefaultColor(layers.length)
-    var layer = {
-      id: id,
-      type: type,
-      displayName: name,
-      visible: true,
-      data: json 
-    }
+    var layer = createJsonLayer(json, name, layers.length -1)
 
     layers.push(layer);
     layersChange = !layersChange;
@@ -76,7 +68,7 @@ const theme = createMuiTheme({
       layersChange: layersChange });
   }
 
-  getDefaultColor(index) {
+/*  getDefaultColor(index) {
     var colorChoices = Object.keys(colorPalette);
     var scaledIndex = index * 3;
     var colorIndex = (scaledIndex- Math.floor(scaledIndex /colorChoices.length)*colorChoices.length);
@@ -88,7 +80,7 @@ const theme = createMuiTheme({
     var n = d.getTime();
 
     return name + n;
-  }
+  } 
 
   getJsonType(json) {
     var type;
@@ -101,7 +93,7 @@ const theme = createMuiTheme({
     }
 
     return type;
-  }
+  }*/
 
   //not used
   setLayerColor(layerId, color){
@@ -147,7 +139,7 @@ const theme = createMuiTheme({
       <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <div className={classes.appFrame}>
-          <TopBar 
+          <TopBar
             handleDrawerToggle={this.handleDrawerToggle.bind(this)}
             toggleToolDrawer={this.toggleToolDrawer.bind(this)}/>
           <LayerBar

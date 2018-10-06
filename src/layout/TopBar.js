@@ -20,7 +20,7 @@ const styles = theme => ({
     
     render() {
 
-      const { classes, handleDrawerToggle, toggleToolDrawer } = this.props;
+      const { classes, handleDrawerToggle, toggleToolDrawer, theme } = this.props;
   
       return (
         <AppBar
@@ -29,7 +29,6 @@ const styles = theme => ({
         <Toolbar disableGutters={true}>
         <Tooltip title="Layers">
             <IconButton
-              color="inherit"
               onClick={handleDrawerToggle}
               className={classNames(classes.button)}
             >
@@ -43,7 +42,6 @@ const styles = theme => ({
             <IconButton
               className= {classes.button}
               onClick={toggleToolDrawer}
-              color="inherit"
             >
               <Build />
             </IconButton>

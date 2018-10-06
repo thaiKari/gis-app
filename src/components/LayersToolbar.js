@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Divider, Tooltip, IconButton, Toolbar } from '@material-ui/core';
 import { InsertDriveFile, Edit, Delete } from '@material-ui/icons'
 import FileUpload from './FileUpload';
+import AddLayerDialog from './AddLayerDialog';
 
 
 const styles = theme => ({
@@ -14,22 +15,32 @@ const styles = theme => ({
   });
 
   class LayersToolbar extends Component {
+    state = {
+      addLayerDialogOpen: false,
+    };
+
+    closeLayerDialog() {
+      this.setState({addLayerDialogOpen: false});
+    }
     
     render() {
 
+      const {addLayerDialogOpen} = this.state;
       const { classes, receiveNewJson } = this.props;
   
       return (
         <div>
+
+        <AddLayerDialog receiveNewJson={receiveNewJson} open={addLayerDialogOpen} closeDialog={this.closeLayerDialog.bind(this)}/>
         <Divider />
         <Toolbar className={classes.layersToolbar} disableGutters={true}>
-          <FileUpload receiveNewJson={receiveNewJson}>
+
             <Tooltip title="New Layer">
-              <IconButton>
+              <IconButton onClick={ () => this.setState({addLayerDialogOpen: true})}>
                 <InsertDriveFile/>
               </IconButton>
             </Tooltip>
-          </FileUpload>
+
           
           <div style={{flex: 1}}></div>
 
