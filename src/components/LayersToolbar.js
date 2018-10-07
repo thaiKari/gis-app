@@ -25,7 +25,7 @@ const styles = theme => ({
     render() {
 
       const {addLayerDialogOpen} = this.state;
-      const { classes, addLayers } = this.props;
+      const { classes, addLayers, openDeleteLayersDialog } = this.props;
   
       return (
         <div>
@@ -49,7 +49,7 @@ const styles = theme => ({
             </IconButton>
           </Tooltip>
           <Tooltip title="Delete Layer">
-            <IconButton>
+            <IconButton onClick={openDeleteLayersDialog}>
               <Delete/>
             </IconButton>
           </Tooltip>

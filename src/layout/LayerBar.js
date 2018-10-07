@@ -5,6 +5,7 @@ import findIndexWithAttribute from '../utils/findIndexWithAttribute'
 import DragNDropBox from '../components/DragNDropBox';
 import LayerList from '../components/LayerList';
 import LayersToolbar from '../components/LayersToolbar';
+import DeleteLayerDialog from '../components/DeleteLayerDialog';
 
 const styles = theme => ({
     drawerPaper: {
@@ -31,6 +32,7 @@ const styles = theme => ({
         selectedLayers: {},
         ctrlPressed: false,
         shiftPressed: false,
+        deleteLayersDialogOpen: false,
       }
         this.onDragEnd = this.onDragEnd.bind(this);
     }
@@ -158,6 +160,21 @@ const styles = theme => ({
           selectedLayers: selectedLayers,
           lastClickedLayer: layerId  });
     };
+
+    openDeleteLayersDialog() {
+      this.setState({deleteLayersDialogOpen: true});
+    }
+
+    closeDeleteLayersDialog() {
+      this.setState({deleteLayersDialogOpen: false});
+    }
+
+    deleteLayers() {
+      const {selectedLayers} = this.state;
+      console.log('DELETE THEM!');
+      //TODO: get a list of all selected layers.
+      // Call function in App.js that removes them from the layers list
+    }
     
     
     render() {
@@ -169,7 +186,7 @@ const styles = theme => ({
         drawerOpen,
         receiveNewJson,
         toggleVisibility} = this.props;
-      const {selectedLayers} = this.state
+      const {selectedLayers, deleteLayersDialogOpen} = this.state;
   
       return (
 
@@ -182,7 +199,13 @@ const styles = theme => ({
         }}
       >
 
-        <LayersToolbar addLayers={addLayers}/>
+        <DeleteLayerDialog closeDialog={this.closeDeleteLayersDialog.bind(this)}
+                            open={deleteLayersDialogOpen}
+                            selectedLayers={selectedLayers}
+                            layers={layers}
+                            deleteLayers={this.deleteLayers.bind(this)}/>
+      
+        <LayersToolbar openDeleteLayersDialog={this.openDeleteLayersDialog.bind(this)} addLayers={addLayers}/>
   
         <div className={classes.content}>
           <LayerList reorderLayersList={reorderLayersList}
