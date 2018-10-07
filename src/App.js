@@ -47,6 +47,7 @@ const theme = createMuiTheme({
     moveLayerUnder: [] //Array with values [layerID, layerAboveID]. Change in state prompts map
   };
 
+
   handleDrawerToggle = () => {
     let drawerOpen= !this.state.drawerOpen;
     this.setState({ drawerOpen: drawerOpen });

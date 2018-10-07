@@ -3,12 +3,16 @@ import { withStyles } from '@material-ui/core/styles';
 import {Dialog,
         AppBar,
         Tabs,
-        Tab} from '@material-ui/core'
+        Tab,
+        DialogActions,
+        DialogTitle,
+        Button} from '@material-ui/core'
 
 import UploadIcon from '@material-ui/icons/CloudUpload';
 import MapIcon from '@material-ui/icons/Map';
 import CreateIcon from '@material-ui/icons/Create';
-import DialogContentUpload from './DialogContentUpload'
+import DialogContentUpload from './DialogContentUpload';
+import createJsonLayer from '../utils/createJsonLayer';
 
 
 const styles = theme => ({
@@ -20,11 +24,41 @@ class AddLayerDialog extends React.Component {
     open: false,
     scroll: 'paper',
     uploadTypeIndex: 0,
+    layers: []
   };
 
-  submitJsonLayers = (newLayers) => {
+  handleFile(json, name) {
+    let {layers} = this.state;
+
+    let layer =  createJsonLayer(json, name, layers.length);
+    layers.push(layer);
+
+    this.setState({layers: layers});
+  }
+
+  deleteLayer(index) {
+    const {layers} = this.state;
+    layers.splice(index, 1);
+
+    this.setState({layers: layers});
+  }
+
+  componentWillUnmount = () => {
+    // dialog has a side-effect if this not checked
+    document.body.style.overflow = 'auto';
+    this.setState({layers: []});
+  } 
+
+  componentDidMount  = () => {
+    // dialog has a side-effect if this not checked
+    document.body.style.overflow = 'auto';
+    this.setState({layers: []});
+  } 
+
+  submitJsonLayers = () => {
+    const {layers} = this.state;
     const {closeDialog, addLayers} = this.props
-    addLayers(newLayers);
+    addLayers(layers);
     closeDialog();
   };
 
@@ -33,7 +67,8 @@ class AddLayerDialog extends React.Component {
   }
 
   handleClose = () => {
-    const {closeDialog} = this.props
+    const {closeDialog} = this.props;
+    this.setState({layers: []});
     closeDialog();
   };
 
@@ -42,13 +77,14 @@ class AddLayerDialog extends React.Component {
   };
   
   getDialogContent() {
-    const {uploadTypeIndex} = this.state;
+    const {uploadTypeIndex, layers} = this.state;
     const {receiveNewJson} = this.props;
 
     switch(uploadTypeIndex) {
       case 0:
-          return <DialogContentUpload handleClose={this.handleClose.bind(this)}
-                  submitLayers={this.submitJsonLayers.bind(this)}/>
+          return <DialogContentUpload handleFile={this.handleFile.bind(this)}
+                  deleteLayer={this.deleteLayer.bind(this)}
+                  layers={layers}/>
       case 1:
           return null
       default:
@@ -62,6 +98,7 @@ class AddLayerDialog extends React.Component {
     const {classes, open} = this.props;
 
     let dialogContent = this.getDialogContent();
+    
 
     return (
       <div>
@@ -69,7 +106,7 @@ class AddLayerDialog extends React.Component {
         <Dialog
           open={open}
           onClose={this.handleClose}
-          scroll={this.state.scroll}
+          scroll={'paper'}
           aria-labelledby="scroll-dialog-title"
         >
 
@@ -81,8 +118,18 @@ class AddLayerDialog extends React.Component {
 
               </Tabs>
             </AppBar>
+            <DialogTitle id="scroll-dialog-title">Upload Layers</DialogTitle>
 
             {dialogContent}
+
+            <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.submitJsonLayers} color="primary">
+              Submit
+            </Button>
+          </DialogActions>   
 
         </Dialog>
       </div>

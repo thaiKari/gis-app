@@ -1,14 +1,11 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {DialogContent,  Typography, DialogTitle, DialogActions, Button}  from '@material-ui/core'
+import {DialogContentText, DialogContent,  Typography, DialogTitle, DialogActions, Button}  from '@material-ui/core'
 import DragNDropBox from './DragNDropBox';
-import createJsonLayer from '../utils/createJsonLayer';
 import SimpleLayerList from './SimpleLayerList';
 
 const styles = theme => ({
-    dialog: {
-      
-    },
+
   });
 
   class DialogContentUpload extends Component {
@@ -17,14 +14,14 @@ const styles = theme => ({
     };
 
 
-    handleFile(json, name) {
+    /*handleFile(json, name) {
       let {layers} = this.state;
 
-      let layer =  createJsonLayer(json, name, layers.length);
+      //let layer =  createJsonLayer(json, name, layers.length);
       layers.push(layer);
 
       this.setState({layers: layers});
-    }
+    } */
 
     submitLayers = () => {
       const {layers} = this.state;
@@ -33,17 +30,12 @@ const styles = theme => ({
       submitLayers(layers);
     }
 
-    deleteLayer(index) {
-      const {layers} = this.state;
-      layers.splice(index, 1);
 
-      this.setState({layers: layers});
-    }
     
     render() {
 
-      const { classes, handleClose, theme } = this.props;
-      const {layers} = this.state;
+      const { classes, handleFile, deleteLayer, layers } = this.props;
+      //const {layers} = this.state;
 
       let uploadList = layers.length > 0 ?
                       <div style = {{padding: 20}}>
@@ -51,28 +43,20 @@ const styles = theme => ({
                         <SimpleLayerList 
                           canDelete={true}
                           layers={layers}
-                          deleteLayer={this.deleteLayer.bind(this)}/>
+                          deleteLayer={deleteLayer}/>
                       </div>
                       : null ;
 
       return (
-        <div>
-          <DialogTitle id="scroll-dialog-title">Upload Layers</DialogTitle>
+
           <DialogContent className={classes.dialog}>
                   
-          <DragNDropBox modalDisp={true} receiveNewJson={this.handleFile.bind(this)}/>
+          <DragNDropBox modalDisp={true} receiveNewJson={handleFile}/>
           {uploadList}
-          
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.submitLayers} color="primary">
-              Add Layers
-            </Button>
-          </DialogActions>
-        </DialogContent>
-      </div>
+
+          </DialogContent>
+  
+
       );
   
   
