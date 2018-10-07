@@ -62,13 +62,11 @@ class AddLayerDialog extends React.Component {
     closeDialog();
   };
 
-  receiveLayers(newLayers) {
-    console.log('newLayers', newLayers)
-  }
-
   handleClose = () => {
     const {closeDialog} = this.props;
-    this.setState({layers: []});
+    this.setState({
+      layers: [],
+      uploadTypeIndex: 0});
     closeDialog();
   };
 
@@ -78,7 +76,6 @@ class AddLayerDialog extends React.Component {
   
   getDialogContent() {
     const {uploadTypeIndex, layers} = this.state;
-    const {receiveNewJson} = this.props;
 
     switch(uploadTypeIndex) {
       case 0:
@@ -95,7 +92,7 @@ class AddLayerDialog extends React.Component {
 
   render() {
     const {uploadTypeIndex} = this.state;
-    const {classes, open} = this.props;
+    const { open} = this.props;
 
     let dialogContent = this.getDialogContent();
     

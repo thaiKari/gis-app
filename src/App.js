@@ -7,7 +7,7 @@ import ToolkitBar from './layout/ToolkitBar';
 import TopBar from './layout/TopBar';
 import Map from './map/Map';
 import reorder from './utils/reorderList'
-import {teal, blue, amber} from '@material-ui/core/colors';
+import {teal, amber} from '@material-ui/core/colors';
 import createJsonLayer from './utils/createJsonLayer';
 
 const theme = createMuiTheme({
@@ -74,7 +74,6 @@ const theme = createMuiTheme({
     
 
     layers.push.apply(layers, newLayers)
-    console.log('Add Lyars', layers)
     this.setState({
       layers: layers,
       layersChange: !layersChange

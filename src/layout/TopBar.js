@@ -20,7 +20,7 @@ const styles = theme => ({
     
     render() {
 
-      const { classes, handleDrawerToggle, toggleToolDrawer, theme } = this.props;
+      const { classes, handleDrawerToggle, toggleToolDrawer } = this.props;
   
       return (
         <AppBar

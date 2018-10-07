@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Divider, Tooltip, IconButton, Toolbar } from '@material-ui/core';
 import { InsertDriveFile, Edit, Delete } from '@material-ui/icons'
-import FileUpload from './FileUpload';
 import AddLayerDialog from './AddLayerDialog';
 
 
@@ -26,12 +25,12 @@ const styles = theme => ({
     render() {
 
       const {addLayerDialogOpen} = this.state;
-      const { classes, receiveNewJson, addLayers } = this.props;
+      const { classes, addLayers } = this.props;
   
       return (
         <div>
 
-        <AddLayerDialog addLayers={addLayers} receiveNewJson={receiveNewJson} open={addLayerDialogOpen} closeDialog={this.closeLayerDialog.bind(this)}/>
+        <AddLayerDialog addLayers={addLayers} open={addLayerDialogOpen} closeDialog={this.closeLayerDialog.bind(this)}/>
         <Divider />
         <Toolbar className={classes.layersToolbar} disableGutters={true}>
 

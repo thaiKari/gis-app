@@ -50,7 +50,7 @@ const styles = theme => ({
         }}
       >
 
-        <LayersToolbar addLayers={addLayers} receiveNewJson={receiveNewJson} />
+        <LayersToolbar addLayers={addLayers}/>
   
         <div className={classes.content}>
           <LayerList reorderLayersList={reorderLayersList} layersChange={layersChange} layers={layers} toggleVisibility={toggleVisibility}/>
