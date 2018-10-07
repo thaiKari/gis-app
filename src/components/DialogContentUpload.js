@@ -6,7 +6,9 @@ import createJsonLayer from '../utils/createJsonLayer';
 import SimpleLayerList from './SimpleLayerList';
 
 const styles = theme => ({
-  
+    dialog: {
+      
+    },
   });
 
   class DialogContentUpload extends Component {
@@ -40,8 +42,18 @@ const styles = theme => ({
     
     render() {
 
-      const { classes, receiveNewJson, theme } = this.props;
+      const { classes, handleClose, theme } = this.props;
       const {layers} = this.state;
+
+      let uploadList = layers.length > 0 ?
+                      <div style = {{padding: 20}}>
+                        <Typography color='primary'> Add the Following Layers to map:</Typography>
+                        <SimpleLayerList 
+                          canDelete={true}
+                          layers={layers}
+                          deleteLayer={this.deleteLayer.bind(this)}/>
+                      </div>
+                      : null ;
 
       return (
         <div>
@@ -49,14 +61,10 @@ const styles = theme => ({
           <DialogContent className={classes.dialog}>
                   
           <DragNDropBox modalDisp={true} receiveNewJson={this.handleFile.bind(this)}/>
-            <Typography> Add the Following Layers to map:</Typography>
-            <SimpleLayerList 
-              canDelete={true}
-              layers={layers}
-              deleteLayer={this.deleteLayer.bind(this)}/>
+          {uploadList}
           
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={handleClose} color="primary">
               Cancel
             </Button>
             <Button onClick={this.submitLayers} color="primary">

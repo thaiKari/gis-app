@@ -26,12 +26,12 @@ const styles = theme => ({
     render() {
 
       const {addLayerDialogOpen} = this.state;
-      const { classes, receiveNewJson } = this.props;
+      const { classes, receiveNewJson, addLayers } = this.props;
   
       return (
         <div>
 
-        <AddLayerDialog receiveNewJson={receiveNewJson} open={addLayerDialogOpen} closeDialog={this.closeLayerDialog.bind(this)}/>
+        <AddLayerDialog addLayers={addLayers} receiveNewJson={receiveNewJson} open={addLayerDialogOpen} closeDialog={this.closeLayerDialog.bind(this)}/>
         <Divider />
         <Toolbar className={classes.layersToolbar} disableGutters={true}>
 

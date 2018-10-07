@@ -12,10 +12,7 @@ import DialogContentUpload from './DialogContentUpload'
 
 
 const styles = theme => ({
-  dialog: {
-    width: 500,
-    minWidth: 500
-  },
+
 });
 
 class AddLayerDialog extends React.Component {
@@ -25,9 +22,9 @@ class AddLayerDialog extends React.Component {
     uploadTypeIndex: 0,
   };
 
-  submitJsonLayers = (json, name, id) => {
-    const {closeDialog} = this.props
-    //TODO
+  submitJsonLayers = (newLayers) => {
+    const {closeDialog, addLayers} = this.props
+    addLayers(newLayers);
     closeDialog();
   };
 
@@ -50,7 +47,8 @@ class AddLayerDialog extends React.Component {
 
     switch(uploadTypeIndex) {
       case 0:
-          return <DialogContentUpload submitLayers={this.receiveLayers.bind(this)}/>
+          return <DialogContentUpload handleClose={this.handleClose.bind(this)}
+                  submitLayers={this.submitJsonLayers.bind(this)}/>
       case 1:
           return null
       default:

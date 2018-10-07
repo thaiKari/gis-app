@@ -68,32 +68,17 @@ const theme = createMuiTheme({
       layersChange: layersChange });
   }
 
-/*  getDefaultColor(index) {
-    var colorChoices = Object.keys(colorPalette);
-    var scaledIndex = index * 3;
-    var colorIndex = (scaledIndex- Math.floor(scaledIndex /colorChoices.length)*colorChoices.length);
-    return colorPalette[colorChoices[colorIndex]];
-}
+  addLayers = (newLayers) => {
+    let {layers, layersChange} = this.state;
+    
 
-  generateUniqueID(name) {
-    var d = new Date();
-    var n = d.getTime();
-
-    return name + n;
-  } 
-
-  getJsonType(json) {
-    var type;
-
-    if (json.type === 'FeatureCollection'){
-      type = json.features[0].geometry.type;
-    } else {
-      console.log('json type should be FeatureCollection');
-      //TODO: support more types
-    }
-
-    return type;
-  }*/
+    layers.push.apply(layers, newLayers)
+    console.log('Add Lyars', layers)
+    this.setState({
+      layers: layers,
+      layersChange: !layersChange
+    });
+  }
 
   //not used
   setLayerColor(layerId, color){
@@ -149,7 +134,8 @@ const theme = createMuiTheme({
             layers={layers}
             layersChange={layersChange}
             toggleVisibility={this.toggleVisibility.bind(this)}
-            reorderLayersList={this.reorderLayersList.bind(this)}/>
+            reorderLayersList={this.reorderLayersList.bind(this)}
+            addLayers={this.addLayers.bind(this)}/>
           <ToolkitBar
             toolDrawerOpen={toolDrawerOpen}/>
 
