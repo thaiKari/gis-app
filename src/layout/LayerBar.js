@@ -37,7 +37,7 @@ const styles = theme => ({
     
     render() {
 
-      const {reorderLayersList, layersChange, layers, classes, drawerOpen, receiveNewJson, toggleVisibility} = this.props;
+      const {addLayers, reorderLayersList, layersChange, layers, classes, drawerOpen, receiveNewJson, toggleVisibility} = this.props;
   
       return (
 
@@ -50,7 +50,7 @@ const styles = theme => ({
         }}
       >
 
-        <LayersToolbar receiveNewJson={receiveNewJson} />
+        <LayersToolbar addLayers={addLayers}/>
   
         <div className={classes.content}>
           <LayerList reorderLayersList={reorderLayersList} layersChange={layersChange} layers={layers} toggleVisibility={toggleVisibility}/>

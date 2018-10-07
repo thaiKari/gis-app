@@ -29,7 +29,6 @@ const styles = theme => ({
         <Toolbar disableGutters={true}>
         <Tooltip title="Layers">
             <IconButton
-              color="inherit"
               onClick={handleDrawerToggle}
               className={classNames(classes.button)}
             >
@@ -43,7 +42,6 @@ const styles = theme => ({
             <IconButton
               className= {classes.button}
               onClick={toggleToolDrawer}
-              color="inherit"
             >
               <Build />
             </IconButton>

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import LayerListItem from './LayerListItem';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import findIndexWithAttribute from '../utils/findIndexWithAttribute'
 
 const styles = theme => ({
   
@@ -93,20 +94,11 @@ const getItemStyle = (theme, isDragging, draggableStyle ) => ({
       this.setState({selectedLayers: newSelectedLayers});
     }
 
-    findIndexWithAttribute(array, attr, value) {
-      for(var i = 0; i < array.length; i += 1) {
-        if(array[i][attr] === value) {
-            return i;
-        }
-      }
-      return -1;
-    }
-
     selectLayersBetween(lastClickedLayer, layerId, selectedLayers) {
       const {layers} = this.props;
       var fromIndex, toIndex;
-      let i1 = this.findIndexWithAttribute(layers, 'id', lastClickedLayer);
-      let i2 = this.findIndexWithAttribute(layers, 'id', layerId);
+      let i1 = findIndexWithAttribute(layers, 'id', lastClickedLayer);
+      let i2 = findIndexWithAttribute(layers, 'id', layerId);
 
       if (i1 < i2 ) {
         fromIndex = i1;
