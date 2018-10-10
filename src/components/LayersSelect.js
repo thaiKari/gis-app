@@ -174,7 +174,8 @@ class LayersSelect extends React.Component {
   };
 
   handleChange = (value) => {
-    console.log('value', value)
+    const {changeLayer} = this.props;
+    changeLayer(value.value);
     this.setState({
       curValue: value,
     });
@@ -191,19 +192,20 @@ class LayersSelect extends React.Component {
   }
 
   setCurLayer = () => {
-    const {layers, currLayer} = this.props;
-    let layer = layers.find(l => l.id ==currLayer);
+    const {currLayer} = this.props;
+    
     let curValue={
-      value: layer.id,
-      label: layer.displayName,
+      value: currLayer.id,
+      label: currLayer.displayName,
     };
 
-    this.setState({curValue: curValue})
-
+    this.setState({
+      curValue: curValue,
+      currLayer: currLayer});
   }
 
   render() {
-    const { currLayer, layers, classes, theme } = this.props;
+    const { layers, classes, theme } = this.props;
 
     const selectStyles = {
       input: base => ({

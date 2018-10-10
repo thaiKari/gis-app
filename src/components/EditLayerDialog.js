@@ -31,7 +31,13 @@ class AddLayerDialog extends React.Component {
   componentDidMount  = () => {
     // dialog has a side-effect if this not checked
     document.body.style.overflow = 'auto';
-  } 
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.currLayer !== this.props.currLayer) {
+      this.setCurLayer();
+    }
+  }
 
   submitChanges = () => {
     console.log('submitChanges');
@@ -41,18 +47,32 @@ class AddLayerDialog extends React.Component {
   };
 
   handleClose = () => {
-    console.log('handleClose');
     const {closeDialog} = this.props;
+    this.setCurLayer();
     closeDialog();
-
   };
 
-  getContent() {
+  changeLayer = (layerId) => {
+    const {layers} = this.props;
+    let layer = layers.find(l => l.id == layerId);
+    this.setState({layer: layer});
+  }
+
+  setCurLayer = () => {
     const {layers, currLayer} = this.props;
+    let layer = layers.find(l => l.id ==currLayer);
+
+    this.setState({
+      layer: layer});
+  }
+
+  getContent = () => {
+    let {layer} = this.state;
+    const {layers} = this.props;
 
     return(
       <DialogContent>
-        <LayersSelect layers={layers} currLayer={currLayer} />        
+        <LayersSelect layers={layers} currLayer={layer} changeLayer={this.changeLayer.bind(this)} />        
       </DialogContent>
     );
   }
