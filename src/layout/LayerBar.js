@@ -208,7 +208,10 @@ const styles = theme => ({
         drawerOpen,
         receiveNewJson,
         toggleVisibility} = this.props;
-      const {selectedLayers, deleteLayersDialogOpen, editLayersDialogOpen} = this.state;
+      const {selectedLayers,
+        deleteLayersDialogOpen,
+        editLayersDialogOpen,
+        lastClickedLayer} = this.state;
       
       return (
 
@@ -226,9 +229,12 @@ const styles = theme => ({
                             selectedLayers={selectedLayers}
                             layers={layers}
                             deleteLayers={this.deleteLayers.bind(this)}/>
-        <EditLayerDialog open={editLayersDialogOpen} closeDialog={this.closeEditLayersDialog.bind(this)}/>
+        <EditLayerDialog open={editLayersDialogOpen}
+                          closeDialog={this.closeEditLayersDialog.bind(this)}
+                          layers={layers}
+                          currLayer={lastClickedLayer}/>
 
-        <LayersToolbar open={this.openDeleteLayersDialog.bind(this)} openEditLayersDialog={this.openEditLayersDialog.bind(this)} addLayers={addLayers}/>
+        <LayersToolbar openDeleteLayersDialog={this.openDeleteLayersDialog.bind(this)} openEditLayersDialog={this.openEditLayersDialog.bind(this)} addLayers={addLayers}/>
   
         <div className={classes.content}>
           <LayerList reorderLayersList={reorderLayersList}

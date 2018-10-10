@@ -2,10 +2,12 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {Dialog,
         DialogTitle,
-        DialogContent
+        DialogContent,
+        Typography
         } from '@material-ui/core'
 
 import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
+import OkAction from './DialogActions/OkAction';
 
 
 const styles = theme => ({
@@ -42,10 +44,28 @@ class AddLayerDialog extends React.Component {
 
   };
 
+  getContent() {
+    return(
+      <DialogContent>        
+        <Typography> HI</Typography>
+      </DialogContent>
+    );
+  }
 
   render() {
-    const {open} = this.props;
+    const {open, layers} = this.props;
 
+    let content = layers.length > 0 ?
+      this.getContent()
+      : 
+      <DialogContent>        
+        <Typography> Add some layers first</Typography>
+      </DialogContent>
+
+    let actions = layers.length > 0 ?
+      <SubmitOrCancelAction submit={this.submitChanges} cancel={this.handleClose}/>
+      : 
+      <OkAction ok={this.handleClose}/>
 
     return (
       <div>
@@ -57,14 +77,8 @@ class AddLayerDialog extends React.Component {
           aria-labelledby="scroll-dialog-title"
         >
             <DialogTitle id="scroll-dialog-title">Edit Layers</DialogTitle>
-
-                <DialogContent>
-                  
-                  Edit
-        
-                </DialogContent>
-
-            <SubmitOrCancelAction submit={this.submitChanges} cancel={this.handleClose}/>
+              {content}
+              {actions}
 
         </Dialog>
       </div>
