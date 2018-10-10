@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { DialogContent, Typography}  from '@material-ui/core'
-import DragNDropBox from './DragNDropBox';
-import SimpleLayerList from './SimpleLayerList';
+import DragNDropBox from '../DragNDropBox';
+import SimpleLayerList from '../SimpleLayerList';
 
 const styles = theme => ({
 
   });
 
-  class DialogContentUpload extends Component {
+  class DC_Upload extends Component {
 
     render() {
 
@@ -41,4 +41,4 @@ const styles = theme => ({
 
   }
 
-export default withStyles(styles, { withTheme: true })(DialogContentUpload);
+export default withStyles(styles, { withTheme: true })(DC_Upload);
