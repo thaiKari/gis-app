@@ -8,7 +8,7 @@ const styles = theme => ({
   
   });
 
-  class DA_SubmitOrCancel extends Component {
+  class SubmitOrCancelAction extends Component {
     
     render() {
 
@@ -33,4 +33,4 @@ const styles = theme => ({
 
   }
 
-export default withStyles(styles, { withTheme: true })(DA_SubmitOrCancel);
+export default withStyles(styles, { withTheme: true })(SubmitOrCancelAction);

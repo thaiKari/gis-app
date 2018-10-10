@@ -6,7 +6,8 @@ import DragNDropBox from '../components/DragNDropBox';
 import LayerList from '../components/LayerList';
 import LayersToolbar from '../components/LayersToolbar';
 import DeleteLayerDialog from '../components/DeleteLayerDialog';
-
+import EditLayerDialog from '../components/EditLayerDialog';
+ 
 const styles = theme => ({
     drawerPaper: {
         position: 'relative',
@@ -33,6 +34,7 @@ const styles = theme => ({
         ctrlPressed: false,
         shiftPressed: false,
         deleteLayersDialogOpen: false,
+        editLayersDialogOpen: false,
       }
         this.onDragEnd = this.onDragEnd.bind(this);
     }
@@ -169,6 +171,14 @@ const styles = theme => ({
       this.setState({deleteLayersDialogOpen: false});
     }
 
+    openEditLayersDialog() {
+      this.setState({editLayersDialogOpen: true});
+    }
+
+    closeEditLayersDialog() {
+      this.setState({editLayersDialogOpen: false});
+    }
+
     deleteLayers() {
       const {selectedLayers} = this.state;
       const {deleteLayers} = this.props
@@ -198,8 +208,8 @@ const styles = theme => ({
         drawerOpen,
         receiveNewJson,
         toggleVisibility} = this.props;
-      const {selectedLayers, deleteLayersDialogOpen} = this.state;
-  
+      const {selectedLayers, deleteLayersDialogOpen, editLayersDialogOpen} = this.state;
+      
       return (
 
         <Drawer
@@ -216,8 +226,9 @@ const styles = theme => ({
                             selectedLayers={selectedLayers}
                             layers={layers}
                             deleteLayers={this.deleteLayers.bind(this)}/>
-      
-        <LayersToolbar openDeleteLayersDialog={this.openDeleteLayersDialog.bind(this)} addLayers={addLayers}/>
+        <EditLayerDialog open={editLayersDialogOpen} closeDialog={this.closeEditLayersDialog.bind(this)}/>
+
+        <LayersToolbar open={this.openDeleteLayersDialog.bind(this)} openEditLayersDialog={this.openEditLayersDialog.bind(this)} addLayers={addLayers}/>
   
         <div className={classes.content}>
           <LayerList reorderLayersList={reorderLayersList}

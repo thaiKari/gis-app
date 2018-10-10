@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Divider, Tooltip, IconButton, Toolbar } from '@material-ui/core';
 import { InsertDriveFile, Edit, Delete } from '@material-ui/icons'
 import AddLayerDialog from './AddLayerDialog';
+import EditLayerDialog from './EditLayerDialog';
 
 
 const styles = theme => ({
@@ -18,19 +19,21 @@ const styles = theme => ({
       addLayerDialogOpen: false,
     };
 
-    closeLayerDialog() {
+    closeAddLayerDialog() {
       this.setState({addLayerDialogOpen: false});
     }
+    
     
     render() {
 
       const {addLayerDialogOpen} = this.state;
-      const { classes, addLayers, openDeleteLayersDialog } = this.props;
+      const { classes, addLayers, openDeleteLayersDialog, openEditLayersDialog } = this.props;
   
       return (
         <div>
 
-        <AddLayerDialog addLayers={addLayers} open={addLayerDialogOpen} closeDialog={this.closeLayerDialog.bind(this)}/>
+        <AddLayerDialog addLayers={addLayers} open={addLayerDialogOpen} closeDialog={this.closeAddLayerDialog.bind(this)}/>    
+
         <Divider />
         <Toolbar className={classes.layersToolbar} disableGutters={true}>
 
@@ -44,7 +47,7 @@ const styles = theme => ({
           <div style={{flex: 1}}></div>
 
           <Tooltip title="Edit Layer">
-            <IconButton>
+            <IconButton  onClick={openEditLayersDialog}>
               <Edit/>
             </IconButton>
           </Tooltip>

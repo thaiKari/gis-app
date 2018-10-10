@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, Button, Dialog,  Typography, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
-import DA_SubmitOrCancel from './DialogActions/DA_SubmitOrCancel';
+import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
 
 class AlertDialog extends React.Component {
 
@@ -31,7 +31,7 @@ class AlertDialog extends React.Component {
 
     let actionButtons = hasSelection ?
 
-    <DA_SubmitOrCancel submitText={'Agree'} submit={deleteLayers} cancel={closeDialog}/>
+    <SubmitOrCancelAction submitText={'Agree'} submit={deleteLayers} cancel={closeDialog}/>
     :
     <DialogActions>
       <Button onClick={this.props.closeDialog} color="primary">

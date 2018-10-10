@@ -11,9 +11,9 @@ import {Dialog,
 import UploadIcon from '@material-ui/icons/CloudUpload';
 import MapIcon from '@material-ui/icons/Map';
 import CreateIcon from '@material-ui/icons/Create';
-import DC_Upload from './DialogContent/DC_Upload';
+import UploadContent from './DialogContent/UploadContent';
 import createJsonLayer from '../utils/createJsonLayer';
-import DA_SubmitOrCancel from './DialogActions/DA_SubmitOrCancel';
+import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
 
 
 const styles = theme => ({
@@ -80,7 +80,7 @@ class AddLayerDialog extends React.Component {
 
     switch(uploadTypeIndex) {
       case 0:
-          return <DC_Upload handleFile={this.handleFile.bind(this)}
+          return <UploadContent handleFile={this.handleFile.bind(this)}
                   deleteLayer={this.deleteLayer.bind(this)}
                   layers={layers}/>
       case 1:
@@ -120,7 +120,7 @@ class AddLayerDialog extends React.Component {
 
             {dialogContent}
 
-            <DA_SubmitOrCancel submit={this.submitJsonLayers} cancel={this.handleClose}/>
+            <SubmitOrCancelAction submit={this.submitJsonLayers} cancel={this.handleClose}/>
 
         </Dialog>
       </div>
