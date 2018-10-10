@@ -17,7 +17,6 @@ import { emphasize } from '@material-ui/core/styles/colorManipulator';
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: 250,
   },
   input: {
     display: 'flex',
@@ -194,14 +193,12 @@ class LayersSelect extends React.Component {
   setCurLayer = () => {
     const {currLayer} = this.props;
     
-    let curValue={
+    let curValue = currLayer ? {
       value: currLayer.id,
       label: currLayer.displayName,
-    };
+    } : null;
 
-    this.setState({
-      curValue: curValue,
-      currLayer: currLayer});
+    this.setState({curValue: curValue});
   }
 
   render() {

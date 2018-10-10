@@ -9,6 +9,7 @@ import {Dialog,
 import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
 import OkAction from './DialogActions/OkAction';
 import LayersSelect from './LayersSelect';
+import ColorPickerExpansionPanel from './ColorPickerExpansionPanel'
 
 
 const styles = theme => ({
@@ -73,6 +74,7 @@ class AddLayerDialog extends React.Component {
     return(
       <DialogContent>
         <LayersSelect layers={layers} currLayer={layer} changeLayer={this.changeLayer.bind(this)} />        
+        <ColorPickerExpansionPanel/>
       </DialogContent>
     );
   }
