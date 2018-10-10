@@ -8,10 +8,13 @@ import {Dialog,
 
 import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
 import OkAction from './DialogActions/OkAction';
+import LayersSelect from './LayersSelect';
 
 
 const styles = theme => ({
+  dialog: {
 
+  }
 });
 
 class AddLayerDialog extends React.Component {
@@ -45,21 +48,23 @@ class AddLayerDialog extends React.Component {
   };
 
   getContent() {
+    const {layers, currLayer} = this.props;
+
     return(
-      <DialogContent>        
-        <Typography> HI</Typography>
+      <DialogContent>
+        <LayersSelect layers={layers} currLayer={currLayer} />        
       </DialogContent>
     );
   }
 
   render() {
-    const {open, layers} = this.props;
+    const {open, layers, classes} = this.props;
 
     let content = layers.length > 0 ?
       this.getContent()
       : 
-      <DialogContent>        
-        <Typography> Add some layers first</Typography>
+      <DialogContent>
+        <Typography>Add some layers first</Typography>         
       </DialogContent>
 
     let actions = layers.length > 0 ?
@@ -71,6 +76,7 @@ class AddLayerDialog extends React.Component {
       <div>
 
         <Dialog
+          fullWidth={true}
           open={open}
           onClose={this.handleClose}
           scroll={'paper'}

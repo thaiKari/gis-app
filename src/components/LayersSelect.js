@@ -13,23 +13,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
-const suggestions = [
-  { label: 'Afghanistan' },
-  { label: 'Aland Islands' },
-  { label: 'Albania' },
-  { label: 'Algeria' },
-  { label: 'American Samoa' },
-  { label: 'Andorra' },
-  { label: 'Angola' },
-  { label: 'Anguilla' },
-  { label: 'Antarctica' },
-  { label: 'Antigua and Barbuda' },
-  { label: 'Argentina' },
-  { label: 'Armenia' },
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
-}));
 
 const styles = theme => ({
   root: {
@@ -187,18 +170,40 @@ const components = {
 
 class LayersSelect extends React.Component {
   state = {
-    single: null,
-    multi: null,
+    curValue: null,
   };
 
-  handleChange = name => value => {
+  handleChange = (value) => {
+    console.log('value', value)
     this.setState({
-      [name]: value,
+      curValue: value,
     });
   };
 
+  componentDidMount() {
+    this.setCurLayer();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.currLayer !== this.props.currLayer) {
+      this.setCurLayer();
+    }
+  }
+
+  setCurLayer = () => {
+    const {layers, currLayer} = this.props;
+    let layer = layers.find(l => l.id ==currLayer);
+    let curValue={
+      value: layer.id,
+      label: layer.displayName,
+    };
+
+    this.setState({curValue: curValue})
+
+  }
+
   render() {
-    const { classes, theme } = this.props;
+    const { currLayer, layers, classes, theme } = this.props;
 
     const selectStyles = {
       input: base => ({
@@ -210,34 +215,23 @@ class LayersSelect extends React.Component {
       }),
     };
 
+    let options = layers.map(layer => ({
+      value: layer.id,
+      label: layer.displayName,
+    })); 
+
+
     return (
       <div className={classes.root}>
         <NoSsr>
           <Select
             classes={classes}
             styles={selectStyles}
-            options={suggestions}
+            options={options}
             components={components}
-            value={this.state.single}
-            onChange={this.handleChange('single')}
-            placeholder="Search a country (start with a)"
-          />
-          <div className={classes.divider} />
-          <Select
-            classes={classes}
-            styles={selectStyles}
-            textFieldProps={{
-              label: 'Label',
-              InputLabelProps: {
-                shrink: true,
-              },
-            }}
-            options={suggestions}
-            components={components}
-            value={this.state.multi}
-            onChange={this.handleChange('multi')}
-            placeholder="Select multiple countries"
-            isMulti
+            value={this.state.curValue}
+            onChange={(value) => this.handleChange(value)}
+            placeholder="Choose a Layer to edit"
           />
         </NoSsr>
       </div>
