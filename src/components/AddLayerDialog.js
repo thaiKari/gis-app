@@ -120,11 +120,11 @@ class AddLayerDialog extends React.Component {
             {dialogContent}
 
             <DialogActions>
+            <Button onClick={this.submitJsonLayers}  color="primary">
+              Submit
+            </Button>
             <Button onClick={this.handleClose} color="primary">
               Cancel
-            </Button>
-            <Button onClick={this.submitJsonLayers} color="primary">
-              Submit
             </Button>
           </DialogActions>   
 

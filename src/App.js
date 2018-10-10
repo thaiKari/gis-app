@@ -9,6 +9,7 @@ import Map from './map/Map';
 import reorder from './utils/reorderList'
 import {teal, amber} from '@material-ui/core/colors';
 import createJsonLayer from './utils/createJsonLayer';
+import findIndexWithAttribute from './utils/findIndexWithAttribute';
 
 const theme = createMuiTheme({
   palette: {
@@ -44,7 +45,8 @@ const theme = createMuiTheme({
     toolDrawerOpen: false,
     layers: [],
     layersChange: false, //needed to recognise change in layers
-    moveLayerUnder: [] //Array with values [layerID, layerAboveID]. Change in state prompts map
+    moveLayerUnder: [], //Array with values [layerID, layerAboveID]. Change in state prompts map
+    deletedLayers:[]
   };
 
 
@@ -115,10 +117,26 @@ const theme = createMuiTheme({
     });
   }
 
+  deleteLayers(layerIds) {
+    let {layers, layersChange} = this.state;
+
+    for (var i in layerIds) {
+      let indexToDelete = findIndexWithAttribute(layers, 'id', layerIds[i]);
+      if (indexToDelete > -1) {
+        layers.splice(indexToDelete, 1);
+      }
+    }
+
+    this.setState({
+      layers: layers,
+      layersChange: !layersChange,
+      deletedLayers: layerIds });
+  }
+
   render() {
 
     const { classes } = this.props;
-    const { moveLayerUnder, drawerOpen, toolDrawerOpen, layers, layersChange } = this.state;
+    const { deletedLayers, moveLayerUnder, drawerOpen, toolDrawerOpen, layers, layersChange } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -135,14 +153,16 @@ const theme = createMuiTheme({
             layersChange={layersChange}
             toggleVisibility={this.toggleVisibility.bind(this)}
             reorderLayersList={this.reorderLayersList.bind(this)}
-            addLayers={this.addLayers.bind(this)}/>
+            addLayers={this.addLayers.bind(this)}
+            deleteLayers={this.deleteLayers.bind(this)}/>
           <ToolkitBar
             toolDrawerOpen={toolDrawerOpen}/>
 
           <main className={classes.content}>          
                <Map 
                layers={layers}
-               moveLayerUnder={moveLayerUnder}/>                  
+               moveLayerUnder={moveLayerUnder}
+               deletedLayers={deletedLayers}/>                  
           </main>
 
         </div>

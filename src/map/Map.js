@@ -57,9 +57,22 @@ class Map extends Component {
         let layerAbove = moveLayerUnder[1];
         this._map.moveLayer(layerId, layerAbove);
       }
+      else if (prevProps.deletedLayers !== this.props.deletedLayers){
+        this.removeMapLayers(this.props.deletedLayers);
+      }
       else {
         // Assume layer visibility toggled or layer added
         this.updateLayerVisibility();
+      }
+    }
+
+    removeMapLayers(layerIds) {
+      for (let i in layerIds) {
+        let layerId = layerIds[i];
+        if(this._map.getSource(layerId)){
+          this._map.removeLayer(layerId);
+          this._map.removeSource(layerId);
+        }
       }
     }
 

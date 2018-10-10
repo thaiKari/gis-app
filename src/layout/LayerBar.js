@@ -171,9 +171,21 @@ const styles = theme => ({
 
     deleteLayers() {
       const {selectedLayers} = this.state;
-      console.log('DELETE THEM!');
-      //TODO: get a list of all selected layers.
-      // Call function in App.js that removes them from the layers list
+      const {deleteLayers} = this.props
+
+      let layersToDelete = [];
+
+      for(var key in selectedLayers){
+        if(selectedLayers[key]){
+          layersToDelete.push(key);
+        }
+      }
+    
+      this.setState({selectedLayers:{} });
+      this.layersChange();
+      deleteLayers(layersToDelete);
+      this.closeDeleteLayersDialog();
+
     }
     
     
