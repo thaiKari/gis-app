@@ -11,7 +11,7 @@ import {Dialog,
 import UploadIcon from '@material-ui/icons/CloudUpload';
 import MapIcon from '@material-ui/icons/Map';
 import CreateIcon from '@material-ui/icons/Create';
-import DialogContentUpload from './DialogContentUpload';
+import DC_Upload from './DialogContent/DC_Upload';
 import createJsonLayer from '../utils/createJsonLayer';
 
 
@@ -79,7 +79,7 @@ class AddLayerDialog extends React.Component {
 
     switch(uploadTypeIndex) {
       case 0:
-          return <DialogContentUpload handleFile={this.handleFile.bind(this)}
+          return <DC_Upload handleFile={this.handleFile.bind(this)}
                   deleteLayer={this.deleteLayer.bind(this)}
                   layers={layers}/>
       case 1:
