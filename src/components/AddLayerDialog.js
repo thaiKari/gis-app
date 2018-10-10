@@ -13,6 +13,7 @@ import MapIcon from '@material-ui/icons/Map';
 import CreateIcon from '@material-ui/icons/Create';
 import DC_Upload from './DialogContent/DC_Upload';
 import createJsonLayer from '../utils/createJsonLayer';
+import DA_SubmitOrCancel from './DialogActions/DA_SubmitOrCancel';
 
 
 const styles = theme => ({
@@ -119,14 +120,7 @@ class AddLayerDialog extends React.Component {
 
             {dialogContent}
 
-            <DialogActions>
-            <Button onClick={this.submitJsonLayers}  color="primary">
-              Submit
-            </Button>
-            <Button onClick={this.handleClose} color="primary">
-              Cancel
-            </Button>
-          </DialogActions>   
+            <DA_SubmitOrCancel submit={this.submitJsonLayers} cancel={this.handleClose}/>
 
         </Dialog>
       </div>
