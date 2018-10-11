@@ -10,12 +10,16 @@ import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
 import OkAction from './DialogActions/OkAction';
 import LayersSelect from './LayersSelect';
 import ColorPickerExpansionPanel from './ColorPickerExpansionPanel'
+import ColorPicker from './ColorPicker';
 
 
 const styles = theme => ({
-  dialog: {
-
-  }
+  dialogPaper: {
+    minHeight: '50vh',
+  },
+  spaced: {
+    marginBottom: 50,
+  },
 });
 
 class AddLayerDialog extends React.Component {
@@ -69,12 +73,16 @@ class AddLayerDialog extends React.Component {
 
   getContent = () => {
     let {layer} = this.state;
-    const {layers} = this.props;
+    const {layers, classes} = this.props;
 
     return(
       <DialogContent>
-        <LayersSelect layers={layers} currLayer={layer} changeLayer={this.changeLayer.bind(this)} />        
-        <ColorPickerExpansionPanel/>
+        <LayersSelect
+            className={classes.spaced}
+            layers={layers}
+            currLayer={layer}
+            changeLayer={this.changeLayer.bind(this)} />        
+        <ColorPicker/>
       </DialogContent>
     );
   }
@@ -103,6 +111,8 @@ class AddLayerDialog extends React.Component {
           onClose={this.handleClose}
           scroll={'paper'}
           aria-labelledby="scroll-dialog-title"
+          classes={{ paper: classes.dialogPaper }}
+          
         >
             <DialogTitle id="scroll-dialog-title">Edit Layers</DialogTitle>
               {content}
