@@ -82,13 +82,6 @@ const theme = createMuiTheme({
     });
   }
 
-  //not used
-  setLayerColor(layerId, color){
-    
-    var layer = this.getLayer(layerId);
-    layer.data.color = color;
-  }
-
   toggleVisibility(layerId) {
     let layers = this.state.layers;
     let layer = layers.find(l => l.id === layerId);

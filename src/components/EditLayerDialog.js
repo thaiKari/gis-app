@@ -75,6 +75,8 @@ class AddLayerDialog extends React.Component {
     let {layer} = this.state;
     const {layers, classes} = this.props;
 
+    let colorPicker = layer ? <ColorPicker setData={this.setData.bind(this)} data={layer.data}/> : null;
+
     return(
       <DialogContent>
         <LayersSelect
@@ -82,9 +84,15 @@ class AddLayerDialog extends React.Component {
             layers={layers}
             currLayer={layer}
             changeLayer={this.changeLayer.bind(this)} />        
-        <ColorPicker/>
+            {colorPicker}
       </DialogContent>
     );
+  }
+
+  setData = (data) => {
+    let {layer} = this.state;
+    layer.data = data;
+    this.setState({layer: layer})
   }
 
   render() {

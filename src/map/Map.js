@@ -204,7 +204,7 @@ class Map extends Component {
         'layout': {'visibility': visibility },
         'paint': {
           'fill-color': layer.data.color,
-          'fill-opacity': 0.8
+          'fill-opacity': layer.data.opacity
         }
       },layerAbove);
 
