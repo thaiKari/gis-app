@@ -1,6 +1,6 @@
 import React from 'react'
 import reactCSS from 'reactcss'
-import {SliderPicker, AlphaPicker ,  SketchPicker, ChromePicker } from 'react-color';
+import {SliderPicker, AlphaPicker } from 'react-color';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
@@ -21,18 +21,15 @@ const styles = theme => ({
     },
     picker: {
       touchAction: 'none'
+    },
+    AlphaPicker: {
+      marginTop: theme.spacing.unit * 3
     }
   });
 
 class ColorPicker extends React.Component {
   state = {
     displayColorPicker: false,
-    color: {
-      r: '241',
-      g: '112',
-      b: '19',
-      a: '1',
-    },
   };
 
   handleClick = () => {
@@ -44,28 +41,35 @@ class ColorPicker extends React.Component {
   };
 
   handleColorChange = (color) => {
-    console.log(color.hex, color.rgb.a, this.props.data.color);
-    let {data, setData} = this.props;
-    data.color = color.hex;
-    setData(data);
-
-    this.setState({ color: color.rgb });
+    const {setColor} = this.props;
+    setColor(color.rgb);
   };
 
+  handleAlphaChange = (color) => {
+    let {setOpacity} = this.props;
+    setOpacity(color.rgb.a);
+  };
+
+
   render() {
-    let {data, classes, theme} = this.props;
+    let {color, opacity, classes, theme} = this.props;
+
+    let colorString = 'rgb(' + color.r + ',' + color.g + ',' + color.b + ')'
+    console.log(color)
 
     return (
       <div>
         <div className={ classes.swatch } onClick={ this.handleClick }>
           <div className={ classes.color} 
-              style={{backgroundColor: `${ data.color}`,
-                    opacity: `${data.opacity}`}} />
+              style={{backgroundColor: `${colorString}`,
+                    opacity: `${color.a}`}} />
         </div>
         { this.state.displayColorPicker ?
-        <div style = {{padding:  theme.spacing.unit}}>
-        <SliderPicker  color={data.color} onChange={this.handleColorChange } />
-        <AlphaPicker width={'100%'} color={data.color} onChange={this.handleAlphaChange }  />
+        <div className = {classes.picker}>
+        <SliderPicker  color={color} onChange={this.handleColorChange } />
+        <div style={{marginTop: theme.spacing.unit * 2}}>
+        <AlphaPicker width={'100%'} color={color} onChange={this.handleAlphaChange }  />
+        </div>
         </div>
         : null }
 

@@ -25,6 +25,8 @@ const styles = theme => ({
 class AddLayerDialog extends React.Component {
   state = {
     scroll: 'paper',
+    color: null,
+    opactity: null
   };
 
 
@@ -36,6 +38,10 @@ class AddLayerDialog extends React.Component {
   componentDidMount  = () => {
     // dialog has a side-effect if this not checked
     document.body.style.overflow = 'auto';
+    console.log(this.props.currLayer);
+    if (this.props.currLayer) {
+      this.setCurLayer();
+    }
   }
 
   componentDidUpdate = (prevProps) => {
@@ -46,9 +52,6 @@ class AddLayerDialog extends React.Component {
 
   submitChanges = () => {
     console.log('submitChanges');
-    //const {closeDialog, addLayers} = this.props
-    //submitChanges(layers);
-    //closeDialog();
   };
 
   handleClose = () => {
@@ -60,6 +63,7 @@ class AddLayerDialog extends React.Component {
   changeLayer = (layerId) => {
     const {layers} = this.props;
     let layer = layers.find(l => l.id == layerId);
+
     this.setState({layer: layer});
   }
 
@@ -67,15 +71,34 @@ class AddLayerDialog extends React.Component {
     const {layers, currLayer} = this.props;
     let layer = layers.find(l => l.id ==currLayer);
 
+    let colorString = layer.data.color;
+    
+    colorString = colorString.replace('rgb(', '');
+    colorString = colorString.replace(')', '');
+    colorString = colorString.replace(' ', '');
+    var colorArray = colorString.split(',')
+    console.log('colorString', colorArray)
+
     this.setState({
-      layer: layer});
+      layer: layer,
+      color: {
+        r: parseInt(colorArray[0], 10),
+        g: parseInt(colorArray[1], 10),
+        b: parseInt(colorArray[2], 10),
+        a: layer.data.opactity,
+      }
+    });
   }
 
   getContent = () => {
-    let {layer} = this.state;
+    let {layer, color} = this.state;
     const {layers, classes} = this.props;
 
-    let colorPicker = layer ? <ColorPicker setData={this.setData.bind(this)} data={layer.data}/> : null;
+    let colorPicker = layer ? <ColorPicker
+    setColor={this.setColor.bind(this)}
+    setOpacity={this.setOpacity.bind(this)}
+    color={color}
+    /> : null;
 
     return(
       <DialogContent>
@@ -89,11 +112,21 @@ class AddLayerDialog extends React.Component {
     );
   }
 
-  setData = (data) => {
-    let {layer} = this.state;
-    layer.data = data;
-    this.setState({layer: layer})
+  setColor = (newColor) => {
+    let {color} = this.state;
+    color.r = newColor.r,
+    color.g = newColor.g,
+    color.b = newColor.b
+
+    this.setState({color: color})
   }
+
+  setOpacity = (opactity) => {
+    let {color} = this.state;
+    color.a = opactity
+
+    this.setState({color: color})
+  } 
 
   render() {
     const {open, layers, classes} = this.props;
