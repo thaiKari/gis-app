@@ -59,6 +59,8 @@ class Map extends Component {
       }
       else if (prevProps.deletedLayers !== this.props.deletedLayers){
         this.removeMapLayers(this.props.deletedLayers);
+      }else if (prevProps.colorChange !== this.props.colorChange){
+        this.changeColor(this.props.colorChange);
       }
       else {
         // Assume layer visibility toggled or layer added
@@ -73,6 +75,33 @@ class Map extends Component {
           this._map.removeLayer(layerId);
           this._map.removeSource(layerId);
         }
+      }
+    }
+
+    changeColor(colorChange) {
+      const {layers} = this.props;
+      let layerId = colorChange.layerId;
+      let color = colorChange.color;
+      let opacity = colorChange.opacity;
+
+      let layer = layers.find(l => l.id = layerId);
+      let map = this._map;
+
+      switch (layer.type) {
+        case 'Polygon':
+            map.setPaintProperty(layerId, 'fill-color', color);
+            map.setPaintProperty(layerId, 'fill-opacity', opacity);
+          break;
+        case 'LineString':
+            map.setPaintProperty(layerId, 'line-color', color);
+            map.setPaintProperty(layerId, 'line-opacity', opacity);
+          break;
+        case 'Point':
+            map.setPaintProperty(layerId, 'circle-color', color);
+            map.setPaintProperty(layerId, 'circle-opacity', opacity);
+          break;
+        default:
+          console.log('unidentified layer type', layer.type);
       }
     }
 
@@ -160,7 +189,8 @@ class Map extends Component {
         'layout': {'visibility': visibility },
         'paint': {
           'circle-radius': 4,
-          'circle-color': layer.data.color
+          'circle-color': layer.data.color,
+          'circle-opacity': layer.data.opacity
         }
       }, layerAbove);
     }
@@ -182,6 +212,7 @@ class Map extends Component {
         'layout': {'visibility': visibility },
         'paint': {
           'line-color': layer.data.color,
+          'line-opacity': layer.data.opacity,
           'line-width': 6
         }
       }, layerAbove);

@@ -2,6 +2,7 @@ import React from 'react'
 import reactCSS from 'reactcss'
 import {SliderPicker, AlphaPicker } from 'react-color';
 import { withStyles } from '@material-ui/core/styles';
+import rgbObj2Css from '../utils/rgbObj2Css';
 
 const styles = theme => ({
     color: {
@@ -11,8 +12,7 @@ const styles = theme => ({
     },
     swatch: {
       height: 40,
-      width: '100%',
-      background: '#fff',
+      width: '100%',   
       borderRadius: '5px',
       boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
       display: 'inline-block',
@@ -52,10 +52,9 @@ class ColorPicker extends React.Component {
 
 
   render() {
-    let {color, opacity, classes, theme} = this.props;
+    let {color, classes, theme} = this.props;
 
-    let colorString = 'rgb(' + color.r + ',' + color.g + ',' + color.b + ')'
-    console.log(color)
+    let colorString = rgbObj2Css(color);
 
     return (
       <div>

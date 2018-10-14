@@ -207,7 +207,8 @@ const styles = theme => ({
         classes,
         drawerOpen,
         receiveNewJson,
-        toggleVisibility} = this.props;
+        toggleVisibility,
+        submitChanges} = this.props;
       const {selectedLayers,
         deleteLayersDialogOpen,
         editLayersDialogOpen,
@@ -232,7 +233,8 @@ const styles = theme => ({
         <EditLayerDialog open={editLayersDialogOpen}
                           closeDialog={this.closeEditLayersDialog.bind(this)}
                           layers={layers}
-                          currLayer={lastClickedLayer}/>
+                          currLayer={lastClickedLayer}
+                          submitChanges={submitChanges}/>
 
         <LayersToolbar openDeleteLayersDialog={this.openDeleteLayersDialog.bind(this)} openEditLayersDialog={this.openEditLayersDialog.bind(this)} addLayers={addLayers}/>
   

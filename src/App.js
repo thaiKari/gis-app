@@ -126,10 +126,21 @@ const theme = createMuiTheme({
       deletedLayers: layerIds });
   }
 
+  submitChanges(layerId, color, opacity) {
+    let {layers} = this.state;
+    let layer = layers.find(l => l.id === layerId);
+    layer.data.color= color;
+    layer.data.opacity = opacity;
+    this.setState({
+      layers: layers,
+      colorChange: {layerId: layerId, color: color, opacity: opacity}
+    });
+  }
+
   render() {
 
     const { classes } = this.props;
-    const { deletedLayers, moveLayerUnder, drawerOpen, toolDrawerOpen, layers, layersChange } = this.state;
+    const { colorChange, deletedLayers, moveLayerUnder, drawerOpen, toolDrawerOpen, layers, layersChange } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -147,7 +158,8 @@ const theme = createMuiTheme({
             toggleVisibility={this.toggleVisibility.bind(this)}
             reorderLayersList={this.reorderLayersList.bind(this)}
             addLayers={this.addLayers.bind(this)}
-            deleteLayers={this.deleteLayers.bind(this)}/>
+            deleteLayers={this.deleteLayers.bind(this)}
+            submitChanges={this.submitChanges.bind(this)}/>
           <ToolkitBar
             toolDrawerOpen={toolDrawerOpen}/>
 
@@ -155,7 +167,8 @@ const theme = createMuiTheme({
                <Map 
                layers={layers}
                moveLayerUnder={moveLayerUnder}
-               deletedLayers={deletedLayers}/>                  
+               deletedLayers={deletedLayers}
+               colorChange={colorChange}/>                  
           </main>
 
         </div>

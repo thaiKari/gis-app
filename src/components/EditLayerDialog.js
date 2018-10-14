@@ -11,6 +11,8 @@ import OkAction from './DialogActions/OkAction';
 import LayersSelect from './LayersSelect';
 import ColorPickerExpansionPanel from './ColorPickerExpansionPanel'
 import ColorPicker from './ColorPicker';
+import rgbCss2Obj from '../utils/rgbCss2Obj';
+import rgbObj2Css from '../utils/rgbObj2Css';
 
 
 const styles = theme => ({
@@ -26,7 +28,6 @@ class AddLayerDialog extends React.Component {
   state = {
     scroll: 'paper',
     color: null,
-    opactity: null
   };
 
 
@@ -38,7 +39,6 @@ class AddLayerDialog extends React.Component {
   componentDidMount  = () => {
     // dialog has a side-effect if this not checked
     document.body.style.overflow = 'auto';
-    console.log(this.props.currLayer);
     if (this.props.currLayer) {
       this.setCurLayer();
     }
@@ -51,7 +51,12 @@ class AddLayerDialog extends React.Component {
   }
 
   submitChanges = () => {
-    console.log('submitChanges');
+    const {color, layer} = this.state;
+    const {submitChanges, closeDialog} = this.props;
+    let colorString = rgbObj2Css(color);
+
+    submitChanges(layer.id, colorString, color.a );
+    closeDialog();
   };
 
   handleClose = () => {
@@ -65,28 +70,30 @@ class AddLayerDialog extends React.Component {
     let layer = layers.find(l => l.id == layerId);
 
     this.setState({layer: layer});
+    this.setColorObj(layer);
+  }
+
+  setColorObj = (layer) => {
+
+    if(layer) {
+      let colorString = layer.data.color;
+      let color =  rgbCss2Obj(colorString, layer.data.opacity);
+  
+      this.setState({
+        color: color
+      });
+    }
+
   }
 
   setCurLayer = () => {
     const {layers, currLayer} = this.props;
     let layer = layers.find(l => l.id ==currLayer);
 
-    let colorString = layer.data.color;
-    
-    colorString = colorString.replace('rgb(', '');
-    colorString = colorString.replace(')', '');
-    colorString = colorString.replace(' ', '');
-    var colorArray = colorString.split(',')
-    console.log('colorString', colorArray)
+    this.setColorObj(layer);
 
     this.setState({
       layer: layer,
-      color: {
-        r: parseInt(colorArray[0], 10),
-        g: parseInt(colorArray[1], 10),
-        b: parseInt(colorArray[2], 10),
-        a: layer.data.opactity,
-      }
     });
   }
 
