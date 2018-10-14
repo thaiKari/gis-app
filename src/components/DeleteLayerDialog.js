@@ -2,7 +2,7 @@ import React from 'react';
 import { List, Button, Dialog,  Typography, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
 
-class AlertDialog extends React.Component {
+class DeleteLayerDialog extends React.Component {
 
 
   render() {
@@ -65,4 +65,4 @@ class AlertDialog extends React.Component {
   }
 }
 
-export default AlertDialog;
+export default DeleteLayerDialog;

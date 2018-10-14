@@ -68,7 +68,7 @@ class AddLayerDialog extends React.Component {
 
   changeLayer = (layerId) => {
    const {layers} = this.props;
-    let layer = layers.find(l => l.id === layerId);
+    const layer = layers.find((l) => {return l.id == layerId});
 
     this.setState({layer: layer});
     this.setColorObj(layer); 
@@ -89,7 +89,7 @@ class AddLayerDialog extends React.Component {
 
   setCurLayer = () => {
     const {layers, currLayer} = this.props;
-    let layer = layers.find(l => l.id === currLayer);
+    const layer = layers.find((l) => {return l.id == currLayer});
 
     this.setColorObj(layer);
 

@@ -6,7 +6,7 @@ import DragNDropBox from '../components/DragNDropBox';
 import LayerList from '../components/LayerList';
 import LayersToolbar from '../components/LayersToolbar';
 import DeleteLayerDialog from '../components/DeleteLayerDialog';
-import EditLayerDialog from '../components/EditLayerDialog';
+import EditLayerDialog2 from '../components/EditLayerDialog2';
  
 const styles = theme => ({
     drawerPaper: {
@@ -231,13 +231,15 @@ const styles = theme => ({
                             selectedLayers={selectedLayers}
                             layers={layers}
                             deleteLayers={this.deleteLayers.bind(this)}/>
-        <EditLayerDialog open={editLayersDialogOpen}
+        <EditLayerDialog2 open={editLayersDialogOpen}
                           closeDialog={this.closeEditLayersDialog.bind(this)}
                           layers={layers}
                           currLayer={lastClickedLayer}
                           submitChanges={submitChanges}/>
 
-        <LayersToolbar openDeleteLayersDialog={this.openDeleteLayersDialog.bind(this)} openEditLayersDialog={this.openEditLayersDialog.bind(this)} addLayers={addLayers}/>
+        <LayersToolbar openDeleteLayersDialog={this.openDeleteLayersDialog.bind(this)}
+        openEditLayersDialog={this.openEditLayersDialog.bind(this)}
+        addLayers={addLayers}/>
   
         <div className={classes.content}>
           <LayerList reorderLayersList={reorderLayersList}
