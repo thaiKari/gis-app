@@ -48,7 +48,7 @@ const getItemStyle = (theme, isDragging, draggableStyle ) => ({
                     >
 
                     <LayerListItem 
-                      key={layer.id}
+                      key={'lli'+ layer.id}
                       layer={layer}
                       index={index}
                       layerSelected={selectedLayers[layer.id]}

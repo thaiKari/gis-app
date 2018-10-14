@@ -127,10 +127,22 @@ const theme = createMuiTheme({
   }
 
   submitChanges(layerId, color, opacity) {
-    let {layers} = this.state;
-    let layer = layers.find(l => l.id === layerId);
+    let layers = this.state.layers;
+    //let layer = layers.find(l => l.id === layerId);
+
+    /*for (var i in layers) {
+      if (layers[i].id == layerId){
+        console.log(layerId)
+        layers[i].data.color= color;
+        layers[i].data.opacity= opacity;
+      }
+    }
+
+    console.log(layers);
+
     layer.data.color= color;
-    layer.data.opacity = opacity;
+    layer.data.opacity = opacity;*/
+
     this.setState({
       layers: layers,
       colorChange: {layerId: layerId, color: color, opacity: opacity}
@@ -138,6 +150,8 @@ const theme = createMuiTheme({
   }
 
   render() {
+
+    console.log( this.state.layers);
 
     const { classes } = this.props;
     const { colorChange, deletedLayers, moveLayerUnder, drawerOpen, toolDrawerOpen, layers, layersChange } = this.state;

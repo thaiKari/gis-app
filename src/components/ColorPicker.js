@@ -1,5 +1,4 @@
 import React from 'react'
-import reactCSS from 'reactcss'
 import {SliderPicker, AlphaPicker } from 'react-color';
 import { withStyles } from '@material-ui/core/styles';
 import rgbObj2Css from '../utils/rgbObj2Css';

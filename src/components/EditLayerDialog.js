@@ -9,7 +9,6 @@ import {Dialog,
 import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
 import OkAction from './DialogActions/OkAction';
 import LayersSelect from './LayersSelect';
-import ColorPickerExpansionPanel from './ColorPickerExpansionPanel'
 import ColorPicker from './ColorPicker';
 import rgbCss2Obj from '../utils/rgbCss2Obj';
 import rgbObj2Css from '../utils/rgbObj2Css';
@@ -53,9 +52,11 @@ class AddLayerDialog extends React.Component {
   submitChanges = () => {
     const {color, layer} = this.state;
     const {submitChanges, closeDialog} = this.props;
-    let colorString = rgbObj2Css(color);
+    if(color) {
+      let colorString = rgbObj2Css(color);
+      submitChanges(layer.id, colorString, color.a );
+    }
 
-    submitChanges(layer.id, colorString, color.a );
     closeDialog();
   };
 
@@ -66,11 +67,11 @@ class AddLayerDialog extends React.Component {
   };
 
   changeLayer = (layerId) => {
-    const {layers} = this.props;
-    let layer = layers.find(l => l.id == layerId);
+   const {layers} = this.props;
+    let layer = layers.find(l => l.id === layerId);
 
     this.setState({layer: layer});
-    this.setColorObj(layer);
+    this.setColorObj(layer); 
   }
 
   setColorObj = (layer) => {
@@ -88,7 +89,7 @@ class AddLayerDialog extends React.Component {
 
   setCurLayer = () => {
     const {layers, currLayer} = this.props;
-    let layer = layers.find(l => l.id ==currLayer);
+    let layer = layers.find(l => l.id === currLayer);
 
     this.setColorObj(layer);
 
@@ -165,7 +166,6 @@ class AddLayerDialog extends React.Component {
             <DialogTitle id="scroll-dialog-title">Edit Layers</DialogTitle>
               {content}
               {actions}
-
         </Dialog>
       </div>
     );

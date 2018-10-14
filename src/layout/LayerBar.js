@@ -13,7 +13,7 @@ const styles = theme => ({
         position: 'relative',
         width: theme.drawerWidth,
         marginTop: theme.appBarHeight,
-        overflow: 'hidden'
+        //overflow: 'hidden'
       },
       drawerHeader: {
         height: theme.appBarHeight,
@@ -220,6 +220,7 @@ const styles = theme => ({
         variant="persistent"
         anchor={'left'}
         open={drawerOpen}
+        scroll={'paper'}
         classes={{
           paper: classes.drawerPaper,
         }}
