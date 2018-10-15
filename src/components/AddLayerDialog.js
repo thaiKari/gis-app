@@ -4,9 +4,7 @@ import {Dialog,
         AppBar,
         Tabs,
         Tab,
-        DialogActions,
-        DialogTitle,
-        Button} from '@material-ui/core'
+        DialogTitle} from '@material-ui/core'
 
 import UploadIcon from '@material-ui/icons/CloudUpload';
 import MapIcon from '@material-ui/icons/Map';

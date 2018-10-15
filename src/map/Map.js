@@ -84,7 +84,7 @@ class Map extends Component {
       let color = colorChange.color;
       let opacity = colorChange.opacity;
 
-      let layer = layers.find(l => l.id = layerId);
+      let layer = layers.find(l => l.id === layerId);
       let map = this._map;
 
       switch (layer.type) {

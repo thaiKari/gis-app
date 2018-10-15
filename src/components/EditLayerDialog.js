@@ -1,18 +1,13 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import {Dialog,
-        DialogTitle,
-        DialogContent,
-        Typography
-        } from '@material-ui/core'
-
+import {Dialog,  Typography,DialogContent, DialogTitle } from '@material-ui/core';
 import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
-import OkAction from './DialogActions/OkAction';
+import OkAction from './DialogActions/OkAction'
 import LayersSelect from './LayersSelect';
-import ColorPicker from './ColorPicker';
+import findIndexWithAttribute from '../utils/findIndexWithAttribute';
+import { withStyles } from '@material-ui/core/styles';
 import rgbCss2Obj from '../utils/rgbCss2Obj';
 import rgbObj2Css from '../utils/rgbObj2Css';
-
+import ColorPicker from './ColorPicker';
 
 const styles = theme => ({
   dialogPaper: {
@@ -23,60 +18,30 @@ const styles = theme => ({
   },
 });
 
-class AddLayerDialog extends React.Component {
+class EditLayerDialog extends React.Component {
+
   state = {
     scroll: 'paper',
-    color: null,
+    color: {r:0, g: 0, b:0, a:0},
+    layerIndex: null
   };
-
-
-  componentWillUnmount = () => {
-    // dialog has a side-effect if this not checked
-    document.body.style.overflow = 'auto';
-  } 
-
-  componentDidMount  = () => {
-    // dialog has a side-effect if this not checked
-    document.body.style.overflow = 'auto';
-    if (this.props.currLayer) {
-      this.setCurLayer();
-    }
-  }
-
-  componentDidUpdate = (prevProps) => {
-    if (prevProps.currLayer !== this.props.currLayer) {
-      this.setCurLayer();
-    }
-  }
 
   submitChanges = () => {
-    const {color, layer} = this.state;
-    const {submitChanges, closeDialog} = this.props;
-    if(color) {
+    const {color, layerIndex } = this.state;
+    const {submitChanges, closeDialog, layers} = this.props;
+    if(color && layerIndex) {
       let colorString = rgbObj2Css(color);
-      submitChanges(layer.id, colorString, color.a );
+      submitChanges(layers[layerIndex].id, colorString, color.a );
     }
 
     closeDialog();
   };
 
-  handleClose = () => {
-    const {closeDialog} = this.props;
-    this.setCurLayer();
-    closeDialog();
-  };
+  setColorObj = (layerIndex) => {
+    const {layers} = this.props;
 
-  changeLayer = (layerId) => {
-   const {layers} = this.props;
-    const layer = layers.find((l) => {return l.id == layerId});
-
-    this.setState({layer: layer});
-    this.setColorObj(layer); 
-  }
-
-  setColorObj = (layer) => {
-
-    if(layer) {
+    if(layerIndex) {
+      const layer = layers[layerIndex];
       let colorString = layer.data.color;
       let color =  rgbCss2Obj(colorString, layer.data.opacity);
   
@@ -84,47 +49,13 @@ class AddLayerDialog extends React.Component {
         color: color
       });
     }
-
-  }
-
-  setCurLayer = () => {
-    const {layers, currLayer} = this.props;
-    const layer = layers.find((l) => {return l.id == currLayer});
-
-    this.setColorObj(layer);
-
-    this.setState({
-      layer: layer,
-    });
-  }
-
-  getContent = () => {
-    let {layer, color} = this.state;
-    const {layers, classes} = this.props;
-
-    let colorPicker = layer ? <ColorPicker
-    setColor={this.setColor.bind(this)}
-    setOpacity={this.setOpacity.bind(this)}
-    color={color}
-    /> : null;
-
-    return(
-      <DialogContent>
-        <LayersSelect
-            className={classes.spaced}
-            layers={layers}
-            currLayer={layer}
-            changeLayer={this.changeLayer.bind(this)} />        
-            {colorPicker}
-      </DialogContent>
-    );
   }
 
   setColor = (newColor) => {
     let {color} = this.state;
-    color.r = newColor.r,
-    color.g = newColor.g,
-    color.b = newColor.b
+    color.r = newColor.r;
+    color.g = newColor.g;
+    color.b = newColor.b;
 
     this.setState({color: color})
   }
@@ -135,6 +66,65 @@ class AddLayerDialog extends React.Component {
 
     this.setState({color: color})
   } 
+
+  handleClose = () => {
+    const {closeDialog} = this.props;
+    closeDialog();
+  };
+
+
+  componentDidMount = () => {
+    const{currLayer} = this.props;
+    this.setLayerIndex(currLayer);
+  }
+
+  componentDidUpdate = (prevProps) => {
+    const{currLayer} = this.props;
+    if(prevProps.currLayer !== currLayer){
+      this.setLayerIndex(currLayer);
+    }
+    
+  }
+
+  setLayerIndex = (layerId) => {
+    const{layers} = this.props;
+
+    if(layerId){
+      let layerIndex = findIndexWithAttribute(layers, 'id', layerId);
+      this.setState({layerIndex: layerIndex});
+      this.setColorObj(layerIndex);
+    }
+
+  }
+
+  changeLayer = (value) => {
+    this.setState({layerIndex: value});
+    this.setColorObj(value);
+  }
+
+  
+  getContent = () => {
+    let {layerIndex, color} = this.state;
+    const {layers, classes} = this.props
+
+    return (
+    <DialogContent>
+        <LayersSelect
+          className={classes.spaced}
+          layers={layers}
+          layerIndex={layerIndex}
+          changeLayer={this.changeLayer.bind(this)} />  
+        {layerIndex >= 0 ? 
+        <ColorPicker
+          setColor={this.setColor.bind(this)}
+          setOpacity={this.setOpacity.bind(this)}
+          color={color}/> 
+        : null}  
+    </DialogContent> );
+
+  
+  };
+
 
   render() {
     const {open, layers, classes} = this.props;
@@ -172,4 +162,4 @@ class AddLayerDialog extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(AddLayerDialog);
+export default withStyles(styles, { withTheme: true })(EditLayerDialog);

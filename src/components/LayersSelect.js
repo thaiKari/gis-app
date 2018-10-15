@@ -185,17 +185,19 @@ class LayersSelect extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.currLayer !== this.props.currLayer) {
+    if (prevProps.layerIndex !== this.props.layerIndex) {
       this.setCurLayer();
     }
   }
 
   setCurLayer = () => {
-    const {currLayer} = this.props;
+    const {layerIndex, layers} = this.props;
     
-    let curValue = currLayer ? {
-      value: currLayer.id,
-      label: currLayer.displayName,
+    let curValue = layerIndex < layers.length 
+                && layerIndex >= 0
+                && layerIndex !== null ? {
+      value: layerIndex,
+      label: layers[layerIndex].displayName,
     } : null;
 
     this.setState({curValue: curValue});
@@ -214,8 +216,8 @@ class LayersSelect extends React.Component {
       }),
     };
 
-    let options = layers.map(layer => ({
-      value: layer.id,
+    let options = layers.map((layer, index) => ({
+      value: index,
       label: layer.displayName,
     })); 
 
