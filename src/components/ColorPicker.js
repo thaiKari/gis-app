@@ -2,6 +2,8 @@ import React from 'react'
 import {SliderPicker, AlphaPicker } from 'react-color';
 import { withStyles } from '@material-ui/core/styles';
 import rgbObj2Css from '../utils/rgbObj2Css';
+import ColorForm from './ColorForm';
+import {Typography} from '@material-ui/core';
 
 const styles = theme => ({
     color: {
@@ -51,7 +53,7 @@ class ColorPicker extends React.Component {
 
 
   render() {
-    let {color, classes, theme} = this.props;
+    let {color, classes, theme, setColor, setOpacity, colorChanged} = this.props;
 
     let colorString = rgbObj2Css(color);
 
@@ -65,9 +67,10 @@ class ColorPicker extends React.Component {
         { this.state.displayColorPicker ?
         <div className = {classes.picker}>
         <SliderPicker  color={color} onChange={this.handleColorChange } />
-        <div style={{marginTop: theme.spacing.unit * 2}}>
+        <Typography  style={{ marginTop: theme.spacing.unit * 2}} variant="caption" gutterBottom>
+        Opacity</Typography>
         <AlphaPicker width={'100%'} color={color} onChange={this.handleAlphaChange }  />
-        </div>
+        <ColorForm colorChanged={colorChanged} setColor={setColor} setOpacity={setOpacity} color={color}/>
         </div>
         : null }
 

@@ -126,20 +126,14 @@ const theme = createMuiTheme({
       deletedLayers: layerIds });
   }
 
-  submitChanges = (layerId, color, opacity) => {
+  submitChanges = (layerId, color, opacity, layerName) => {
     let {layers} = this.state;
 
     let layer = layers.find(l => l.id === layerId);
 
-    for (var i in layers) {
-      if (layers[i].id === layerId){
-        layers[i].data.color= color;
-        layers[i].data.opacity= opacity;
-      }
-    }
-
     layer.data.color= color;
     layer.data.opacity = opacity;
+    layer.displayName = layerName;
 
     this.setState({
       layers: layers,

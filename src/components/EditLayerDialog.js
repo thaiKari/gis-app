@@ -28,16 +28,17 @@ class EditLayerDialog extends React.Component {
   state = {
     scroll: 'paper',
     color: {r:0, g: 0, b:0, a:0},
+    colorChanged: false,
     layerIndex: null,
     layerName: null
   };
 
   submitChanges = () => {
-    const {color, layerIndex } = this.state;
+    const {color, layerIndex, layerName } = this.state;
     const {submitChanges, closeDialog, layers} = this.props;
     if(color && layerIndex) {
       let colorString = rgbObj2Css(color);
-      submitChanges(layers[layerIndex].id, colorString, color.a );
+      submitChanges(layers[layerIndex].id, colorString, color.a, layerName );
     }
 
     closeDialog();
@@ -52,18 +53,21 @@ class EditLayerDialog extends React.Component {
       let color =  rgbCss2Obj(colorString, layer.data.opacity);
   
       this.setState({
-        color: color
+        color: color,
+        colorChanged: !this.state.colorChanged
       });
     }
   }
 
   setColor = (newColor) => {
     let {color} = this.state;
-    color.r = newColor.r;
-    color.g = newColor.g;
-    color.b = newColor.b;
+      color.r = newColor.r;
+      color.g = newColor.g;
+      color.b = newColor.b;
 
-    this.setState({color: color})
+    this.setState({
+      color: color,
+      colorChanged: !this.state.colorChanged})
   }
 
   setOpacity = (opactity) => {
@@ -120,14 +124,13 @@ class EditLayerDialog extends React.Component {
 
   
   getContent = () => {
-    let {layerIndex, color, layerName} = this.state;
+    let {layerIndex, color, colorChanged, layerName} = this.state;
     const {layers, classes, theme} = this.props
 
     let error = false;
 
     if(layerName == ''){
       error = layerName.length > 0 ? false : true
-      console.log(error, layerName)
     }
     
 
@@ -160,7 +163,8 @@ class EditLayerDialog extends React.Component {
         <ColorPicker
           setColor={this.setColor.bind(this)}
           setOpacity={this.setOpacity.bind(this)}
-          color={color}/> 
+          color={color}
+          colorChanged={colorChanged}/> 
         </div> : null}  
     </DialogContent> );
 
@@ -170,7 +174,6 @@ class EditLayerDialog extends React.Component {
 
   render() {
     const {open, layers, classes} = this.props;
-    console.log(this.state);
 
     let content = layers.length > 0 ?
       this.getContent()
