@@ -12,14 +12,15 @@ const styles = theme => ({
     
     render() {
 
-      const { submit, submitText , cancel, cancelText } = this.props;
+      const { submit, submitText , cancel, cancelText, submitDisabled } = this.props;
 
-      let submitBtnTxt = submitText ? submitText: 'Submit'
-      let cancelBtnTxt = cancelText ? cancelText: 'Cancel'
+      let submitBtnTxt = submitText ? submitText: 'Submit';
+      let cancelBtnTxt = cancelText ? cancelText: 'Cancel';
+      let disabled = submitDisabled ? true: false;
   
       return (
         <DialogActions>
-            <Button onClick={submit}  color="primary">
+            <Button variant='contained' disabled={disabled} onClick={submit}  color="primary">
               {submitBtnTxt}
             </Button>
             <Button onClick={cancel} color="primary">

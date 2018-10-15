@@ -3,8 +3,7 @@ import {Dialog,
    Typography,
    DialogContent,
    DialogTitle,
-   TextField,
-   FormLabel  } from '@material-ui/core';
+   TextField} from '@material-ui/core';
 import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
 import OkAction from './DialogActions/OkAction'
 import LayersSelect from './LayersSelect';
@@ -30,7 +29,8 @@ class EditLayerDialog extends React.Component {
     color: {r:0, g: 0, b:0, a:0},
     colorChanged: false,
     layerIndex: null,
-    layerName: null
+    layerName: null,
+    hasError: true
   };
 
   submitChanges = () => {
@@ -47,7 +47,7 @@ class EditLayerDialog extends React.Component {
   setColorObj = (layerIndex) => {
     const {layers} = this.props;
 
-    if(layerIndex) {
+    if(layerIndex >= 0) {
       const layer = layers[layerIndex];
       let colorString = layer.data.color;
       let color =  rgbCss2Obj(colorString, layer.data.opacity);
@@ -111,14 +111,27 @@ class EditLayerDialog extends React.Component {
 
   }
 
-  changeLayer = (value) => {
-    this.setState({layerIndex: value});
-    this.setColorObj(value);
+  changeLayer = (layerIndex) => {
+    const{layers} = this.props;
+    let layerName = layers[layerIndex] ? layers[layerIndex].displayName: '';
+
+    this.setColorObj(layerIndex);
+    this.setState({
+      layerIndex: layerIndex,
+      layerName: layerName
+    });
   }
 
   handleChange = name => ({ target: { value } }) => {
+    let hasError = false;
+    if (name === 'layerName') {
+      if(!value > 0) {
+        hasError= true;
+      }
+    }
     this.setState({
-        [name]: value    
+        [name]: value,
+        hasError: hasError 
     })
   }
 
@@ -127,10 +140,10 @@ class EditLayerDialog extends React.Component {
     let {layerIndex, color, colorChanged, layerName} = this.state;
     const {layers, classes, theme} = this.props
 
-    let error = false;
+    let Nameerror = false;
 
-    if(layerName == ''){
-      error = layerName.length > 0 ? false : true
+    if(layerName === '') {
+      Nameerror = true;
     }
     
 
@@ -142,19 +155,18 @@ class EditLayerDialog extends React.Component {
           layerIndex={layerIndex}
           changeLayer={this.changeLayer.bind(this)} />  
 
-        {layerIndex >= 0 ? 
+        {layerIndex >= 0 && layerIndex !== null ? 
         <div style={{ margin: theme.spacing.unit * 2}}>
         <TextField
           id="outlined-full-width"
           label="Layer Name"
-          defaultValue ={layers[layerIndex] ?
-            layers[layerIndex].displayName: ''}
+          value={layerName}
           fullWidth
-          error={error}
+          error={Nameerror}
           onChange={this.handleChange('layerName')}      
           margin="normal"
           variant="outlined"
-          helperText={error? 'layer Name cannot be empty': ''}
+          helperText={Nameerror? 'layer Name cannot be empty': ''}
           InputLabelProps={{
             shrink: true,
           }}
@@ -174,6 +186,7 @@ class EditLayerDialog extends React.Component {
 
   render() {
     const {open, layers, classes} = this.props;
+    const {hasError} = this.state;
 
     let content = layers.length > 0 ?
       this.getContent()
@@ -183,7 +196,7 @@ class EditLayerDialog extends React.Component {
       </DialogContent>
 
     let actions = layers.length > 0 ?
-      <SubmitOrCancelAction submit={this.submitChanges} cancel={this.handleClose}/>
+      <SubmitOrCancelAction submitDisabled={hasError} submit={this.submitChanges} cancel={this.handleClose}/>
       : 
       <OkAction ok={this.handleClose}/>
 
