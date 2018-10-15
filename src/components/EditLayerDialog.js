@@ -1,5 +1,10 @@
 import React from 'react';
-import {Dialog,  Typography,DialogContent, DialogTitle } from '@material-ui/core';
+import {Dialog,
+   Typography,
+   DialogContent,
+   DialogTitle,
+   TextField,
+   FormLabel  } from '@material-ui/core';
 import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
 import OkAction from './DialogActions/OkAction'
 import LayersSelect from './LayersSelect';
@@ -23,7 +28,8 @@ class EditLayerDialog extends React.Component {
   state = {
     scroll: 'paper',
     color: {r:0, g: 0, b:0, a:0},
-    layerIndex: null
+    layerIndex: null,
+    layerName: null
   };
 
   submitChanges = () => {
@@ -91,7 +97,11 @@ class EditLayerDialog extends React.Component {
 
     if(layerId){
       let layerIndex = findIndexWithAttribute(layers, 'id', layerId);
-      this.setState({layerIndex: layerIndex});
+      let layerName = layers[layerIndex] ? layers[layerIndex].displayName: '';
+      this.setState({
+        layerIndex: layerIndex,
+        layerName: layerName
+      });
       this.setColorObj(layerIndex);
     }
 
@@ -102,10 +112,24 @@ class EditLayerDialog extends React.Component {
     this.setColorObj(value);
   }
 
+  handleChange = name => ({ target: { value } }) => {
+    this.setState({
+        [name]: value    
+    })
+  }
+
   
   getContent = () => {
-    let {layerIndex, color} = this.state;
-    const {layers, classes} = this.props
+    let {layerIndex, color, layerName} = this.state;
+    const {layers, classes, theme} = this.props
+
+    let error = false;
+
+    if(layerName == ''){
+      error = layerName.length > 0 ? false : true
+      console.log(error, layerName)
+    }
+    
 
     return (
     <DialogContent>
@@ -114,12 +138,30 @@ class EditLayerDialog extends React.Component {
           layers={layers}
           layerIndex={layerIndex}
           changeLayer={this.changeLayer.bind(this)} />  
+
         {layerIndex >= 0 ? 
+        <div style={{ margin: theme.spacing.unit * 2}}>
+        <TextField
+          id="outlined-full-width"
+          label="Layer Name"
+          defaultValue ={layers[layerIndex] ?
+            layers[layerIndex].displayName: ''}
+          fullWidth
+          error={error}
+          onChange={this.handleChange('layerName')}      
+          margin="normal"
+          variant="outlined"
+          helperText={error? 'layer Name cannot be empty': ''}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <Typography  style={{ marginTop: theme.spacing.unit * 2}} variant="caption" gutterBottom>Color</Typography>
         <ColorPicker
           setColor={this.setColor.bind(this)}
           setOpacity={this.setOpacity.bind(this)}
           color={color}/> 
-        : null}  
+        </div> : null}  
     </DialogContent> );
 
   
@@ -128,6 +170,7 @@ class EditLayerDialog extends React.Component {
 
   render() {
     const {open, layers, classes} = this.props;
+    console.log(this.state);
 
     let content = layers.length > 0 ?
       this.getContent()
