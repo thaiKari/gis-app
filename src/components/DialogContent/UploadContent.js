@@ -8,7 +8,7 @@ const styles = theme => ({
 
   });
 
-  class DC_Upload extends Component {
+  class UploadContent extends Component {
 
     render() {
 
@@ -41,4 +41,4 @@ const styles = theme => ({
 
   }
 
-export default withStyles(styles, { withTheme: true })(DC_Upload);
+export default withStyles(styles, { withTheme: true })(UploadContent);

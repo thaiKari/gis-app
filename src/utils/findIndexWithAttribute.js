@@ -1,5 +1,5 @@
 const findIndexWithAttribute = (array, attr, value) => {
-    for(var i = 0; i < array.length; i += 1) {
+    for(var i in array ) {
         if(array[i][attr] === value) {
             return i;
         }

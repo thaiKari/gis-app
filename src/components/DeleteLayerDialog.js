@@ -1,13 +1,13 @@
 import React from 'react';
 import { List, Button, Dialog,  Typography, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
+import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
 
-
-class AlertDialog extends React.Component {
+class DeleteLayerDialog extends React.Component {
 
 
   render() {
 
-    const { open, selectedLayers, layers } = this.props
+    const { open, selectedLayers, layers, closeDialog, deleteLayers } = this.props
 
     let hasSelection = false;
     let deleteList = Object.keys(selectedLayers).map( (key) => {
@@ -30,21 +30,14 @@ class AlertDialog extends React.Component {
     : null
 
     let actionButtons = hasSelection ?
-        <DialogActions>
-            <Button onClick={this.props.deleteLayers} color="primary" autoFocus>
-                Agree
-            </Button>
-            <Button onClick={this.props.closeDialog } color="primary">
-                Cancel
-            </Button>
-            
-    </DialogActions>
+
+    <SubmitOrCancelAction submitText={'Agree'} submit={deleteLayers} cancel={closeDialog}/>
     :
     <DialogActions>
-    <Button onClick={this.props.closeDialog} color="primary">
-      OK
-    </Button>
-  </DialogActions>
+      <Button onClick={this.props.closeDialog} color="primary">
+        OK
+      </Button>
+    </DialogActions>
 
 
 
@@ -72,4 +65,4 @@ class AlertDialog extends React.Component {
   }
 }
 
-export default AlertDialog;
+export default DeleteLayerDialog;

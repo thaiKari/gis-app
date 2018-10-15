@@ -1,0 +1,82 @@
+import React from 'react'
+import {SliderPicker, AlphaPicker } from 'react-color';
+import { withStyles } from '@material-ui/core/styles';
+import rgbObj2Css from '../utils/rgbObj2Css';
+import ColorForm from './ColorForm';
+import {Typography} from '@material-ui/core';
+
+const styles = theme => ({
+    color: {
+      width: '100%',
+      height: '100%',
+      borderRadius: '2px',
+    },
+    swatch: {
+      height: 40,
+      width: '100%',   
+      borderRadius: '5px',
+      boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+      display: 'inline-block',
+      cursor: 'pointer',
+      marginBottom: theme.spacing.unit * 3
+    },
+    picker: {
+      touchAction: 'none'
+    },
+    AlphaPicker: {
+      marginTop: theme.spacing.unit * 3
+    }
+  });
+
+class ColorPicker extends React.Component {
+  state = {
+    displayColorPicker: false,
+  };
+
+  handleClick = () => {
+    this.setState({ displayColorPicker: !this.state.displayColorPicker })
+  };
+
+  handleClose = () => {
+    this.setState({ displayColorPicker: false })
+  };
+
+  handleColorChange = (color) => {
+    const {setColor} = this.props;
+    setColor(color.rgb);
+  };
+
+  handleAlphaChange = (color) => {
+    let {setOpacity} = this.props;
+    setOpacity(color.rgb.a);
+  };
+
+
+  render() {
+    let {color, classes, theme, setColor, setOpacity, colorChanged} = this.props;
+
+    let colorString = rgbObj2Css(color);
+
+    return (
+      <div>
+        <div className={ classes.swatch } onClick={ this.handleClick }>
+          <div className={ classes.color} 
+              style={{backgroundColor: `${colorString}`,
+                    opacity: `${color.a}`}} />
+        </div>
+        { this.state.displayColorPicker ?
+        <div className = {classes.picker}>
+        <SliderPicker  color={color} onChange={this.handleColorChange } />
+        <Typography  style={{ marginTop: theme.spacing.unit * 2}} variant="caption" gutterBottom>
+        Opacity</Typography>
+        <AlphaPicker width={'100%'} color={color} onChange={this.handleAlphaChange }  />
+        <ColorForm colorChanged={colorChanged} setColor={setColor} setOpacity={setOpacity} color={color}/>
+        </div>
+        : null }
+
+      </div>
+    )
+  }
+}
+
+export default  withStyles(styles, { withTheme: true })(ColorPicker);

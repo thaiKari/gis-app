@@ -2,10 +2,11 @@
  * @param {*} name the name of the object to be ided
  */
 const generateUniqueID = (name) => {
-    let d = new Date();
-    let n = d.getTime();
+  //Static variable:
+  generateUniqueID.layerNum = generateUniqueID.layerNum ?
+                              generateUniqueID.layerNum + 1 : 1
 
-    return name + n;
+    return name + generateUniqueID.layerNum;
   };
 
 export default generateUniqueID
