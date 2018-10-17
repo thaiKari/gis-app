@@ -46,65 +46,6 @@ class Map extends Component {
     };
   }
 
-    shouldComponentUpdate(nextProps) {
-        return true;
-      }
-
-    componentDidUpdate(prevProps) {
-      if (prevProps.moveLayerUnder !== this.props.moveLayerUnder) {
-        let moveLayerUnder = this.props.moveLayerUnder;
-        let layerId = moveLayerUnder[0];
-        let layerAbove = moveLayerUnder[1];
-        this._map.moveLayer(layerId, layerAbove);
-      }
-      else if (prevProps.deletedLayers !== this.props.deletedLayers){
-        this.removeMapLayers(this.props.deletedLayers);
-      }else if (prevProps.colorChange !== this.props.colorChange){
-        this.changeColor(this.props.colorChange);
-      }
-      else {
-        // Assume layer visibility toggled or layer added
-        this.updateLayerVisibility();
-      }
-    }
-
-    removeMapLayers(layerIds) {
-      for (let i in layerIds) {
-        let layerId = layerIds[i];
-        if(this._map.getSource(layerId)){
-          this._map.removeLayer(layerId);
-          this._map.removeSource(layerId);
-        }
-      }
-    }
-
-    changeColor(colorChange) {
-      const {layers} = this.props;
-      let layerId = colorChange.layerId;
-      let color = colorChange.color;
-      let opacity = colorChange.opacity;
-
-      let layer = layers.find(l => l.id === layerId);
-      let map = this._map;
-
-      switch (layer.type) {
-        case 'Polygon':
-            map.setPaintProperty(layerId, 'fill-color', color);
-            map.setPaintProperty(layerId, 'fill-opacity', opacity);
-          break;
-        case 'LineString':
-            map.setPaintProperty(layerId, 'line-color', color);
-            map.setPaintProperty(layerId, 'line-opacity', opacity);
-          break;
-        case 'Point':
-            map.setPaintProperty(layerId, 'circle-color', color);
-            map.setPaintProperty(layerId, 'circle-opacity', opacity);
-          break;
-        default:
-          console.log('unidentified layer type', layer.type);
-      }
-    }
-
     componentDidMount() {
       var zoomLevel = 13;
       var centerCoords = [ 10.397, 63.428,];
@@ -118,6 +59,65 @@ class Map extends Component {
         zoom: zoomLevel
     });
   }
+
+  shouldComponentUpdate(nextProps) {
+    return true;
+  }
+
+componentDidUpdate(prevProps) {
+  if (prevProps.moveLayerUnder !== this.props.moveLayerUnder) {
+    let moveLayerUnder = this.props.moveLayerUnder;
+    let layerId = moveLayerUnder[0];
+    let layerAbove = moveLayerUnder[1];
+    this._map.moveLayer(layerId, layerAbove);
+  }
+  else if (prevProps.deletedLayers !== this.props.deletedLayers){
+    this.removeMapLayers(this.props.deletedLayers);
+  }else if (prevProps.colorChange !== this.props.colorChange){
+    this.changeColor(this.props.colorChange);
+  }
+  else {
+    // Assume layer visibility toggled or layer added
+    this.updateLayerVisibility();
+  }
+}
+
+removeMapLayers(layerIds) {
+  for (let i in layerIds) {
+    let layerId = layerIds[i];
+    if(this._map.getSource(layerId)){
+      this._map.removeLayer(layerId);
+      this._map.removeSource(layerId);
+    }
+  }
+}
+
+changeColor(colorChange) {
+  const {layers} = this.props;
+  let layerId = colorChange.layerId;
+  let color = colorChange.color;
+  let opacity = colorChange.opacity;
+
+  let layer = layers.find(l => l.id === layerId);
+  let map = this._map;
+
+  switch (layer.type) {
+    case 'Polygon':
+        map.setPaintProperty(layerId, 'fill-color', color);
+        map.setPaintProperty(layerId, 'fill-opacity', opacity);
+      break;
+    case 'LineString':
+        map.setPaintProperty(layerId, 'line-color', color);
+        map.setPaintProperty(layerId, 'line-opacity', opacity);
+      break;
+    case 'Point':
+        map.setPaintProperty(layerId, 'circle-color', color);
+        map.setPaintProperty(layerId, 'circle-opacity', opacity);
+      break;
+    default:
+      console.log('unidentified layer type', layer.type);
+  }
+}
 
     updateLayerVisibility() {
       
