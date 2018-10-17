@@ -29,8 +29,7 @@ class EditLayerDialog extends React.Component {
     color: {r:0, g: 0, b:0, a:0},
     colorChanged: false,
     layerIndex: null,
-    layerName: null,
-    hasError: true
+    layerName: '',
   };
 
   submitChanges = () => {
@@ -123,15 +122,8 @@ class EditLayerDialog extends React.Component {
   }
 
   handleChange = name => ({ target: { value } }) => {
-    let hasError = false;
-    if (name === 'layerName') {
-      if(!value > 0) {
-        hasError= true;
-      }
-    }
     this.setState({
         [name]: value,
-        hasError: hasError 
     })
   }
 
@@ -186,7 +178,7 @@ class EditLayerDialog extends React.Component {
 
   render() {
     const {open, layers, classes} = this.props;
-    const {hasError} = this.state;
+    const {layerName} = this.state;
 
     let content = layers.length > 0 ?
       this.getContent()
@@ -194,6 +186,8 @@ class EditLayerDialog extends React.Component {
       <DialogContent>
         <Typography>Add some layers first</Typography>         
       </DialogContent>
+
+    let hasError= layerName.length===0;
 
     let actions = layers.length > 0 ?
       <SubmitOrCancelAction submitDisabled={hasError} submit={this.submitChanges} cancel={this.handleClose}/>
