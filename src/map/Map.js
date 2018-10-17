@@ -42,7 +42,7 @@ class Map extends Component {
     super ();
     mapboxgl.accessToken = getSetting('REACT_APP_MAPBOX_ACCESTOKEN');
     this.state = {
-      
+      unidentifiedLayerType: []
     };
   }
 
@@ -124,19 +124,20 @@ class Map extends Component {
         let layers = this.props.layers;
     
         layers.forEach( (layer, i) => {
-          if (!this._map.isStyleLoaded()) {
-            this.waitForStyleLoad(this.handleSingleLayerVisibility.bind(this), layer, i);
-          }
-          else {
-            this.handleSingleLayerVisibility(layer, i);
-          }
-  
+            this.handleSingleLayerVisibility(layer, i);  
         });
     }
 
     handleSingleLayerVisibility(layer, i) {
+      let {unidentifiedLayerType} = this.state;
+      const {layers} = this.props;
+
       if (!this._map.isStyleLoaded()) {
-        this.waitForStyleLoad(this.handleSingleLayerVisibility.bind(this), layer, i);
+        
+        //this.waitForStyleLoad(this.handleSingleLayerVisibility.bind(this), layer, i);
+        this.waitForSomething(this._map.isStyleLoaded(), this.handleSingleLayerVisibility.bind(this), layer, i);
+      } else if ( i > 0 && !this._map.getSource(layers[i-1].id) && !unidentifiedLayerType[layers[i-1].id] ) {
+        this.waitForSomething(this._map.getSource(layers[i-1].id), this.handleSingleLayerVisibility.bind(this), layer, i)
       }
 
       else {
@@ -153,6 +154,8 @@ class Map extends Component {
               break;
             default:
               console.log('unidentified layer type', layer.type);
+              unidentifiedLayerType.push(layer.id);
+              this.setState({unidentifiedLayerType: unidentifiedLayerType})
           }
           
         }
@@ -165,13 +168,22 @@ class Map extends Component {
       }
     }
 
-    waitForStyleLoad(callback, layer, i) {
+   /* waitForStyleLoad(callback, layer, i) {
       if (!this._map.isStyleLoaded()) {
         setTimeout(() => {
           callback(layer, i);
-        }, 200);
+        }, 300);
+      }
+    }*/
+
+    waitForSomething(toWaitFor, callback, layer, i) {
+      if (!toWaitFor) {
+        setTimeout(() => {
+          callback(layer, i);
+        }, 300);
       }
     }
+
 
     addPointLayer(layer, i) {
       const {layers} = this.props;
