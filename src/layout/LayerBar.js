@@ -3,26 +3,27 @@ import { withStyles } from '@material-ui/core/styles';
 import { Drawer } from '@material-ui/core';
 import findIndexWithAttribute from '../utils/findIndexWithAttribute'
 import DragNDropBox from '../components/DragNDropBox';
-//import LayerList from '../components/LayerList';
 import LayersToolbar from '../components/LayersToolbar';
-//import DeleteLayerDialog from '../components/DeleteLayerDialog';
-//import EditLayerDialog from '../components/EditLayerDialog';
+import Loading from '../utils/Loading/Loading';
+import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
 
-import Loading from '../components/Loading';
 import Loadable from 'react-loadable'
 
 const DeleteLayerDialog = Loadable({
   loader: () => import('../components/DeleteLayerDialog'),
-  loading: Loading,
+  delay: 300,
+  loading: LoadingFullpageCirular,
 });
 
 const EditLayerDialog = Loadable({
   loader: () => import('../components/EditLayerDialog'),
-  loading: Loading,
+  delay: 300,
+  loading: LoadingFullpageCirular,
 });
 
 const LayerList = Loadable({
   loader: () => import('../components/LayerList'),
+  delay: 300,
   loading: Loading,
 });
  
@@ -264,6 +265,7 @@ const styles = theme => ({
         addLayers={addLayers}/>
   
         <div className={classes.content}>
+
         {layers.length > 0 ?
           <LayerList reorderLayersList={reorderLayersList}
                     layers={layers}

@@ -3,12 +3,12 @@ import { withStyles } from '@material-ui/core/styles';
 import { Divider, Tooltip, IconButton, Toolbar } from '@material-ui/core';
 import { InsertDriveFile, Edit, Delete } from '@material-ui/icons'
 //import AddLayerDialog from './AddLayerDialog';
-import Loading from '../components/Loading';
+import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
 import Loadable from 'react-loadable'
 
 const AddLayerDialog = Loadable({
   loader: () => import('./AddLayerDialog'),
-  loading: Loading,
+  loading: LoadingFullpageCirular,
 });
 
 const styles = theme => ({

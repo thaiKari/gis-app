@@ -1,11 +1,17 @@
 import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import CircularLoader from '../../components/LoadingTypes/CircularLoader';
 
-export default function Loading(props) {
+const styles = {
+};
+
+function LoadingFullpageCirular(props) {
+
   if (props.isLoading) {
     if (props.timedOut) {
       return <div>Loader timed out!</div>;
     } else if (props.pastDelay) {
-      return <div>Loading...</div>;
+          return <CircularLoader fullpage={true} />;
     } else {
       return null;
     }
@@ -15,3 +21,5 @@ export default function Loading(props) {
     return null;
   }
 }
+
+export default withStyles(styles)(LoadingFullpageCirular);

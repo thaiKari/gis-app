@@ -5,17 +5,25 @@ import './App.css';
 import LayerBar from './layout/LayerBar';
 //import ToolkitBar from './layout/ToolkitBar';
 import TopBar from './layout/TopBar';
-import Map from './map/Map';
+//import Map from './map/Map';
 import reorder from './utils/reorderList'
 import {teal, amber} from '@material-ui/core/colors';
 import createJsonLayer from './utils/createJsonLayer';
 import findIndexWithAttribute from './utils/findIndexWithAttribute';
-import Loading from './components/Loading';
 import Loadable from 'react-loadable'
+import LoadingFullPage from './utils/Loading/LoadingFullpageCirular';
+import Loading from './utils/Loading/Loading';
 
 const ToolkitBar = Loadable({
   loader: () => import('./layout/ToolkitBar'),
+  delay: 300, // 0.3 seconds
   loading: Loading,
+});
+
+const Map = Loadable({
+  loader: () => import('./map/Map'),
+  delay: 300, // 0.3 seconds
+  loading: LoadingFullPage
 });
 
 
@@ -183,8 +191,8 @@ const theme = createMuiTheme({
             toolDrawerOpen={toolDrawerOpen}/>
           : null}
 
-          <main className={classes.content}>          
-               <Map 
+          <main className={classes.content}>      
+               <Map
                layers={layers}
                moveLayerUnder={moveLayerUnder}
                deletedLayers={deletedLayers}
