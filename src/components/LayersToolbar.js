@@ -2,8 +2,14 @@ import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Divider, Tooltip, IconButton, Toolbar } from '@material-ui/core';
 import { InsertDriveFile, Edit, Delete } from '@material-ui/icons'
-import AddLayerDialog from './AddLayerDialog';
+//import AddLayerDialog from './AddLayerDialog';
+import Loading from '../components/Loading';
+import Loadable from 'react-loadable'
 
+const AddLayerDialog = Loadable({
+  loader: () => import('./AddLayerDialog'),
+  loading: Loading,
+});
 
 const styles = theme => ({
     layersToolbar: {
@@ -31,8 +37,9 @@ const styles = theme => ({
       return (
         <div>
 
+        {addLayerDialogOpen ?
         <AddLayerDialog addLayers={addLayers} open={addLayerDialogOpen} closeDialog={this.closeAddLayerDialog.bind(this)}/>    
-
+        : null}
         <Divider />
         <Toolbar className={classes.layersToolbar} disableGutters={true}>
 

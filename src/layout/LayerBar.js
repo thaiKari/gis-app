@@ -3,10 +3,28 @@ import { withStyles } from '@material-ui/core/styles';
 import { Drawer } from '@material-ui/core';
 import findIndexWithAttribute from '../utils/findIndexWithAttribute'
 import DragNDropBox from '../components/DragNDropBox';
-import LayerList from '../components/LayerList';
+//import LayerList from '../components/LayerList';
 import LayersToolbar from '../components/LayersToolbar';
-import DeleteLayerDialog from '../components/DeleteLayerDialog';
-import EditLayerDialog from '../components/EditLayerDialog';
+//import DeleteLayerDialog from '../components/DeleteLayerDialog';
+//import EditLayerDialog from '../components/EditLayerDialog';
+
+import Loading from '../components/Loading';
+import Loadable from 'react-loadable'
+
+const DeleteLayerDialog = Loadable({
+  loader: () => import('../components/DeleteLayerDialog'),
+  loading: Loading,
+});
+
+const EditLayerDialog = Loadable({
+  loader: () => import('../components/EditLayerDialog'),
+  loading: Loading,
+});
+
+const LayerList = Loadable({
+  loader: () => import('../components/LayerList'),
+  loading: Loading,
+});
  
 const styles = theme => ({
     drawerPaper: {
@@ -226,28 +244,34 @@ const styles = theme => ({
         }}
       >
 
+        {deleteLayersDialogOpen ?
         <DeleteLayerDialog closeDialog={this.closeDeleteLayersDialog.bind(this)}
                             open={deleteLayersDialogOpen}
                             selectedLayers={selectedLayers}
                             layers={layers}
                             deleteLayers={this.deleteLayers.bind(this)}/>
+        : null}
+        {editLayersDialogOpen ?
         <EditLayerDialog open={editLayersDialogOpen}
                           closeDialog={this.closeEditLayersDialog.bind(this)}
                           layers={layers}
                           currLayer={lastClickedLayer}
                           submitChanges={submitChanges}/>
+        : null}
 
         <LayersToolbar openDeleteLayersDialog={this.openDeleteLayersDialog.bind(this)}
         openEditLayersDialog={this.openEditLayersDialog.bind(this)}
         addLayers={addLayers}/>
   
         <div className={classes.content}>
+        {layers.length > 0 ?
           <LayerList reorderLayersList={reorderLayersList}
                     layers={layers}
                     toggleVisibility={toggleVisibility}
                     handleListItemClick={this.handleListItemClick.bind(this)}
                     onDragEnd={this.onDragEnd.bind(this)}
                     selectedLayers={selectedLayers}/>
+          : null}
           <DragNDropBox receiveNewJson={receiveNewJson}/>
         </div>
 

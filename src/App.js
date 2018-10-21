@@ -3,13 +3,21 @@ import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import {withStyles} from '@material-ui/core/styles';
 import './App.css';
 import LayerBar from './layout/LayerBar';
-import ToolkitBar from './layout/ToolkitBar';
+//import ToolkitBar from './layout/ToolkitBar';
 import TopBar from './layout/TopBar';
 import Map from './map/Map';
 import reorder from './utils/reorderList'
 import {teal, amber} from '@material-ui/core/colors';
 import createJsonLayer from './utils/createJsonLayer';
 import findIndexWithAttribute from './utils/findIndexWithAttribute';
+import Loading from './components/Loading';
+import Loadable from 'react-loadable'
+
+const ToolkitBar = Loadable({
+  loader: () => import('./layout/ToolkitBar'),
+  loading: Loading,
+});
+
 
 const theme = createMuiTheme({
   palette: {
@@ -170,8 +178,10 @@ const theme = createMuiTheme({
             addLayers={this.addLayers.bind(this)}
             deleteLayers={this.deleteLayers.bind(this)}
             submitChanges={this.submitChanges.bind(this)}/>
+          {toolDrawerOpen ?
           <ToolkitBar
             toolDrawerOpen={toolDrawerOpen}/>
+          : null}
 
           <main className={classes.content}>          
                <Map 
