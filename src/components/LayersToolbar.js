@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Divider, Tooltip, IconButton, Toolbar } from '@material-ui/core';
-import { InsertDriveFile, Edit, Delete } from '@material-ui/icons'
-//import AddLayerDialog from './AddLayerDialog';
+import { InsertDriveFile, Edit, Delete, SaveAlt } from '@material-ui/icons'
 import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
 import Loadable from 'react-loadable'
 
@@ -32,7 +31,7 @@ const styles = theme => ({
     render() {
 
       const {addLayerDialogOpen} = this.state;
-      const { classes, addLayers, openDeleteLayersDialog, openEditLayersDialog } = this.props;
+      const { classes,hasLayers, addLayers,openSaveLayersDialog, openDeleteLayersDialog, openEditLayersDialog } = this.props;
   
       return (
         <div>
@@ -48,19 +47,30 @@ const styles = theme => ({
                 <InsertDriveFile/>
               </IconButton>
             </Tooltip>
+            <Tooltip title="Download files">
+            <div>
+            <IconButton disabled={!hasLayers} onClick={openSaveLayersDialog}>
+              <SaveAlt/>
+            </IconButton>
+            </div>
+          </Tooltip>
 
           
           <div style={{flex: 1}}></div>
 
           <Tooltip title="Edit Layer">
-            <IconButton  onClick={openEditLayersDialog}>
+          <div>
+            <IconButton disabled={!hasLayers} onClick={openEditLayersDialog}>
               <Edit/>
             </IconButton>
+            </div>
           </Tooltip>
           <Tooltip title="Delete Layer">
-            <IconButton onClick={openDeleteLayersDialog}>
+          <div>
+            <IconButton disabled={!hasLayers} onClick={openDeleteLayersDialog}>
               <Delete/>
             </IconButton>
+            </div>
           </Tooltip>
         </Toolbar>
         <Divider />

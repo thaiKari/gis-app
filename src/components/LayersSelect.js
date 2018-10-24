@@ -1,4 +1,5 @@
 
+// CUrrently only simpleSelect is in use
 import React from 'react';
 import classNames from 'classnames';
 import Select from 'react-select';
@@ -11,13 +12,13 @@ import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
-
+import FormControl from '@material-ui/core/FormControl';
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
     marginBottom: theme.spacing.unit*3,
-  },
+  }, 
   input: {
     display: 'flex',
     padding: 0,

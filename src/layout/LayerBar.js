@@ -21,6 +21,12 @@ const EditLayerDialog = Loadable({
   loading: LoadingFullpageCirular,
 });
 
+const SaveLayerDialog = Loadable({
+  loader: () => import('../components/SaveLayerDialog'),
+  delay: 300,
+  loading: LoadingFullpageCirular,
+});
+
 const LayerList = Loadable({
   loader: () => import('../components/LayerList'),
   delay: 300,
@@ -54,6 +60,7 @@ const styles = theme => ({
         shiftPressed: false,
         deleteLayersDialogOpen: false,
         editLayersDialogOpen: false,
+        saveLayersDialogOpen: false
       }
         this.onDragEnd = this.onDragEnd.bind(this);
     }
@@ -198,6 +205,14 @@ const styles = theme => ({
       this.setState({editLayersDialogOpen: false});
     }
 
+    openSaveLayersDialog() {
+      this.setState({saveLayersDialogOpen: true});
+    }
+
+    closeSaveLayersDialog() {
+      this.setState({saveLayersDialogOpen: false});
+    }
+
     deleteLayers() {
       const {selectedLayers} = this.state;
       const {deleteLayers} = this.props
@@ -231,8 +246,10 @@ const styles = theme => ({
       const {selectedLayers,
         deleteLayersDialogOpen,
         editLayersDialogOpen,
-        lastClickedLayer} = this.state;
-      
+        lastClickedLayer,
+        saveLayersDialogOpen} = this.state;
+
+        let hasLayers = layers.length > 0
       return (
 
         <Drawer
@@ -244,7 +261,7 @@ const styles = theme => ({
           paper: classes.drawerPaper,
         }}
       >
-
+        
         {deleteLayersDialogOpen ?
         <DeleteLayerDialog closeDialog={this.closeDeleteLayersDialog.bind(this)}
                             open={deleteLayersDialogOpen}
@@ -259,14 +276,23 @@ const styles = theme => ({
                           currLayer={lastClickedLayer}
                           submitChanges={submitChanges}/>
         : null}
+        {saveLayersDialogOpen ?
+        <SaveLayerDialog open={saveLayersDialogOpen}
+                          closeDialog={this.closeSaveLayersDialog.bind(this)}
+                          layers={layers}
+                          currLayer={lastClickedLayer}
+                          submitChanges={()=>console.log('DO THE DOWNLOAD')}/>
+        : null}
+        
 
         <LayersToolbar openDeleteLayersDialog={this.openDeleteLayersDialog.bind(this)}
         openEditLayersDialog={this.openEditLayersDialog.bind(this)}
-        addLayers={addLayers}/>
+        openSaveLayersDialog={this.openSaveLayersDialog.bind(this)}
+        addLayers={addLayers} hasLayers={hasLayers}/>
   
         <div className={classes.content}>
 
-        {layers.length > 0 ?
+        {hasLayers ?
           <LayerList reorderLayersList={reorderLayersList}
                     layers={layers}
                     toggleVisibility={toggleVisibility}

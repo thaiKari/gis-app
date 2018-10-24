@@ -6,7 +6,7 @@ import {Dialog,
    TextField} from '@material-ui/core';
 import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
 import OkAction from './DialogActions/OkAction'
-import LayersSelect from './LayersSelect';
+import LayersSelect from './LayersSelectSimple';
 import findIndexWithAttribute from '../utils/findIndexWithAttribute';
 import { withStyles } from '@material-ui/core/styles';
 import rgbCss2Obj from '../utils/rgbCss2Obj';
@@ -16,9 +16,15 @@ import ColorPicker from './ColorPicker';
 const styles = theme => ({
   dialogPaper: {
     minHeight: '50vh',
+    overflowX:'hidden'
   },
   spaced: {
     marginBottom: 50,
+  },
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    width:'100%'
   },
 });
 
@@ -112,7 +118,7 @@ class EditLayerDialog extends React.Component {
 
   changeLayer = (layerIndex) => {
     const{layers} = this.props;
-    let layerName = layers[layerIndex] ? layers[layerIndex].displayName: '';
+    let layerName = layers[layerIndex] ? layers[layerIndex].displayName : '';
 
     this.setColorObj(layerIndex);
     this.setState({
@@ -141,19 +147,20 @@ class EditLayerDialog extends React.Component {
 
     return (
     <DialogContent>
+      <form className={classes.container}>
         <LayersSelect
           className={classes.spaced}
           layers={layers}
           layerIndex={layerIndex}
           changeLayer={this.changeLayer.bind(this)} />  
-
+        </form>
         {layerIndex >= 0 && layerIndex !== null ? 
         <div style={{ margin: theme.spacing.unit * 2}}>
         <TextField
           id="outlined-full-width"
           label="Layer Name"
           value={layerName}
-          fullWidth
+          fullWidth={true}
           error={Nameerror}
           onChange={this.handleChange('layerName')}      
           margin="normal"
@@ -170,6 +177,7 @@ class EditLayerDialog extends React.Component {
           color={color}
           colorChanged={colorChanged}/> 
         </div> : null}  
+        
     </DialogContent> );
 
   
