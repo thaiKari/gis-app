@@ -288,7 +288,8 @@ const styles = theme => ({
         <LayersToolbar openDeleteLayersDialog={this.openDeleteLayersDialog.bind(this)}
         openEditLayersDialog={this.openEditLayersDialog.bind(this)}
         openSaveLayersDialog={this.openSaveLayersDialog.bind(this)}
-        addLayers={addLayers} hasLayers={hasLayers}/>
+        addLayers={addLayers} hasLayers={hasLayers}
+        layers={layers}/>
   
         <div className={classes.content}>
 

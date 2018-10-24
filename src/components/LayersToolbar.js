@@ -4,6 +4,8 @@ import { Divider, Tooltip, IconButton, Toolbar } from '@material-ui/core';
 import { InsertDriveFile, Edit, Delete, SaveAlt } from '@material-ui/icons'
 import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
 import Loadable from 'react-loadable'
+import downloadJsons from '../utils/downloadJsons';
+
 
 const AddLayerDialog = Loadable({
   loader: () => import('./AddLayerDialog'),
@@ -31,7 +33,7 @@ const styles = theme => ({
     render() {
 
       const {addLayerDialogOpen} = this.state;
-      const { classes,hasLayers, addLayers,openSaveLayersDialog, openDeleteLayersDialog, openEditLayersDialog } = this.props;
+      const { classes, layers, hasLayers, addLayers,openSaveLayersDialog, openDeleteLayersDialog, openEditLayersDialog } = this.props;
   
       return (
         <div>
@@ -49,7 +51,7 @@ const styles = theme => ({
             </Tooltip>
             <Tooltip title="Download files">
             <div>
-            <IconButton disabled={!hasLayers} onClick={openSaveLayersDialog}>
+            <IconButton disabled={!hasLayers} onClick={() => downloadJsons(layers)}>
               <SaveAlt/>
             </IconButton>
             </div>
