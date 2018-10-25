@@ -9,9 +9,9 @@ import {Dialog,
 import UploadIcon from '@material-ui/icons/CloudUpload';
 import MapIcon from '@material-ui/icons/Map';
 import CreateIcon from '@material-ui/icons/Create';
-import UploadContent from './DialogContent/UploadContent';
-import createJsonLayer from '../utils/createJsonLayer';
-import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
+import UploadContent from '../DialogContent/UploadContent';
+import createJsonLayer from '../../utils/createJsonLayer';
+import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
 
 
 const styles = theme => ({
@@ -28,8 +28,11 @@ class AddLayerDialog extends React.Component {
 
   handleFile(json, name) {
     let {layers} = this.state;
+    const {checkLayerName} = this.props;
 
-    let layer =  createJsonLayer(json, name, layers.length);
+    let newName = checkLayerName(name);
+
+    let layer =  createJsonLayer(json, newName, layers.length);
     layers.push(layer);
 
     this.setState({layers: layers});

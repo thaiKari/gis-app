@@ -4,14 +4,14 @@ import {Dialog,
    DialogContent,
    DialogTitle,
    TextField} from '@material-ui/core';
-import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
-import OkAction from './DialogActions/OkAction'
-import LayersSelect from './LayersSelectSimple';
-import findIndexWithAttribute from '../utils/findIndexWithAttribute';
+import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
+import OkAction from '../DialogActions/OkAction'
+import LayersSelect from '../LayersSelectSimple';
+import findIndexWithAttribute from '../../utils/findIndexWithAttribute';
 import { withStyles } from '@material-ui/core/styles';
-import rgbCss2Obj from '../utils/rgbCss2Obj';
-import rgbObj2Css from '../utils/rgbObj2Css';
-import ColorPicker from './ColorPicker';
+import rgbCss2Obj from '../../utils/rgbCss2Obj';
+import rgbObj2Css from '../../utils/rgbObj2Css';
+import ColorPicker from '../ColorPicker';
 
 const styles = theme => ({
   dialogPaper: {
@@ -128,19 +128,48 @@ class EditLayerDialog extends React.Component {
   }
 
   handleChange = name => ({ target: { value } }) => {
+    
+    if( name === 'layerName'){
+    }
+
     this.setState({
         [name]: value,
     })
   }
 
+  checkIfLayerNameExists = (name) => {
+    let {layers} = this.props;
+    const {layerIndex} = this.state;
+    let haslayer = false
+
+    layers.forEach((layer, index) => {
+      if(index != layerIndex) {
+        if(layer.displayName === name) {
+          haslayer = true;
+        }
+      }
+    });
+
+    return haslayer;
+  }
+
   
   getContent = () => {
-    let {layerIndex, color, colorChanged, layerName} = this.state;
+    let {layerIndex, color, colorChanged, layerName,} = this.state;
     const {layers, classes, theme} = this.props
 
     let Nameerror = false;
+    let errorText = '';
+
+    console.log('exists', this.checkIfLayerNameExists(layerName))
 
     if(layerName === '') {
+      errorText ='layer name cannot be empty';
+      Nameerror = true;
+    } else if ( this.checkIfLayerNameExists(layerName)) {
+      // Name exists already and is not the same as this layers names
+      console.log(true)
+      errorText ='That name is already in use';
       Nameerror = true;
     }
     
@@ -165,7 +194,7 @@ class EditLayerDialog extends React.Component {
           onChange={this.handleChange('layerName')}      
           margin="normal"
           variant="outlined"
-          helperText={Nameerror? 'layer Name cannot be empty': ''}
+          helperText={errorText}
           InputLabelProps={{
             shrink: true,
           }}

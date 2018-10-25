@@ -8,7 +8,7 @@ import downloadJsons from '../utils/downloadJsons';
 
 
 const AddLayerDialog = Loadable({
-  loader: () => import('./AddLayerDialog'),
+  loader: () => import('./Dialogs/AddLayerDialog'),
   loading: LoadingFullpageCirular,
 });
 
@@ -33,13 +33,13 @@ const styles = theme => ({
     render() {
 
       const {addLayerDialogOpen} = this.state;
-      const { classes, layers, hasLayers, addLayers,openSaveLayersDialog, openDeleteLayersDialog, openEditLayersDialog } = this.props;
+      const { classes, layers, hasLayers, addLayers, openDeleteLayersDialog, openEditLayersDialog, checkLayerName } = this.props;
   
       return (
         <div>
 
         {addLayerDialogOpen ?
-        <AddLayerDialog addLayers={addLayers} open={addLayerDialogOpen} closeDialog={this.closeAddLayerDialog.bind(this)}/>    
+        <AddLayerDialog addLayers={addLayers} checkLayerName={checkLayerName} open={addLayerDialogOpen} closeDialog={this.closeAddLayerDialog.bind(this)}/>    
         : null}
         <Divider />
         <Toolbar className={classes.layersToolbar} disableGutters={true}>

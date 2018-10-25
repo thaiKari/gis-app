@@ -3,9 +3,7 @@ import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import {withStyles} from '@material-ui/core/styles';
 import './App.css';
 import LayerBar from './layout/LayerBar';
-//import ToolkitBar from './layout/ToolkitBar';
 import TopBar from './layout/TopBar';
-//import Map from './map/Map';
 import reorder from './utils/reorderList'
 import {teal, amber} from '@material-ui/core/colors';
 import createJsonLayer from './utils/createJsonLayer';
@@ -62,7 +60,7 @@ const theme = createMuiTheme({
     layers: [],
     layersChange: false, //needed to recognise change in layers
     moveLayerUnder: [], //Array with values [layerID, layerAboveID]. Change in state prompts map
-    deletedLayers:[]
+    deletedLayers:[],
   };
 
 
@@ -78,7 +76,8 @@ const theme = createMuiTheme({
 
   receiveNewJson = (json, name) => {
     let {layers, layersChange} = this.state;
-    var layer = createJsonLayer(json, name, layers.length -1)
+    let newName = this.checkLayerName(name)
+    var layer = createJsonLayer(json, newName, layers.length -1)
 
     layers.push(layer);
     layersChange = !layersChange;
@@ -139,7 +138,8 @@ const theme = createMuiTheme({
     this.setState({
       layers: layers,
       layersChange: !layersChange,
-      deletedLayers: layerIds });
+      deletedLayers: layerIds,
+     });
   }
 
   submitChanges = (layerId, color, opacity, layerName) => {
@@ -149,12 +149,33 @@ const theme = createMuiTheme({
 
     layer.data.color= color;
     layer.data.opacity = opacity;
-    layer.displayName = layerName;
+    layer.displayName = this.checkLayerName(layerName);
 
     this.setState({
       layers: layers,
       colorChange: {layerId: layerId, color: color, opacity: opacity}
     });
+  }
+
+  checkLayerName = (name) => {
+    let {layers} = this.state;
+    let i = 1;
+    let newName = name;
+    let hasDuplicate = true;
+
+    while(hasDuplicate){
+      hasDuplicate = false;
+
+      for(var j = 0 ; j < layers.length; j++) {
+        if(newName === layers[j].displayName ){
+          hasDuplicate = true;
+          newName = name + '_' + i;
+          i += 1;
+        }
+      }
+    }
+
+    return newName;
   }
 
   render() {
@@ -184,6 +205,7 @@ const theme = createMuiTheme({
             toggleVisibility={this.toggleVisibility.bind(this)}
             reorderLayersList={this.reorderLayersList.bind(this)}
             addLayers={this.addLayers.bind(this)}
+            checkLayerName={this.checkLayerName.bind(this)}
             deleteLayers={this.deleteLayers.bind(this)}
             submitChanges={this.submitChanges.bind(this)}/>
           {toolDrawerOpen ?
