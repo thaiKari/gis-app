@@ -10,13 +10,13 @@ import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
 import Loadable from 'react-loadable'
 
 const DeleteLayerDialog = Loadable({
-  loader: () => import('../components/DeleteLayerDialog'),
+  loader: () => import('../components/Dialogs/DeleteLayerDialog'),
   delay: 300,
   loading: LoadingFullpageCirular,
 });
 
 const EditLayerDialog = Loadable({
-  loader: () => import('../components/EditLayerDialog'),
+  loader: () => import('../components/Dialogs/EditLayerDialog'),
   delay: 300,
   loading: LoadingFullpageCirular,
 });
@@ -227,12 +227,15 @@ const styles = theme => ({
         drawerOpen,
         receiveNewJson,
         toggleVisibility,
+        checkLayerName,
         submitChanges} = this.props;
       const {selectedLayers,
         deleteLayersDialogOpen,
         editLayersDialogOpen,
-        lastClickedLayer} = this.state;
-      
+        lastClickedLayer,
+        } = this.state;
+
+        let hasLayers = layers.length > 0
       return (
 
         <Drawer
@@ -244,29 +247,35 @@ const styles = theme => ({
           paper: classes.drawerPaper,
         }}
       >
-
+        
         {deleteLayersDialogOpen ?
         <DeleteLayerDialog closeDialog={this.closeDeleteLayersDialog.bind(this)}
                             open={deleteLayersDialogOpen}
                             selectedLayers={selectedLayers}
                             layers={layers}
-                            deleteLayers={this.deleteLayers.bind(this)}/>
+                            deleteLayers={this.deleteLayers.bind(this)}
+                           />
         : null}
         {editLayersDialogOpen ?
         <EditLayerDialog open={editLayersDialogOpen}
                           closeDialog={this.closeEditLayersDialog.bind(this)}
                           layers={layers}
                           currLayer={lastClickedLayer}
-                          submitChanges={submitChanges}/>
+                          submitChanges={submitChanges}
+                          />
         : null}
+        
 
         <LayersToolbar openDeleteLayersDialog={this.openDeleteLayersDialog.bind(this)}
         openEditLayersDialog={this.openEditLayersDialog.bind(this)}
-        addLayers={addLayers}/>
+        addLayers={addLayers}
+        hasLayers={hasLayers}
+        checkLayerName={checkLayerName}
+        layers={layers}/>
   
         <div className={classes.content}>
 
-        {layers.length > 0 ?
+        {hasLayers ?
           <LayerList reorderLayersList={reorderLayersList}
                     layers={layers}
                     toggleVisibility={toggleVisibility}

@@ -4,21 +4,27 @@ import {Dialog,
    DialogContent,
    DialogTitle,
    TextField} from '@material-ui/core';
-import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
-import OkAction from './DialogActions/OkAction'
-import LayersSelect from './LayersSelect';
-import findIndexWithAttribute from '../utils/findIndexWithAttribute';
+import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
+import OkAction from '../DialogActions/OkAction'
+import LayersSelect from '../LayersSelectSimple';
+import findIndexWithAttribute from '../../utils/findIndexWithAttribute';
 import { withStyles } from '@material-ui/core/styles';
-import rgbCss2Obj from '../utils/rgbCss2Obj';
-import rgbObj2Css from '../utils/rgbObj2Css';
-import ColorPicker from './ColorPicker';
+import rgbCss2Obj from '../../utils/rgbCss2Obj';
+import rgbObj2Css from '../../utils/rgbObj2Css';
+import ColorPicker from '../ColorPicker';
 
 const styles = theme => ({
   dialogPaper: {
     minHeight: '50vh',
+    overflowX:'hidden'
   },
   spaced: {
     marginBottom: 50,
+  },
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    width:'100%'
   },
 });
 
@@ -112,7 +118,7 @@ class EditLayerDialog extends React.Component {
 
   changeLayer = (layerIndex) => {
     const{layers} = this.props;
-    let layerName = layers[layerIndex] ? layers[layerIndex].displayName: '';
+    let layerName = layers[layerIndex] ? layers[layerIndex].displayName : '';
 
     this.setColorObj(layerIndex);
     this.setState({
@@ -122,43 +128,73 @@ class EditLayerDialog extends React.Component {
   }
 
   handleChange = name => ({ target: { value } }) => {
+    
+    if( name === 'layerName'){
+    }
+
     this.setState({
         [name]: value,
     })
   }
 
+  checkIfLayerNameExists = (name) => {
+    let {layers} = this.props;
+    const {layerIndex} = this.state;
+    let haslayer = false
+
+    layers.forEach((layer, index) => {
+      if(index != layerIndex) {
+        if(layer.displayName === name) {
+          haslayer = true;
+        }
+      }
+    });
+
+    return haslayer;
+  }
+
   
   getContent = () => {
-    let {layerIndex, color, colorChanged, layerName} = this.state;
+    let {layerIndex, color, colorChanged, layerName,} = this.state;
     const {layers, classes, theme} = this.props
 
     let Nameerror = false;
+    let errorText = '';
+
+    console.log('exists', this.checkIfLayerNameExists(layerName))
 
     if(layerName === '') {
+      errorText ='layer name cannot be empty';
+      Nameerror = true;
+    } else if ( this.checkIfLayerNameExists(layerName)) {
+      // Name exists already and is not the same as this layers names
+      console.log(true)
+      errorText ='That name is already in use';
       Nameerror = true;
     }
     
 
     return (
     <DialogContent>
+      <form className={classes.container}>
         <LayersSelect
           className={classes.spaced}
           layers={layers}
           layerIndex={layerIndex}
           changeLayer={this.changeLayer.bind(this)} />  
-
+        </form>
         {layerIndex >= 0 && layerIndex !== null ? 
         <div style={{ margin: theme.spacing.unit * 2}}>
         <TextField
           id="outlined-full-width"
           label="Layer Name"
           value={layerName}
-          fullWidth
+          fullWidth={true}
           error={Nameerror}
           onChange={this.handleChange('layerName')}      
           margin="normal"
           variant="outlined"
-          helperText={Nameerror? 'layer Name cannot be empty': ''}
+          helperText={errorText}
           InputLabelProps={{
             shrink: true,
           }}
@@ -170,6 +206,7 @@ class EditLayerDialog extends React.Component {
           color={color}
           colorChanged={colorChanged}/> 
         </div> : null}  
+        
     </DialogContent> );
 
   

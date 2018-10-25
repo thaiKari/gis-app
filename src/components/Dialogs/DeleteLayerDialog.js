@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, Button, Dialog,  Typography, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
-import SubmitOrCancelAction from './DialogActions/SubmitOrCancelAction';
+import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
 
 class DeleteLayerDialog extends React.Component {
 
