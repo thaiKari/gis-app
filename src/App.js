@@ -11,6 +11,7 @@ import findIndexWithAttribute from './utils/findIndexWithAttribute';
 import Loadable from 'react-loadable'
 import LoadingFullPage from './utils/Loading/LoadingFullpageCirular';
 import Loading from './utils/Loading/Loading';
+import DrawerBtn from './components/DrawerBtn';
 
 const ToolkitBar = Loadable({
   loader: () => import('./layout/ToolkitBar'),
@@ -193,9 +194,7 @@ const theme = createMuiTheme({
       <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <div className={classes.appFrame}>
-          <TopBar
-            handleDrawerToggle={this.handleDrawerToggle.bind(this)}
-            toggleToolDrawer={this.toggleToolDrawer.bind(this)}/>
+
           <LayerBar
             handleDrawerToggle={this.handleDrawerToggle.bind(this)}
             drawerOpen={drawerOpen}
@@ -218,7 +217,11 @@ const theme = createMuiTheme({
                layers={layers}
                moveLayerUnder={moveLayerUnder}
                deletedLayers={deletedLayers}
-               colorChange={colorChange}/>                  
+               colorChange={colorChange}/>
+
+              <DrawerBtn 
+              handleDrawerToggle={this.handleDrawerToggle.bind(this)}
+              drawerOpen={drawerOpen}/>                  
           </main>
 
         </div>
@@ -231,3 +234,9 @@ const theme = createMuiTheme({
 }
 
 export default withStyles(styles, { withTheme: true })(App);
+
+/**
+ *           <TopBar
+            handleDrawerToggle={this.handleDrawerToggle.bind(this)}
+            toggleToolDrawer={this.toggleToolDrawer.bind(this)}/>
+ */

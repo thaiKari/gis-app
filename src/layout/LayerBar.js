@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Drawer } from '@material-ui/core';
+import { Drawer, Toolbar, Typography, Divider } from '@material-ui/core';
 import findIndexWithAttribute from '../utils/findIndexWithAttribute'
 import DragNDropBox from '../components/DragNDropBox';
 import LayersToolbar from '../components/LayersToolbar';
@@ -31,11 +31,13 @@ const styles = theme => ({
     drawerPaper: {
         position: 'relative',
         width: theme.drawerWidth,
-        marginTop: theme.appBarHeight,
+        //marginTop: theme.appBarHeight,
         //overflow: 'hidden'
       },
       drawerHeader: {
-        height: theme.appBarHeight,
+        //height: theme.appBarHeight,
+        paddingTop: theme.spacing.unit * 2,
+        paddingBottom: theme.spacing.unit * 2,
       },
       content: {
         flexGrow: 1,
@@ -247,6 +249,14 @@ const styles = theme => ({
           paper: classes.drawerPaper,
         }}
       >
+      <div className={classes.drawerHeader}>
+        <Toolbar variant="dense">
+          <Typography color='primary' component="h2" variant="display1" gutterBottom style={{flex: 1}}>
+              Gis-App
+          </Typography>  
+        </Toolbar>
+            
+        </div>
         
         {deleteLayersDialogOpen ?
         <DeleteLayerDialog closeDialog={this.closeDeleteLayersDialog.bind(this)}
@@ -264,7 +274,8 @@ const styles = theme => ({
                           submitChanges={submitChanges}
                           />
         : null}
-        
+
+        <Divider/>        
 
         <LayersToolbar openDeleteLayersDialog={this.openDeleteLayersDialog.bind(this)}
         openEditLayersDialog={this.openEditLayersDialog.bind(this)}
@@ -298,7 +309,7 @@ export default withStyles(styles, { withTheme: true })(LayerBar);
 
 /**
  * OLD HEADER
- *         <div className={classes.drawerHeader}>
+*         <div className={classes.drawerHeader}>
         <Toolbar variant="dense">
           <Typography variant='title' style={{flex: 1}}>
               Layers
