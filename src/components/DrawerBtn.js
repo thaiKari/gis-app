@@ -66,7 +66,6 @@ class DrawerBtn extends React.Component {
   }
 
   stopResize = () => {
-    console.log('Stop!')
     
     if (this.state.isDragging) {
       this.setState(() => ({

@@ -239,7 +239,6 @@ const styles = theme => ({
         } = this.state;
 
         let hasLayers = layers.length > 0;
-        console.log(drawerWidth)
 
       return (
         <div style={{

@@ -225,7 +225,9 @@ const theme = createMuiTheme({
                layers={layers}
                moveLayerUnder={moveLayerUnder}
                deletedLayers={deletedLayers}
-               colorChange={colorChange}/>
+               colorChange={colorChange}
+               drawerWidth={drawerWidth}
+               drawerOpen={drawerOpen}/>
 
               <DrawerBtn 
               handleDrawerToggle={this.handleDrawerToggle.bind(this)}
