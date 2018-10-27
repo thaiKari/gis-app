@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import {withStyles} from '@material-ui/core/styles';
+import {MuiThemeProvider, createMuiTheme, withStyles} from '@material-ui/core/styles';
 import './App.css';
 import LayerBar from './layout/LayerBar';
-import TopBar from './layout/TopBar';
+import ToolbarIconButton from './layout/ToolbarIconButton';
 import reorder from './utils/reorderList'
 import {teal, amber} from '@material-ui/core/colors';
 import createJsonLayer from './utils/createJsonLayer';
@@ -11,6 +10,7 @@ import findIndexWithAttribute from './utils/findIndexWithAttribute';
 import Loadable from 'react-loadable'
 import LoadingFullPage from './utils/Loading/LoadingFullpageCirular';
 import Loading from './utils/Loading/Loading';
+import DrawerBtn from './components/DrawerBtn';
 
 const ToolkitBar = Loadable({
   loader: () => import('./layout/ToolkitBar'),
@@ -31,7 +31,6 @@ const theme = createMuiTheme({
     secondary: amber,
     type: 'dark',
   },
-  drawerWidth: 240,
   appBarHeight: 60,
   typography: {
       fontFamily: 'Gamja+Flower'
@@ -50,7 +49,7 @@ const theme = createMuiTheme({
       position: 'relative',
       display: 'flex',
       width: '100%',
-    },
+    }
   });
   
   class App extends Component {
@@ -61,8 +60,12 @@ const theme = createMuiTheme({
     layersChange: false, //needed to recognise change in layers
     moveLayerUnder: [], //Array with values [layerID, layerAboveID]. Change in state prompts map
     deletedLayers:[],
+    drawerWidth: 240,
   };
-
+  
+  changeDrawerWidth = (newWidth) => {
+    this.setState({ drawerWidth: newWidth});
+  }
 
   handleDrawerToggle = () => {
     let drawerOpen= !this.state.drawerOpen;
@@ -187,18 +190,22 @@ const theme = createMuiTheme({
       drawerOpen,
       toolDrawerOpen,
       layers,
-      layersChange } = this.state;
+      layersChange,
+      drawerWidth } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <div className={classes.appFrame}>
-          <TopBar
-            handleDrawerToggle={this.handleDrawerToggle.bind(this)}
-            toggleToolDrawer={this.toggleToolDrawer.bind(this)}/>
+
+          <ToolbarIconButton
+            toolDrawerOpen={toolDrawerOpen}
+            toggleToolDrawer={this.toggleToolDrawer.bind(this)} />
+
           <LayerBar
             handleDrawerToggle={this.handleDrawerToggle.bind(this)}
             drawerOpen={drawerOpen}
+            drawerWidth = {drawerWidth}
             receiveNewJson={this.receiveNewJson.bind(this)}
             layers={layers}
             layersChange={layersChange}
@@ -218,7 +225,15 @@ const theme = createMuiTheme({
                layers={layers}
                moveLayerUnder={moveLayerUnder}
                deletedLayers={deletedLayers}
-               colorChange={colorChange}/>                  
+               colorChange={colorChange}
+               drawerWidth={drawerWidth}
+               drawerOpen={drawerOpen}/>
+
+              <DrawerBtn 
+              handleDrawerToggle={this.handleDrawerToggle.bind(this)}
+              drawerOpen={drawerOpen}
+              drawerWidth = {drawerWidth}
+              changeDrawerWidth = {this.changeDrawerWidth.bind(this)}/>                  
           </main>
 
         </div>
@@ -231,3 +246,9 @@ const theme = createMuiTheme({
 }
 
 export default withStyles(styles, { withTheme: true })(App);
+
+/**
+ *           <TopBar
+            handleDrawerToggle={this.handleDrawerToggle.bind(this)}
+            toggleToolDrawer={this.toggleToolDrawer.bind(this)}/>
+ */

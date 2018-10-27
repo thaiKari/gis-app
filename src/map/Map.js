@@ -15,22 +15,13 @@ const styles = theme => ({
     noneShiftContent: {
       marginLeft: -theme.drawerWidth,
     },
-    shiftContent: {
-      position: 'absolute',
-      top: theme.appBarHeight,
-      padding: theme.spacing.unit * 3,
-      zIndex: 1000
-    },
-    'content-left': {
-      marginLeft: `calc( 0px - ${theme.drawerWidth}px)`,
-    },
     contentShift: {
       transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
     },
-    'contentShift-left': {
+    drawerClosed: {
       marginLeft: 0,
     }
   });
@@ -168,14 +159,6 @@ changeColor(colorChange) {
       }
     }
 
-   /* waitForStyleLoad(callback, layer, i) {
-      if (!this._map.isStyleLoaded()) {
-        setTimeout(() => {
-          callback(layer, i);
-        }, 300);
-      }
-    }*/
-
     waitForSomething(toWaitFor, callback, layer, i) {
       if (!toWaitFor) {
         setTimeout(() => {
@@ -254,16 +237,32 @@ changeColor(colorChange) {
     }
 
     render() {
-        const {classes, open} = this.props;
+        const {classes, drawerOpen, drawerWidth, theme} = this.props;
+
+        let mapControllerDivStyle =
+            {position: 'absolute',
+            top: 75,
+            padding: theme.spacing.unit * 3,
+            zIndex: 10000,
+            marginLeft: drawerWidth,
+            /*backgroundColor: 'pink',
+            width: 100,
+            height: 100*/
+          }
+
+        if(!drawerOpen){
+          mapControllerDivStyle.marginLeft = 0
+        }
+
         return (
           <div>
-            <div className={classes.noneShiftContent}>
+            <div style={{marginLeft: 0}}>
             <div ref={el => this._mapContainer = el} className={classes.map} id='map'/>
             </div>            
          
-            <div id='mapControllers' className={classNames(classes.shiftContent, classes[`content-left`], {
-              [classes.contentShift]: open,
-              [classes[`contentShift-left`]]: open,
+            <div style = {mapControllerDivStyle}
+             id='mapControllers' className={classNames(classes.contentShift, {
+              [classes.drawerClosed]: !drawerOpen,
             })}></div>
          
           </div>);

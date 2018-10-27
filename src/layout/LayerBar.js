@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Drawer } from '@material-ui/core';
+import { Drawer, Toolbar, Typography, Divider } from '@material-ui/core';
 import findIndexWithAttribute from '../utils/findIndexWithAttribute'
 import DragNDropBox from '../components/DragNDropBox';
 import LayersToolbar from '../components/LayersToolbar';
@@ -28,20 +28,22 @@ const LayerList = Loadable({
 });
  
 const styles = theme => ({
-    drawerPaper: {
-        position: 'relative',
-        width: theme.drawerWidth,
-        marginTop: theme.appBarHeight,
-        //overflow: 'hidden'
-      },
+
       drawerHeader: {
-        height: theme.appBarHeight,
+        //height: theme.appBarHeight,
+        paddingTop: theme.spacing.unit * 2,
+        paddingBottom: theme.spacing.unit * 2,
       },
       content: {
         flexGrow: 1,
         padding: theme.spacing.unit * 2,
         paddingRight: theme.spacing.unit * 3,
       },
+      drawerPaper: {
+        position: 'relative',
+        width: '100%',
+        height: '100vh'
+      }
   });
 
   class LayerBar extends Component {
@@ -228,16 +230,22 @@ const styles = theme => ({
         receiveNewJson,
         toggleVisibility,
         checkLayerName,
-        submitChanges} = this.props;
+        submitChanges,
+        drawerWidth} = this.props;
       const {selectedLayers,
         deleteLayersDialogOpen,
         editLayersDialogOpen,
         lastClickedLayer,
         } = this.state;
 
-        let hasLayers = layers.length > 0
-      return (
+        let hasLayers = layers.length > 0;
 
+      return (
+        <div style={{
+          position: 'absolute',
+          width: drawerWidth,
+          height: '100%'
+          }}>
         <Drawer
         variant="persistent"
         anchor={'left'}
@@ -247,6 +255,14 @@ const styles = theme => ({
           paper: classes.drawerPaper,
         }}
       >
+      <div className={classes.drawerHeader}>
+        <Toolbar variant="dense">
+          <Typography color='primary' component="h2" variant="display1" gutterBottom style={{flex: 1}}>
+              Gis-App
+          </Typography>  
+        </Toolbar>
+            
+        </div>
         
         {deleteLayersDialogOpen ?
         <DeleteLayerDialog closeDialog={this.closeDeleteLayersDialog.bind(this)}
@@ -264,7 +280,8 @@ const styles = theme => ({
                           submitChanges={submitChanges}
                           />
         : null}
-        
+
+        <Divider/>        
 
         <LayersToolbar openDeleteLayersDialog={this.openDeleteLayersDialog.bind(this)}
         openEditLayersDialog={this.openEditLayersDialog.bind(this)}
@@ -287,6 +304,7 @@ const styles = theme => ({
         </div>
 
       </Drawer>
+      </div>
 
       );
   
@@ -298,7 +316,7 @@ export default withStyles(styles, { withTheme: true })(LayerBar);
 
 /**
  * OLD HEADER
- *         <div className={classes.drawerHeader}>
+*         <div className={classes.drawerHeader}>
         <Toolbar variant="dense">
           <Typography variant='title' style={{flex: 1}}>
               Layers
