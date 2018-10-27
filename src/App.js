@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import {withStyles} from '@material-ui/core/styles';
+import {MuiThemeProvider, createMuiTheme, withStyles} from '@material-ui/core/styles';
 import './App.css';
 import LayerBar from './layout/LayerBar';
-import TopBar from './layout/TopBar';
+import ToolbarIconButton from './layout/ToolbarIconButton';
 import reorder from './utils/reorderList'
 import {teal, amber} from '@material-ui/core/colors';
 import createJsonLayer from './utils/createJsonLayer';
@@ -50,7 +49,7 @@ const theme = createMuiTheme({
       position: 'relative',
       display: 'flex',
       width: '100%',
-    },
+    }
   });
   
   class App extends Component {
@@ -198,6 +197,10 @@ const theme = createMuiTheme({
       <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <div className={classes.appFrame}>
+
+          <ToolbarIconButton
+            toolDrawerOpen={toolDrawerOpen}
+            toggleToolDrawer={this.toggleToolDrawer.bind(this)} />
 
           <LayerBar
             handleDrawerToggle={this.handleDrawerToggle.bind(this)}

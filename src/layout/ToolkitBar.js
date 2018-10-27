@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import { Typography, SwipeableDrawer } from '@material-ui/core';
+import { Typography, SwipeableDrawer, Divider } from '@material-ui/core';
 
 const styles = theme => ({
     toolbarDrawerPaper: {
         //backgroundColor: theme.palette.primary.dark,
         width: theme.spacing.unit * 7,
         height: 'auto', 
-        marginTop: theme.appBarHeight,
+        //marginTop: 70,
         overflowX: 'hidden',
         [theme.breakpoints.up('sm')]: {
           width: theme.spacing.unit * 9,
@@ -36,7 +36,11 @@ const styles = theme => ({
                 paper: classNames(classes.toolbarDrawerPaper),
             }}
         >
-            <Typography>Stuff</Typography>
+        <div style={{height: 75}}></div>
+        <Divider/>
+        <Typography>Stuff</Typography>
+        <Divider/>
+        <Typography>Stuff</Typography>
   
       </SwipeableDrawer>
       );

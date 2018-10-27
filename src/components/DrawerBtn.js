@@ -1,11 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {DragIndicator} from '@material-ui/icons'
 import classNames from 'classnames';
-import ReactDOM from 'react-dom'
 
 const styles = theme => ({
     drawerButton: {
@@ -88,7 +86,7 @@ class DrawerBtn extends React.Component {
   }
 
   render() {
-    const { classes, drawerOpen, theme } = this.props;
+    const { classes, drawerOpen } = this.props;
     const {width, isDragging} = this.state;
 
     var leftPos = drawerOpen? width : 0;
