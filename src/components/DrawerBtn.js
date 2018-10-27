@@ -69,6 +69,7 @@ class DrawerBtn extends React.Component {
 
   stopResize = () => {
     console.log('Stop!')
+    
     if (this.state.isDragging) {
       this.setState(() => ({
         isDragging: false,
@@ -77,7 +78,9 @@ class DrawerBtn extends React.Component {
   }
 
   resizePanel = (event) => {
+    const{changeDrawerWidth} = this.props;
     if (this.state.isDragging) {
+      changeDrawerWidth(event.clientX);
       this.setState({
         width: event.clientX
       })

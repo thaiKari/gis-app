@@ -41,6 +41,8 @@ const styles = theme => ({
       },
       drawerPaper: {
         position: 'relative',
+        width: '100%',
+        height: '100vh'
       }
   });
 
@@ -237,9 +239,14 @@ const styles = theme => ({
         } = this.state;
 
         let hasLayers = layers.length > 0;
+        console.log(drawerWidth)
 
       return (
-
+        <div style={{
+          position: 'absolute',
+          width: drawerWidth,
+          height: '100%'
+          }}>
         <Drawer
         variant="persistent"
         anchor={'left'}
@@ -298,6 +305,7 @@ const styles = theme => ({
         </div>
 
       </Drawer>
+      </div>
 
       );
   
