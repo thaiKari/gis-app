@@ -5,6 +5,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {DragIndicator} from '@material-ui/icons'
 import classNames from 'classnames';
+import ReactDOM from 'react-dom'
 
 const styles = theme => ({
     drawerButton: {
@@ -35,45 +36,87 @@ const styles = theme => ({
         justifyContent: 'center',
         flexWrap: 'wrap',
         zIndex: 10000,
+        backgroundColor: theme.palette.grey[700]
+      },
+      smoothTransition: {
         transition: theme.transitions.create('left', {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
-        }),
-        backgroundColor: theme.palette.grey[700]
-      }
+        })
+      },
+      dragListenDiv: {
+        position:'absolute', left:0, top: 0, width:'100vw', height: '100vh', zIndex: 10000
+      },
 });
 
 
 class DrawerBtn extends React.Component {
+  state = {
+    width: 240,
+    isDragging: false
+  };
+
+  
+  handleResize = (event) => {
+
+  }
+
+  startResize = (event, index) => {
+    this.setState({
+      isDragging: true,
+    })
+  }
+
+  stopResize = () => {
+    console.log('Stop!')
+    if (this.state.isDragging) {
+      this.setState(() => ({
+        isDragging: false,
+      }))
+    }
+  }
+
+  resizePanel = (event) => {
+    if (this.state.isDragging) {
+      this.setState({
+        width: event.clientX
+      })
+    }
+  }
 
   render() {
     const { classes, drawerOpen, theme } = this.props;
+    const {width, isDragging} = this.state;
 
-    var leftPos = drawerOpen? theme.drawerWidth : 0;
+    var leftPos = drawerOpen? width : 0;
     var buttonIcon = drawerOpen? <ChevronLeftIcon  color='action'/> : <ChevronRightIcon color='action'/>  
-    
-    console.log(theme.palette)
+
 
     return (
-    
-    <div style={{left:leftPos}} className={classNames(classes.buttonDiv) } >
+    <div className={classNames({[classes.dragListenDiv]: isDragging} ) }
+    onMouseMove ={this.resizePanel}
+    onMouseUp ={this.stopResize}>
+
+    <div style={{left:leftPos}} className={classNames(classes.buttonDiv, {[classes.smoothTransition]: !isDragging} ) } >
         <button 
-          className={classNames(classes.drawerButton)}
-          onClick={this.props.handleDrawerToggle} >
+          className={classNames(classes.drawerButton, classes.resize)}          
+          onMouseDown ={this.startResize}
+           >
           <DragIndicator  color='action'/>
         </button >
 
         <button 
-          className={classNames(classes.drawerButton)}
+          className={classNames(classes.drawerButton, classes.close)}
           onClick={this.props.handleDrawerToggle} >
           {buttonIcon}
         </button >
 
         <button 
-          className={classNames(classes.drawerButton)}
-          onClick={this.props.handleDrawerToggle} >
+          className={classNames(classes.drawerButton, classes.resize)}
+          onMouseDown ={this.startResize}>
           <DragIndicator  color='action'/>
         </button >
+    </div>
     </div>
     );
 

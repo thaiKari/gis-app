@@ -28,12 +28,7 @@ const LayerList = Loadable({
 });
  
 const styles = theme => ({
-    drawerPaper: {
-        position: 'relative',
-        width: theme.drawerWidth,
-        //marginTop: theme.appBarHeight,
-        //overflow: 'hidden'
-      },
+
       drawerHeader: {
         //height: theme.appBarHeight,
         paddingTop: theme.spacing.unit * 2,
@@ -44,6 +39,9 @@ const styles = theme => ({
         padding: theme.spacing.unit * 2,
         paddingRight: theme.spacing.unit * 3,
       },
+      drawerPaper: {
+        position: 'relative',
+      }
   });
 
   class LayerBar extends Component {
@@ -230,14 +228,16 @@ const styles = theme => ({
         receiveNewJson,
         toggleVisibility,
         checkLayerName,
-        submitChanges} = this.props;
+        submitChanges,
+        drawerWidth} = this.props;
       const {selectedLayers,
         deleteLayersDialogOpen,
         editLayersDialogOpen,
         lastClickedLayer,
         } = this.state;
 
-        let hasLayers = layers.length > 0
+        let hasLayers = layers.length > 0;
+
       return (
 
         <Drawer

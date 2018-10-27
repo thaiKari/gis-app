@@ -32,7 +32,6 @@ const theme = createMuiTheme({
     secondary: amber,
     type: 'dark',
   },
-  drawerWidth: 240,
   appBarHeight: 60,
   typography: {
       fontFamily: 'Gamja+Flower'
@@ -62,8 +61,12 @@ const theme = createMuiTheme({
     layersChange: false, //needed to recognise change in layers
     moveLayerUnder: [], //Array with values [layerID, layerAboveID]. Change in state prompts map
     deletedLayers:[],
+    drawerWidth: 240,
   };
-
+  
+  changeDrawerWidth = (newWidth) => {
+    this.setState({ drawerWidth: newWidth});
+  }
 
   handleDrawerToggle = () => {
     let drawerOpen= !this.state.drawerOpen;
@@ -188,7 +191,8 @@ const theme = createMuiTheme({
       drawerOpen,
       toolDrawerOpen,
       layers,
-      layersChange } = this.state;
+      layersChange,
+      drawerWidth } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -198,6 +202,7 @@ const theme = createMuiTheme({
           <LayerBar
             handleDrawerToggle={this.handleDrawerToggle.bind(this)}
             drawerOpen={drawerOpen}
+            drawerWidth = {drawerWidth}
             receiveNewJson={this.receiveNewJson.bind(this)}
             layers={layers}
             layersChange={layersChange}
@@ -221,7 +226,9 @@ const theme = createMuiTheme({
 
               <DrawerBtn 
               handleDrawerToggle={this.handleDrawerToggle.bind(this)}
-              drawerOpen={drawerOpen}/>                  
+              drawerOpen={drawerOpen}
+              drawerWidth = {drawerWidth}
+              changeDrawerWidth = {this.changeDrawerWidth.bind(this)}/>                  
           </main>
 
         </div>
