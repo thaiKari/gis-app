@@ -44,7 +44,7 @@ const styles = theme => ({
     
     render() {
 
-      const { classes,  prompt1, prompt2, layers, type } = this.props;
+      const { classes,  prompt1, prompt2, layers } = this.props;
       const {layerNums} = this.state;
   
       return (

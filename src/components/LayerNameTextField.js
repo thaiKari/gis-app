@@ -21,7 +21,7 @@ const styles = theme => ({
     
     render() {
 
-      const { promt, layerName, layers, layerIndex, theme } = this.props;
+      const { promt, layerName, layers, layerIndex} = this.props;
 
       let Nameerror = false;
       let errorText = '';
@@ -37,7 +37,7 @@ const styles = theme => ({
       let promtText = promt? promt: "Layer Name";
   
       return (
-        <form style={{margin: theme.spacing.unit,}}>
+        <form>
             <TextField
             id="outlined-full-width"
             label={promtText}

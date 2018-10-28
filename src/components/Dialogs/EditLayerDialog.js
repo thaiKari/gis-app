@@ -11,7 +11,6 @@ import findIndexWithAttribute from '../../utils/findIndexWithAttribute';
 import { withStyles } from '@material-ui/core/styles';
 import rgbCss2Obj from '../../utils/rgbCss2Obj';
 import rgbObj2Css from '../../utils/rgbObj2Css';
-import checkIfLayerNameExists from '../../utils/checkIfLayerNameExists';
 import ColorPicker from '../ColorPicker';
 import LayerNameTextField from '../LayerNameTextField';
 
@@ -135,19 +134,8 @@ class EditLayerDialog extends React.Component {
   
   getContent = () => {
     let {layerIndex, color, colorChanged, layerName,} = this.state;
-    const {layers, classes, theme} = this.props
-
-    let Nameerror = false;
-    let errorText = '';
-
-    if(layerName === '') {
-      errorText ='layer name cannot be empty';
-      Nameerror = true;
-    } else if ( checkIfLayerNameExists(layerName, layers, layerIndex)) {
-      // Name exists already and is not the same as this layers names
-      errorText ='That name is already in use';
-      Nameerror = true;
-    }
+    const {layers, classes, theme} = this.props;
+    console.log(layerIndex)
     
 
     return (

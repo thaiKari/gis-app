@@ -4,11 +4,9 @@ import {Dialog,
     Typography,
     DialogContent,
     DialogTitle,
-    TextField} from '@material-ui/core';
+    } from '@material-ui/core';
 import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
 import OkAction from '../DialogActions/OkAction'
-import LayersSelect from '../LayersSelectSimple';
-import checkIfLayerNameExists from '../../utils/checkIfLayerNameExists';
 import intersectFunction from '../../utils/geoprocessing/intersectFunction';
 import differenceFunction from '../../utils/geoprocessing/differenceFunction';
 import unionFunction from '../../utils/geoprocessing/unionFunction';
@@ -86,7 +84,7 @@ const styles = theme => ({
     getContent = type => {
       
       if(type === 'intersect' || type === 'difference' || type === 'union'){
-        const{layers} = this.props;
+        const {layers, theme} = this.props;
         const {outputName} = this.state;
         let prompt1 = type === 'difference' ? 'Input Layer' : 'Layer 1'
         let prompt2 = type === 'difference' ? 'Difference Layer' : 'Layer 2'
@@ -97,13 +95,15 @@ const styles = theme => ({
                   prompt2={prompt2}
                   layers={layers}
                   setLayerNums={this.setLayerNums.bind(this)}/>
+                <div style={{margin: theme.spacing.unit}}>
                 <LayerNameTextField
                   layerName={outputName}
                   setName={this.setName.bind(this)}
                   defaultName={outputName}
                   layers={layers}
                   layerIndex={-1}
-                  promt={'Output layer name'} />          
+                  promt={'Output layer name'} />
+                  </div>         
             </DialogContent> );
         };
 

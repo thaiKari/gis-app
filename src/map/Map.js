@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import {getSetting} from 'config';
-import {  } from '@material-ui/core';
 
 const styles = theme => ({
     map: {
