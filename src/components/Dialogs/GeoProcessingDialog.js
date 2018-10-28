@@ -10,6 +10,9 @@ import OkAction from '../DialogActions/OkAction'
 import LayersSelect from '../LayersSelectSimple';
 import checkIfLayerNameExists from '../../utils/checkIfLayerNameExists';
 import intersectFunction from '../../utils/geoprocessing/intersectFunction';
+import differenceFunction from '../../utils/geoprocessing/differenceFunction';
+import unionFunction from '../../utils/geoprocessing/unionFunction';
+import DoubleLayerPicker from '../DoubleLayerPicker';
 
 const styles = theme => ({
     dialogPaper: {
@@ -43,6 +46,12 @@ const styles = theme => ({
           case 'intersect':
             func = intersectFunction;
             break;
+          case 'union':
+            func = unionFunction;
+            break;
+          case 'difference':
+            func = differenceFunction;
+            break;
         
           default:
             break;
@@ -62,13 +71,24 @@ const styles = theme => ({
         closeDialog();
       };
 
-    getContent = type => {    
-    return (
-    <DialogContent>
-        <Typography>{type}</Typography>            
-    </DialogContent> );
-      
-      };
+    getContent = type => {
+    if(type === 'intersect' || type === 'difference' || type === 'union'){
+        let prompt1 = type === 'difference' ? 'Input Layer' : 'Layer 1'
+        let prompt2 = type === 'difference' ? 'Difference Layer' : 'Layer 2'
+
+        return (
+            <DialogContent>
+                <DoubleLayerPicker/>          
+            </DialogContent> );
+        };
+
+        return (
+            <DialogContent>
+                <Typography>{type}</Typography>            
+            </DialogContent> );
+    }
+
+
     
     render() {
 
@@ -85,6 +105,8 @@ const styles = theme => ({
         <SubmitOrCancelAction submitText='Calculate' submit={this.calculate} cancel={this.handleClose}/>
         : 
         <OkAction ok={this.handleClose}/>
+
+        let diaglogTitle = type.charAt(0).toUpperCase() + type.slice(1);
   
       return (
         <Dialog
@@ -96,7 +118,7 @@ const styles = theme => ({
         classes={{ paper: classes.dialogPaper }}
         
       >
-          <DialogTitle id="scroll-dialog-title">Edit Layers</DialogTitle>
+          <DialogTitle id="scroll-dialog-title">{diaglogTitle}</DialogTitle>
             {content}
             {actions}
       </Dialog>

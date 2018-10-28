@@ -64,9 +64,8 @@ const styles = theme => ({
     render() {
 
       const { classes, toolDrawerOpen, layers } = this.props;
-      const {GeoProcessingDialogOpen, processingFunction, type} = this.state;
-      
-      console.log('open', GeoProcessingDialogOpen)
+      const {GeoProcessingDialogOpen, type} = this.state;
+    
 
       return (
         <SwipeableDrawer
@@ -92,7 +91,7 @@ const styles = theme => ({
         : null}
 
         <Divider className={classes.divider} />
-        <Button>
+        <Button onClick={() => this.openGeoProcessingDialog('difference')}>
           <div className={classes.button}>
           <img  src={difference} alt="difference Icon" className={classes.image}/>
           <Typography gutterBottom  className={classes.text} variant='button'> difference</Typography>
@@ -106,7 +105,7 @@ const styles = theme => ({
           </div>
         </Button>
         <Divider className={classes.divider} />
-        <Button>
+        <Button onClick={() => this.openGeoProcessingDialog('union')}>
           <div className={classes.button}>
           <img  src={union} alt="union Icon" className={classes.image}/>
           <Typography gutterBottom  className={classes.text} variant='button'> union</Typography>
