@@ -45,7 +45,6 @@ class LayersSelect extends React.Component {
                 && layerIndex !== null ? 
                 Number(layerIndex) : '';
 
-                console.log(curValue)
     this.setState({curValue: curValue});
   }
 

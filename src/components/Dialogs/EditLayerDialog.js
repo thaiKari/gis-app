@@ -135,7 +135,6 @@ class EditLayerDialog extends React.Component {
   getContent = () => {
     let {layerIndex, color, colorChanged, layerName,} = this.state;
     const {layers, classes, theme} = this.props;
-    console.log(layerIndex)
     
 
     return (
