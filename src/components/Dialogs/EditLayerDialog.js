@@ -137,23 +137,6 @@ class EditLayerDialog extends React.Component {
         [name]: value,
     })
   }
-
- /* checkIfLayerNameExists = (name) => {
-    let {layers} = this.props;
-    const {layerIndex} = this.state;
-    let haslayer = false
-
-    layers.forEach((layer, index) => {
-      if(index != layerIndex) {
-        if(layer.displayName === name) {
-          haslayer = true;
-        }
-      }
-    });
-
-    return haslayer;
-  }
-*/
   
   getContent = () => {
     let {layerIndex, color, colorChanged, layerName,} = this.state;

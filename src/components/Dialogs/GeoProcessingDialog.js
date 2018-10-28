@@ -31,12 +31,17 @@ const styles = theme => ({
 
   class GeoProcessingDialog extends Component {
     state = {
-        processingFunction: null
+        processingFunction: null,
+        layerNums: [-1, -1] //Indices of the selectedLayers
     }
 
     componentDidMount() {
         const {type} = this.props;
         this.setProcessingFunction(type);
+    }
+
+    setLayerNums = (layerNums) => {
+      this.setState({layerNums: layerNums})
     }
 
     setProcessingFunction = (type) => {
@@ -72,13 +77,18 @@ const styles = theme => ({
       };
 
     getContent = type => {
-    if(type === 'intersect' || type === 'difference' || type === 'union'){
+      
+      if(type === 'intersect' || type === 'difference' || type === 'union'){
+        const{layers} = this.props;
         let prompt1 = type === 'difference' ? 'Input Layer' : 'Layer 1'
         let prompt2 = type === 'difference' ? 'Difference Layer' : 'Layer 2'
 
         return (
             <DialogContent>
-                <DoubleLayerPicker/>          
+                <DoubleLayerPicker prompt1={prompt1}
+                prompt2={prompt2}
+                layers={layers}
+                setLayerNums={this.setLayerNums.bind(this)}/>          
             </DialogContent> );
         };
 
