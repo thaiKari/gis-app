@@ -5,6 +5,15 @@ import { Typography, SwipeableDrawer, Divider, IconButton, Paper, Button } from 
 import difference from '../icons/difference_primary.png';
 import union from '../icons/union_primary.png';
 import intersect from '../icons/intersect_primary.png';
+import Loading from '../utils/Loading/Loading';
+import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
+import Loadable from 'react-loadable'
+
+const GeoProcessingDialog = Loadable({
+  loader: () => import('../components/Dialogs/GeoProcessingDialog'),
+  delay: 300,
+  loading: LoadingFullpageCirular,
+});
 
 const styles = theme => ({
       toolbarDrawerPaper: {
@@ -35,13 +44,30 @@ const styles = theme => ({
         zIndex: 10000
       }
   });
+  
 
   class ToolkitBar extends Component {
+    state = {
+      GeoProcessingDialogOpen: false,
+    }
+
+    closeGeoProcessingDialog = () =>  {
+      this.setState({GeoProcessingDialogOpen: false});
+    }
+
+    openGeoProcessingDialog = (type) => {
+      this.setState({
+        GeoProcessingDialogOpen: true,
+        type: type});
+    }
     
     render() {
 
-      const { classes, toolDrawerOpen } = this.props;
-  
+      const { classes, toolDrawerOpen, layers } = this.props;
+      const {GeoProcessingDialogOpen, processingFunction, type} = this.state;
+      
+      console.log('open', GeoProcessingDialogOpen)
+
       return (
         <SwipeableDrawer
             variant="persistent"
@@ -53,7 +79,17 @@ const styles = theme => ({
                 paper: classNames(classes.toolbarDrawerPaper),
             }}
         >
+        
+
         <div style={{height: 75}}></div>
+
+        {GeoProcessingDialogOpen ?
+        <GeoProcessingDialog open={GeoProcessingDialogOpen}
+                          closeDialog={this.closeGeoProcessingDialog.bind(this)}
+                          layers={layers}
+                          type= {type}
+                          />
+        : null}
 
         <Divider className={classes.divider} />
         <Button>
@@ -63,7 +99,7 @@ const styles = theme => ({
           </div>
         </Button>
         <Divider className={classes.divider} />
-        <Button>
+        <Button onClick={() => this.openGeoProcessingDialog('intersect')}>
           <div className={classes.button}>
           <img  src={intersect} alt="intersect Icon" className={classes.image}/>
           <Typography gutterBottom  className={classes.text} variant='button'> intersect</Typography>

@@ -217,7 +217,8 @@ const theme = createMuiTheme({
             submitChanges={this.submitChanges.bind(this)}/>
           {toolDrawerOpen ?
           <ToolkitBar
-            toolDrawerOpen={toolDrawerOpen}/>
+            toolDrawerOpen={toolDrawerOpen}
+            layers={layers}/>
           : null}
 
           <main className={classes.content}>      

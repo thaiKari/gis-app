@@ -11,6 +11,7 @@ import findIndexWithAttribute from '../../utils/findIndexWithAttribute';
 import { withStyles } from '@material-ui/core/styles';
 import rgbCss2Obj from '../../utils/rgbCss2Obj';
 import rgbObj2Css from '../../utils/rgbObj2Css';
+import checkIfLayerNameExists from '../../utils/checkIfLayerNameExists';
 import ColorPicker from '../ColorPicker';
 
 const styles = theme => ({
@@ -137,7 +138,7 @@ class EditLayerDialog extends React.Component {
     })
   }
 
-  checkIfLayerNameExists = (name) => {
+ /* checkIfLayerNameExists = (name) => {
     let {layers} = this.props;
     const {layerIndex} = this.state;
     let haslayer = false
@@ -152,7 +153,7 @@ class EditLayerDialog extends React.Component {
 
     return haslayer;
   }
-
+*/
   
   getContent = () => {
     let {layerIndex, color, colorChanged, layerName,} = this.state;
@@ -161,14 +162,11 @@ class EditLayerDialog extends React.Component {
     let Nameerror = false;
     let errorText = '';
 
-    console.log('exists', this.checkIfLayerNameExists(layerName))
-
     if(layerName === '') {
       errorText ='layer name cannot be empty';
       Nameerror = true;
-    } else if ( this.checkIfLayerNameExists(layerName)) {
+    } else if ( checkIfLayerNameExists(layerName, layers, layerIndex)) {
       // Name exists already and is not the same as this layers names
-      console.log(true)
       errorText ='That name is already in use';
       Nameerror = true;
     }
