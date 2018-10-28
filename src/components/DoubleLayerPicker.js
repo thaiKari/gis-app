@@ -44,7 +44,7 @@ const styles = theme => ({
     
     render() {
 
-      const { classes,  prompt1, prompt2, layers } = this.props;
+      const { classes,  prompt1, prompt2, layers, type } = this.props;
       const {layerNums} = this.state;
   
       return (
@@ -62,7 +62,6 @@ const styles = theme => ({
             layerIndex={layerNums[1]}
             changeLayer={this.changeLayer2.bind(this)}
             promt={prompt2} />
-
         </form>
         </div>
       );

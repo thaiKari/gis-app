@@ -13,6 +13,7 @@ import intersectFunction from '../../utils/geoprocessing/intersectFunction';
 import differenceFunction from '../../utils/geoprocessing/differenceFunction';
 import unionFunction from '../../utils/geoprocessing/unionFunction';
 import DoubleLayerPicker from '../DoubleLayerPicker';
+import LayerNameTextField from '../LayerNameTextField';
 
 const styles = theme => ({
     dialogPaper: {
@@ -32,12 +33,14 @@ const styles = theme => ({
   class GeoProcessingDialog extends Component {
     state = {
         processingFunction: null,
-        layerNums: [-1, -1] //Indices of the selectedLayers
+        layerNums: [-1, -1], //Indices of the selectedLayers
+        outputName:''
     }
 
     componentDidMount() {
         const {type} = this.props;
         this.setProcessingFunction(type);
+        this.setState({outputName: type});
     }
 
     setLayerNums = (layerNums) => {
@@ -74,21 +77,33 @@ const styles = theme => ({
     handleClose = () => {
         const {closeDialog} = this.props;
         closeDialog();
-      };
+    };
+
+    setName  = (name) => {
+      this.setState({outputName: name});
+    }
 
     getContent = type => {
       
       if(type === 'intersect' || type === 'difference' || type === 'union'){
         const{layers} = this.props;
+        const {outputName} = this.state;
         let prompt1 = type === 'difference' ? 'Input Layer' : 'Layer 1'
         let prompt2 = type === 'difference' ? 'Difference Layer' : 'Layer 2'
 
         return (
             <DialogContent>
                 <DoubleLayerPicker prompt1={prompt1}
-                prompt2={prompt2}
-                layers={layers}
-                setLayerNums={this.setLayerNums.bind(this)}/>          
+                  prompt2={prompt2}
+                  layers={layers}
+                  setLayerNums={this.setLayerNums.bind(this)}/>
+                <LayerNameTextField
+                  layerName={outputName}
+                  setName={this.setName.bind(this)}
+                  defaultName={outputName}
+                  layers={layers}
+                  layerIndex={-1}
+                  promt={'Output layer name'} />          
             </DialogContent> );
         };
 

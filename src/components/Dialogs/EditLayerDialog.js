@@ -3,7 +3,7 @@ import {Dialog,
    Typography,
    DialogContent,
    DialogTitle,
-   TextField} from '@material-ui/core';
+   } from '@material-ui/core';
 import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
 import OkAction from '../DialogActions/OkAction'
 import LayersSelect from '../LayersSelectSimple';
@@ -13,6 +13,7 @@ import rgbCss2Obj from '../../utils/rgbCss2Obj';
 import rgbObj2Css from '../../utils/rgbObj2Css';
 import checkIfLayerNameExists from '../../utils/checkIfLayerNameExists';
 import ColorPicker from '../ColorPicker';
+import LayerNameTextField from '../LayerNameTextField';
 
 const styles = theme => ({
   dialogPaper: {
@@ -128,14 +129,8 @@ class EditLayerDialog extends React.Component {
     });
   }
 
-  handleChange = name => ({ target: { value } }) => {
-    
-    if( name === 'layerName'){
-    }
-
-    this.setState({
-        [name]: value,
-    })
+  setName  = (name) => {
+    this.setState({layerName: name});
   }
   
   getContent = () => {
@@ -166,20 +161,12 @@ class EditLayerDialog extends React.Component {
         </form>
         {layerIndex >= 0 && layerIndex !== null ? 
         <div style={{ margin: theme.spacing.unit * 2}}>
-        <TextField
-          id="outlined-full-width"
-          label="Layer Name"
-          value={layerName}
-          fullWidth={true}
-          error={Nameerror}
-          onChange={this.handleChange('layerName')}      
-          margin="normal"
-          variant="outlined"
-          helperText={errorText}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
+        <LayerNameTextField layerName={layerName}
+            setName={this.setName.bind(this)}
+            defaultName={layerName}
+            layers={layers}
+            layerIndex={layerIndex} />
+
         <Typography  style={{ marginTop: theme.spacing.unit * 2}} variant="caption" gutterBottom>Color</Typography>
         <ColorPicker
           setColor={this.setColor.bind(this)}
