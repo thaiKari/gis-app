@@ -66,9 +66,14 @@ const styles = theme => ({
       }
 
     calculate = () => {
-    const {closeDialog} = this.props;
-    const {processingFunction} = this.state;
-        processingFunction();
+    const {closeDialog, layers, receiveNewJson} = this.props;
+    const {processingFunction, layerNums, outputName} = this.state;
+   //TODO: error if not selected two layers
+   console.log(layers, layerNums);
+   let l1 = layers[layerNums[0]].data
+   let l2 = layers[layerNums[1]].data
+       let newJson = processingFunction(l1, l2);
+       receiveNewJson(newJson, outputName)
         closeDialog();
     };
 

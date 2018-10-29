@@ -227,7 +227,8 @@ const theme = createMuiTheme({
           {toolDrawerOpen ?
           <ToolkitBar
             toolDrawerOpen={toolDrawerOpen}
-            layers={layers}/>
+            layers={layers}
+            receiveNewJson={this.receiveNewJson.bind(this)}/>
           : null}
 
           <main className={classes.content}>      

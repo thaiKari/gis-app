@@ -62,7 +62,7 @@ const styles = theme => ({
     
     render() {
 
-      const { classes, toolDrawerOpen, layers } = this.props;
+      const { classes, toolDrawerOpen, layers, receiveNewJson } = this.props;
       const {GeoProcessingDialogOpen, type} = this.state;
     
 
@@ -86,6 +86,7 @@ const styles = theme => ({
                           closeDialog={this.closeGeoProcessingDialog.bind(this)}
                           layers={layers}
                           type= {type}
+                          receiveNewJson={receiveNewJson}
                           />
         : null}
 
