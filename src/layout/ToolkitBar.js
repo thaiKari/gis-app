@@ -79,7 +79,7 @@ const styles = theme => ({
         >
         
 
-        <div style={{height: 75}}></div>
+        <div style={{height:50}}></div>
 
         {GeoProcessingDialogOpen ?
         <GeoProcessingDialog open={GeoProcessingDialogOpen}
@@ -112,6 +112,7 @@ const styles = theme => ({
           </div>
         </Button>
         <Divider className={classes.divider} />
+        
   
       </SwipeableDrawer>
       );
