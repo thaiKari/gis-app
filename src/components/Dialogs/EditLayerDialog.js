@@ -3,7 +3,7 @@ import {Dialog,
    Typography,
    DialogContent,
    DialogTitle,
-   TextField} from '@material-ui/core';
+   } from '@material-ui/core';
 import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
 import OkAction from '../DialogActions/OkAction'
 import LayersSelect from '../LayersSelectSimple';
@@ -12,6 +12,7 @@ import { withStyles } from '@material-ui/core/styles';
 import rgbCss2Obj from '../../utils/rgbCss2Obj';
 import rgbObj2Css from '../../utils/rgbObj2Css';
 import ColorPicker from '../ColorPicker';
+import LayerNameTextField from '../LayerNameTextField';
 
 const styles = theme => ({
   dialogPaper: {
@@ -127,51 +128,13 @@ class EditLayerDialog extends React.Component {
     });
   }
 
-  handleChange = name => ({ target: { value } }) => {
-    
-    if( name === 'layerName'){
-    }
-
-    this.setState({
-        [name]: value,
-    })
+  setName  = (name) => {
+    this.setState({layerName: name});
   }
-
-  checkIfLayerNameExists = (name) => {
-    let {layers} = this.props;
-    const {layerIndex} = this.state;
-    let haslayer = false
-
-    layers.forEach((layer, index) => {
-      if(index != layerIndex) {
-        if(layer.displayName === name) {
-          haslayer = true;
-        }
-      }
-    });
-
-    return haslayer;
-  }
-
   
   getContent = () => {
     let {layerIndex, color, colorChanged, layerName,} = this.state;
-    const {layers, classes, theme} = this.props
-
-    let Nameerror = false;
-    let errorText = '';
-
-    console.log('exists', this.checkIfLayerNameExists(layerName))
-
-    if(layerName === '') {
-      errorText ='layer name cannot be empty';
-      Nameerror = true;
-    } else if ( this.checkIfLayerNameExists(layerName)) {
-      // Name exists already and is not the same as this layers names
-      console.log(true)
-      errorText ='That name is already in use';
-      Nameerror = true;
-    }
+    const {layers, classes, theme} = this.props;
     
 
     return (
@@ -185,20 +148,12 @@ class EditLayerDialog extends React.Component {
         </form>
         {layerIndex >= 0 && layerIndex !== null ? 
         <div style={{ margin: theme.spacing.unit * 2}}>
-        <TextField
-          id="outlined-full-width"
-          label="Layer Name"
-          value={layerName}
-          fullWidth={true}
-          error={Nameerror}
-          onChange={this.handleChange('layerName')}      
-          margin="normal"
-          variant="outlined"
-          helperText={errorText}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
+        <LayerNameTextField layerName={layerName}
+            setName={this.setName.bind(this)}
+            defaultName={layerName}
+            layers={layers}
+            layerIndex={layerIndex} />
+
         <Typography  style={{ marginTop: theme.spacing.unit * 2}} variant="caption" gutterBottom>Color</Typography>
         <ColorPicker
           setColor={this.setColor.bind(this)}

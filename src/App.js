@@ -10,6 +10,7 @@ import findIndexWithAttribute from './utils/findIndexWithAttribute';
 import Loadable from 'react-loadable'
 import LoadingFullPage from './utils/Loading/LoadingFullpageCirular';
 import Loading from './utils/Loading/Loading';
+import checkIfLayerNameExists from './utils/checkIfLayerNameExists';
 import DrawerBtn from './components/DrawerBtn';
 
 const ToolkitBar = Loadable({
@@ -148,11 +149,19 @@ const theme = createMuiTheme({
   submitChanges = (layerId, color, opacity, layerName) => {
     let {layers} = this.state;
 
-    let layer = layers.find(l => l.id === layerId);
+    let layer = layers.find((l) => l.id === layerId);
+    let index = findIndexWithAttribute(layers, 'id', layerId);
 
     layer.data.color= color;
     layer.data.opacity = opacity;
-    layer.displayName = this.checkLayerName(layerName);
+    let i = 1;
+    let newLayerName = layerName;
+    while(checkIfLayerNameExists(newLayerName, layers, index)){
+      newLayerName = layerName + '_' + i;
+      i += 1;
+    }
+    layer.displayName = newLayerName
+      
 
     this.setState({
       layers: layers,
@@ -217,7 +226,9 @@ const theme = createMuiTheme({
             submitChanges={this.submitChanges.bind(this)}/>
           {toolDrawerOpen ?
           <ToolkitBar
-            toolDrawerOpen={toolDrawerOpen}/>
+            toolDrawerOpen={toolDrawerOpen}
+            layers={layers}
+            receiveNewJson={this.receiveNewJson.bind(this)}/>
           : null}
 
           <main className={classes.content}>      

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {IconButton, Tooltip, Button} from '@material-ui/core';
-import {Build} from '@material-ui/icons';
+import { Tooltip, Button} from '@material-ui/core';
+import {Build, ChevronRight} from '@material-ui/icons';
 
 const styles = theme => ({
     button: {
@@ -22,9 +22,10 @@ const styles = theme => ({
       return (
         <div>
         {toolDrawerOpen ?
-          <IconButton className={classes.button}
-                        onClick={toggleToolDrawer}>>
-          </IconButton>
+          <Button className={classes.button}
+                  onClick={toggleToolDrawer}>
+                  <ChevronRight />
+          </Button>
           :
           <Tooltip title="Tools">
           <Button variant="fab"

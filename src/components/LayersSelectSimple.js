@@ -45,22 +45,23 @@ class LayersSelect extends React.Component {
                 && layerIndex !== null ? 
                 Number(layerIndex) : '';
 
-                console.log(curValue)
     this.setState({curValue: curValue});
   }
 
   render() {
-    const { layers, classes } = this.props;
+    const { layers, classes, promt } = this.props;
     let options = layers.map((layer, index) => {
 
       return <MenuItem key={index} value={index}>{layer.displayName}</MenuItem >
 
     }); 
 
+    let promtText = promt ? promt : 'Choose a Layer';
+
     return (
 
     <FormControl fullWidth={true} className={classes.formControl}>
-      <InputLabel htmlFor="age-simple">Choose a Layer</InputLabel>
+      <InputLabel htmlFor="age-simple">{promtText}</InputLabel>
       <Select
         value={this.state.curValue}
         onChange={this.handleChange('curValue')}
