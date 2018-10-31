@@ -4,6 +4,8 @@ import {Dialog,
     Typography,
     DialogContent,
     DialogTitle,
+    Snackbar,
+    IconButton 
     } from '@material-ui/core';
 import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
 import OkAction from '../DialogActions/OkAction'
@@ -12,6 +14,7 @@ import differenceFunction from '../../utils/geoprocessing/differenceFunction';
 import unionFunction from '../../utils/geoprocessing/unionFunction';
 import DoubleLayerPicker from '../DoubleLayerPicker';
 import LayerNameTextField from '../LayerNameTextField';
+
 
 const styles = theme => ({
     dialogPaper: {
@@ -32,7 +35,8 @@ const styles = theme => ({
     state = {
         processingFunction: null,
         layerNums: [-1, -1], //Indices of the selectedLayers
-        outputName:''
+        outputName:'',
+        errorMessage:''
     }
 
     componentDidMount() {
@@ -68,13 +72,25 @@ const styles = theme => ({
     calculate = () => {
     const {closeDialog, layers, receiveNewJson} = this.props;
     const {processingFunction, layerNums, outputName} = this.state;
-   //TODO: error if not selected two layers
-   console.log(layers, layerNums);
-   let l1 = layers[layerNums[0]].data
-   let l2 = layers[layerNums[1]].data
+
+      let l1, l2 
+
+      if (layers[layerNums[0]]) {
+        l1 = layers[layerNums[0]].data;
+      } if( layers[layerNums[1]]) {
+        l2 = layers[layerNums[1]].data;
+      }
+
        let newJson = processingFunction(l1, l2);
-       receiveNewJson(newJson, outputName)
+
+       if(newJson.type === "FeatureCollection") {
+         console.log(newJson)
+        receiveNewJson(newJson, outputName)
         closeDialog();
+       } else {
+         this.setState({errorMessage: newJson});
+       }
+       
     };
 
     handleClose = () => {
@@ -86,17 +102,39 @@ const styles = theme => ({
       this.setState({outputName: name});
     }
 
+    handleSnackbarClose = (event, reason) => {
+
+      console.log('handleSnackbarClose', event, reason )
+      if (reason === 'clickaway') {
+        return;
+      }
+
+      
+  
+      this.setState({ errorMessage: '' });
+    };
+
     getContent = type => {
       
       if(type === 'intersect' || type === 'difference' || type === 'union'){
-        const {layers, theme} = this.props;
-        const {outputName} = this.state;
+        const {layers, theme, classes} = this.props;
+        const {outputName, errorMessage, layerNums} = this.state;
         let prompt1 = type === 'difference' ? 'Input Layer' : 'Layer 1'
         let prompt2 = type === 'difference' ? 'Difference Layer' : 'Layer 2'
 
+        if(layerNums[0] >= 0 ) {
+          let layer = layers[layerNums[0]];
+          prompt1 += ' (Type: ' + layer.data.features[0].geometry.type  + ')'
+        }
+        if(layerNums[1] >= 0 ) {
+          let layer = layers[layerNums[1]];
+          prompt2 += ' (Type: ' + layer.data.features[0].geometry.type  + ')'
+        }
+
         return (
             <DialogContent>
-                <DoubleLayerPicker prompt1={prompt1}
+              <Typography color='error'> {errorMessage} </Typography>
+              <DoubleLayerPicker prompt1={prompt1}
                   prompt2={prompt2}
                   layers={layers}
                   setLayerNums={this.setLayerNums.bind(this)}/>
@@ -108,6 +146,7 @@ const styles = theme => ({
                   layers={layers}
                   layerIndex={-1}
                   promt={'Output layer name'} />
+                
                   </div>         
             </DialogContent> );
         };

@@ -86,7 +86,6 @@ const styles = theme => ({
 
       let numCols = Math.ceil(((buttons.length + 1) * buttonDim) / (window.innerHeight - 60)  )
 
-
       return (
         <SwipeableDrawer
             variant="persistent"
