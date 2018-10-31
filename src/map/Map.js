@@ -96,6 +96,10 @@ changeColor(colorChange) {
         map.setPaintProperty(layerId, 'fill-color', color);
         map.setPaintProperty(layerId, 'fill-opacity', opacity);
       break;
+    case 'MultiPolygon':
+      map.setPaintProperty(layerId, 'fill-color', color);
+      map.setPaintProperty(layerId, 'fill-opacity', opacity);
+    break;
     case 'LineString':
         map.setPaintProperty(layerId, 'line-color', color);
         map.setPaintProperty(layerId, 'line-opacity', opacity);
@@ -134,6 +138,9 @@ changeColor(colorChange) {
         if( !this._map.getSource(layer.id) ) {
           switch (layer.type) {
             case 'Polygon':
+              this.addPolygonLayer(layer, i);
+              break;
+            case 'MultiPolygon':
               this.addPolygonLayer(layer, i);
               break;
             case 'LineString':

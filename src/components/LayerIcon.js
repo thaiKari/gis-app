@@ -40,7 +40,11 @@ import { withStyles } from '@material-ui/core/styles';;
       var icon;
 
       switch (layer.type) {
-        case 'Polygon':
+        case 'Polygon' :
+          iconStyles.backgroundColor = color;
+          icon = <PolygonIcon style={iconStyles}/>
+          break;
+        case 'MultiPolygon' :
           iconStyles.backgroundColor = color;
           icon = <PolygonIcon style={iconStyles}/>
           break;

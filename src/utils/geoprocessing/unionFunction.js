@@ -1,5 +1,6 @@
 import  union from '@turf/union';
 import performActionOnAllFeaturePairs from './performActionOnAllFeaturePairs';
+import combineFeatures from './combineFeatures';
 
 const unionFunction = (geojson1, geojson2) => {
 
@@ -11,13 +12,11 @@ const unionFunction = (geojson1, geojson2) => {
 
   let newGeojson;
 
-  if(geojson1.features[0].type === 'Polygon') {
-    newGeojson = performActionOnAllFeaturePairs(geojson1, geojson2, union)
+  if(geojson1.features[0].geometry.type === 'Polygon') {
+    newGeojson = performActionOnAllFeaturePairs(geojson1, geojson2, union);
   } else {
-    newGeojson =  'combine FEATURES'
+    newGeojson =  combineFeatures(geojson1, geojson2)
   }
-     
-
     return(newGeojson);
   }
 
