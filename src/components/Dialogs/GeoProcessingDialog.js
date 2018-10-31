@@ -4,8 +4,6 @@ import {Dialog,
     Typography,
     DialogContent,
     DialogTitle,
-    Snackbar,
-    IconButton 
     } from '@material-ui/core';
 import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
 import OkAction from '../DialogActions/OkAction'
@@ -14,6 +12,7 @@ import differenceFunction from '../../utils/geoprocessing/differenceFunction';
 import unionFunction from '../../utils/geoprocessing/unionFunction';
 import DoubleLayerPicker from '../DoubleLayerPicker';
 import LayerNameTextField from '../LayerNameTextField';
+import DialogFeedback from '../DialogContent/DialogFeedback';
 
 
 const styles = theme => ({
@@ -117,7 +116,7 @@ const styles = theme => ({
     getContent = type => {
       
       if(type === 'intersect' || type === 'difference' || type === 'union'){
-        const {layers, theme, classes} = this.props;
+        const {layers, theme} = this.props;
         const {outputName, errorMessage, layerNums} = this.state;
         let prompt1 = type === 'difference' ? 'Input Layer' : 'Layer 1'
         let prompt2 = type === 'difference' ? 'Difference Layer' : 'Layer 2'
@@ -133,7 +132,11 @@ const styles = theme => ({
 
         return (
             <DialogContent>
-              <Typography color='error'> {errorMessage} </Typography>
+              {errorMessage.length > 0 ?
+                <DialogFeedback message={errorMessage} variant={'error'} />
+                : null
+              }
+              
               <DoubleLayerPicker prompt1={prompt1}
                   prompt2={prompt2}
                   layers={layers}

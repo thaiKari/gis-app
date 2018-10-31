@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import { Typography, SwipeableDrawer, Divider, Button } from '@material-ui/core';
+import { Typography, SwipeableDrawer, Button } from '@material-ui/core';
 import difference from '../icons/difference_primary.png';
 import union from '../icons/union_primary.png';
 import intersect from '../icons/intersect_primary.png';
@@ -29,7 +29,6 @@ const buttons= [{
 ];
 
 const buttonDim = 60;
-const numCols = Math.ceil((window.screen.availHeight - 50) / (buttons.length * buttonDim))
 
 const styles = theme => ({
       toolbarDrawerPaper: {
