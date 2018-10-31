@@ -83,7 +83,6 @@ const styles = theme => ({
        let newJson = processingFunction(l1, l2);
 
        if(newJson.type === "FeatureCollection") {
-         console.log(newJson)
         receiveNewJson(newJson, outputName)
         closeDialog();
        } else {
@@ -100,18 +99,6 @@ const styles = theme => ({
     setName  = (name) => {
       this.setState({outputName: name});
     }
-
-    handleSnackbarClose = (event, reason) => {
-
-      console.log('handleSnackbarClose', event, reason )
-      if (reason === 'clickaway') {
-        return;
-      }
-
-      
-  
-      this.setState({ errorMessage: '' });
-    };
 
     getContent = type => {
       
@@ -130,23 +117,34 @@ const styles = theme => ({
           prompt2 += ' (Type: ' + layer.data.features[0].geometry.type  + ')'
         }
 
+        let layerOptions = layers;
+
+        if (type === 'intersect' || type === 'difference' ) {
+          layerOptions = layers.filter(layer => layer.type === 'Polygon' || layer.type === 'MultiPolygon' );
+        }
+
         return (
             <DialogContent>
               {errorMessage.length > 0 ?
                 <DialogFeedback message={errorMessage} variant={'error'} />
                 : null
               }
+              {type === 'intersect' || type === 'difference'  ?
+                <DialogFeedback message={type + ' operation only accepts Polygons'}/>
+                :
+                null
+              }
               
               <DoubleLayerPicker prompt1={prompt1}
                   prompt2={prompt2}
-                  layers={layers}
+                  layers={layerOptions}
                   setLayerNums={this.setLayerNums.bind(this)}/>
                 <div style={{margin: theme.spacing.unit}}>
                 <LayerNameTextField
                   layerName={outputName}
                   setName={this.setName.bind(this)}
                   defaultName={outputName}
-                  layers={layers}
+                  layers={layerOptions}
                   layerIndex={-1}
                   promt={'Output layer name'} />
                 
