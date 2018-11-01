@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import LayersSelect from './LayersSelectSimple';
+import LayersSelect from './LayersSelectSimple2';
 
 const styles = theme => ({
     spaced: {
@@ -15,37 +15,37 @@ const styles = theme => ({
 
   class DoubleLayerPicker extends Component {
     state = {
-      layerNums: [-1, -1]
+      layerIds: ['', '']
     };
 
-    changeLayer1 = (layerIndex) => {
-      let {layerNums} = this.state;
-      let {setLayerNums} = this.props;
+    changeLayer1 = (layerId) => {
+      let {layerIds} = this.state;
+      let {setLayerIds} = this.props;
 
-      layerNums[0] = layerIndex;
-      setLayerNums(layerNums);
+      layerIds[0] = layerId;
+      setLayerIds(layerIds);
  
       this.setState({
-        layerNums: layerNums,
+        layerIds: layerIds,
       });
     }
 
-    changeLayer2 = (layerIndex) => {
-      let {layerNums} = this.state;
-      let {setLayerNums} = this.props;
+    changeLayer2 = (layerId) => {
+      let {layerIds} = this.state;
+      let {setLayerIds} = this.props;
 
-      layerNums[1] = layerIndex;
-      setLayerNums(layerNums);
-
+      layerIds[1] = layerId;
+      setLayerIds(layerIds);
+ 
       this.setState({
-        layerNums: layerNums,
+        layerIds: layerIds,
       });
     }
     
     render() {
 
       const { classes,  prompt1, prompt2, layers } = this.props;
-      const {layerNums} = this.state;
+      const {layerIds} = this.state;
   
       return (
         <div>
@@ -53,13 +53,13 @@ const styles = theme => ({
         <LayersSelect
             className={classes.spaced}
             layers={layers}
-            layerIndex={layerNums[0]}
+            layerId={layerIds[0]}
             changeLayer={this.changeLayer1.bind(this)}
             promt={prompt1} />
           <LayersSelect
             className={classes.spaced}
             layers={layers}
-            layerIndex={layerNums[1]}
+            layerId={layerIds[1]}
             changeLayer={this.changeLayer2.bind(this)}
             promt={prompt2} />
         </form>
