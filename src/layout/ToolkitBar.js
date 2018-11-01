@@ -5,7 +5,9 @@ import { Typography, SwipeableDrawer, Button } from '@material-ui/core';
 import difference from '../icons/difference_primary.png';
 import union from '../icons/union_primary.png';
 import intersect from '../icons/intersect_primary.png';
-import buffer from '../icons/buffer_primary.png'
+import buffer from '../icons/buffer_primary.png';
+import voronoi from '../icons/voronoi.png';
+import bbox from '../icons/bbox_primary.png';
 import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
 import Loadable from 'react-loadable'
 
@@ -30,7 +32,16 @@ const buttons= [{
 {
   type: 'buffer',
   imgSource: buffer
+},
+{
+  type: 'bbox',
+  imgSource: bbox
+},
+{
+  type: 'voronoi',
+  imgSource: voronoi
 }
+
 ];
 
 const buttonDim = 60;
