@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import { Typography, SwipeableDrawer, Divider, Button } from '@material-ui/core';
+import { Typography, SwipeableDrawer, Button } from '@material-ui/core';
 import difference from '../icons/difference_primary.png';
 import union from '../icons/union_primary.png';
 import intersect from '../icons/intersect_primary.png';
@@ -14,17 +14,33 @@ const GeoProcessingDialog = Loadable({
   loading: LoadingFullpageCirular,
 });
 
+const buttons= [{
+  type: 'difference',
+  imgSource: difference
+},
+{
+  type: 'intersect',
+  imgSource: intersect
+},
+{
+  type: 'union',
+  imgSource: union
+}
+];
+
+const buttonDim = 60;
+
 const styles = theme => ({
       toolbarDrawerPaper: {
-        width: 80,
+        width: 'auto',
         height: 'auto', 
         overflowX: 'hidden',
         display: 'flex',
         justifyContent: 'center'
       },
       image: {
-        width: 50,
-        height: 50,
+        width: 30,
+        height: 30,
         display: 'flex',
         justifyContent: 'center'
 
@@ -32,7 +48,9 @@ const styles = theme => ({
       button: {
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        width: buttonDim,
+        height: buttonDim
       },
       text: {
         fontSize: 11.5
@@ -64,7 +82,8 @@ const styles = theme => ({
 
       const { classes, toolDrawerOpen, layers, receiveNewJson } = this.props;
       const {GeoProcessingDialogOpen, type} = this.state;
-    
+
+      let numCols = Math.ceil(((buttons.length + 1) * buttonDim) / (window.innerHeight - 60)  )
 
       return (
         <SwipeableDrawer
@@ -89,29 +108,21 @@ const styles = theme => ({
                           receiveNewJson={receiveNewJson}
                           />
         : null}
+          <div style={{width: 95* numCols}}>          
 
-        <Divider className={classes.divider} />
-        <Button onClick={() => this.openGeoProcessingDialog('difference')}>
-          <div className={classes.button}>
-          <img  src={difference} alt="difference Icon" className={classes.image}/>
-          <Typography gutterBottom  className={classes.text} variant='button'> difference</Typography>
-          </div>
-        </Button>
-        <Divider className={classes.divider} />
-        <Button onClick={() => this.openGeoProcessingDialog('intersect')}>
-          <div className={classes.button}>
-          <img  src={intersect} alt="intersect Icon" className={classes.image}/>
-          <Typography gutterBottom  className={classes.text} variant='button'> intersect</Typography>
-          </div>
-        </Button>
-        <Divider className={classes.divider} />
-        <Button onClick={() => this.openGeoProcessingDialog('union')}>
-          <div className={classes.button}>
-          <img  src={union} alt="union Icon" className={classes.image}/>
-          <Typography gutterBottom  className={classes.text} variant='button'> union</Typography>
-          </div>
-        </Button>
-        <Divider className={classes.divider} />
+            {buttons.map( (b) => {
+              return (
+                <Button key={b.type} onClick={() => this.openGeoProcessingDialog(b.type)}>
+                <div className={classes.button}>
+                <img  src={b.imgSource} alt="difference Icon" className={classes.image}/>
+                <Typography gutterBottom  className={classes.text} variant='button'> {b.type}</Typography>
+                </div>
+              </Button>
+              );
+            })}
+
+
+        </div>
         
   
       </SwipeableDrawer>

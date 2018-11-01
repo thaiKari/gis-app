@@ -83,7 +83,7 @@ const theme = createMuiTheme({
     let newName = this.checkLayerName(name)
     var layer = createJsonLayer(json, newName, layers.length -1)
 
-    layers.push(layer);
+    layers.unshift(layer);
     layersChange = !layersChange;
     this.setState({
       layers: layers,
