@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {MuiThemeProvider, createMuiTheme, withStyles} from '@material-ui/core/styles';
 import './App.css';
-import LayerBar from './layout/LayerBar';
+//import LayerBar from './layout/LayerBar';
 import ToolbarIconButton from './layout/ToolbarIconButton';
 import reorder from './utils/reorderList'
 import {teal, amber} from '@material-ui/core/colors';
@@ -9,18 +9,24 @@ import createJsonLayer from './utils/createJsonLayer';
 import findIndexWithAttribute from './utils/findIndexWithAttribute';
 import Loadable from 'react-loadable'
 import LoadingFullPage from './utils/Loading/LoadingFullpageCirular';
-import Loading from './utils/Loading/Loading';
+//import Loading from './utils/Loading/Loading';
 import checkIfLayerNameExists from './utils/checkIfLayerNameExists';
 import DrawerBtn from './components/DrawerBtn';
 
 const ToolkitBar = Loadable({
   loader: () => import('./layout/ToolkitBar'),
   delay: 300, // 0.3 seconds
-  loading: Loading,
+  loading: LoadingFullPage,
 });
 
 const Map = Loadable({
   loader: () => import('./map/Map'),
+  delay: 300, // 0.3 seconds
+  loading: LoadingFullPage
+});
+
+const LayerBar = Loadable({
+  loader: () => import('./layout/LayerBar'),
   delay: 300, // 0.3 seconds
   loading: LoadingFullPage
 });
