@@ -10,10 +10,22 @@ import OkAction from '../DialogActions/OkAction'
 import intersectFunction from '../../utils/geoprocessing/intersectFunction';
 import differenceFunction from '../../utils/geoprocessing/differenceFunction';
 import unionFunction from '../../utils/geoprocessing/unionFunction';
-import DoubleLayerPicker from '../DoubleLayerPicker';
-import LayerNameTextField from '../LayerNameTextField';
-import DialogFeedback from '../DialogContent/DialogFeedback';
+import bufferFunction from '../../utils/geoprocessing/bufferFunction'
 
+import Loadable from 'react-loadable'
+import LoadingCircular from '../../utils/Loading/LoadingCirular';
+
+const BufferContent = Loadable({
+  loader: () => import('../DialogContent/BufferContent'),
+  delay: 300, // 0.3 seconds
+  loading: LoadingCircular,
+});
+
+const LayerLayerGeoprocessingContent = Loadable({
+  loader: () => import('../DialogContent/LayerLayerGeoprocessingContent'),
+  delay: 300, // 0.3 seconds
+  loading: LoadingCircular,
+});
 
 const styles = theme => ({
     dialogPaper: {
@@ -35,16 +47,22 @@ const styles = theme => ({
         processingFunction: null,
         layerIds: ['', ''], //Ids of the selectedLayers
         outputName:'',
-        errorMessage:''
+        errorMessage:'',
     }
 
     componentDidMount() {
         const {type} = this.props;
         this.setProcessingFunction(type);
-        this.setState({outputName: type});
+        this.setState({outputName: type,});
     }
 
     setLayerIds = (layerIds) => {
+      this.setState({layerIds: layerIds})
+    }
+
+    setSingleLayerId = (layerId) => {
+      let {layerIds} = this.state;
+      layerIds[0] = layerId;
       this.setState({layerIds: layerIds})
     }
 
@@ -61,7 +79,9 @@ const styles = theme => ({
           case 'difference':
             func = differenceFunction;
             break;
-        
+          case 'buffer':
+            func = bufferFunction;
+            break;
           default:
             break;
         }
@@ -69,8 +89,8 @@ const styles = theme => ({
       }
 
     calculate = () => {
-    const {closeDialog, layers, receiveNewJson} = this.props;
-    const {processingFunction, layerIds, outputName} = this.state;
+    const {closeDialog, layers, receiveNewJson, type} = this.props;
+    const {processingFunction, layerIds, outputName, distance} = this.state;
 
     let l1 = layers.find( l => l.id === layerIds[0] );
     let l2 = layers.find( l => l.id === layerIds[1] );
@@ -82,7 +102,13 @@ const styles = theme => ({
         data2 = l2.data;
       } 
 
-       let newJson = processingFunction(data1, data2);
+      let newJson;
+
+      if(type === 'buffer') {
+        newJson = processingFunction(data1, distance);
+      } else { //intersect, union or distance
+        newJson = processingFunction(data1, data2);
+      }
 
        if(newJson.type === "FeatureCollection") {
         receiveNewJson(newJson, outputName)
@@ -102,58 +128,43 @@ const styles = theme => ({
       this.setState({outputName: name});
     }
 
+    changeDistance = (value) => {
+      this.setState({distance: value});
+    }
+    
+
     getContent = type => {
+      const {layers} = this.props;
+      const {outputName, errorMessage, distance, layerIds} = this.state;
       
       if(type === 'intersect' || type === 'difference' || type === 'union'){
-        const {layers, theme} = this.props;
-        const {outputName, errorMessage, layerIds} = this.state;
-        let prompt1 = type === 'difference' ? 'Input Layer' : 'Layer 1'
-        let prompt2 = type === 'difference' ? 'Difference Layer' : 'Layer 2'
-
-        let l1 = layers.find( l => l.id === layerIds[0] )
-        let l2 = layers.find( l => l.id === layerIds[1] )
-
-        if(l1) {
-          prompt1 += ' (Type: ' + l1.data.features[0].geometry.type  + ')'
-        }
-        if(l2) {
-          prompt2 += ' (Type: ' + l2.data.features[0].geometry.type  + ')'
-        }
-
-        let layerOptions = layers;
-
-        if (type === 'intersect' || type === 'difference' ) {
-          layerOptions = layers.filter(layer => layer.type === 'Polygon' || layer.type === 'MultiPolygon' );
-        }
 
         return (
-            <DialogContent>
-              {errorMessage.length > 0 ?
-                <DialogFeedback message={errorMessage} variant={'error'} />
-                : null
-              }
-              {type === 'intersect' || type === 'difference'  ?
-                <DialogFeedback message={type + ' operation only accepts Polygons'}/>
-                :
-                null
-              }
-              
-              <DoubleLayerPicker prompt1={prompt1}
-                  prompt2={prompt2}
-                  layers={layerOptions}
-                  setLayerIds={this.setLayerIds.bind(this)}/>
-                <div style={{margin: theme.spacing.unit}}>
-                <LayerNameTextField
-                  layerName={outputName}
-                  setName={this.setName.bind(this)}
-                  defaultName={outputName}
-                  layers={layerOptions}
-                  layerIndex={-1}
-                  promt={'Output layer name'} />
-                
-                  </div>         
-            </DialogContent> );
+          <LayerLayerGeoprocessingContent
+              errorMessage={errorMessage}
+              layers={layers}
+              layerIds={layerIds}
+              setLayerIds={this.setLayerIds.bind(this)}
+              outputName={outputName}
+              setName={this.setName.bind(this)}
+              type={type}
+          /> );
         };
+
+        if (type === 'buffer') {
+          return (
+            <BufferContent
+              errorMessage={errorMessage}
+              layers={layers}
+              changeLayer={this.setSingleLayerId.bind(this)}
+              distance={distance}
+              changeDistance={this.changeDistance.bind(this)}
+              outputName={outputName}
+              setName={this.setName.bind(this)}
+            />
+             );
+
+        }
 
         return (
             <DialogContent>

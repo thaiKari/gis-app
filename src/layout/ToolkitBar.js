@@ -5,6 +5,7 @@ import { Typography, SwipeableDrawer, Button } from '@material-ui/core';
 import difference from '../icons/difference_primary.png';
 import union from '../icons/union_primary.png';
 import intersect from '../icons/intersect_primary.png';
+import buffer from '../icons/buffer_primary.png'
 import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
 import Loadable from 'react-loadable'
 
@@ -25,6 +26,10 @@ const buttons= [{
 {
   type: 'union',
   imgSource: union
+},
+{
+  type: 'buffer',
+  imgSource: buffer
 }
 ];
 
