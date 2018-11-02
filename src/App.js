@@ -4,6 +4,8 @@ import './App.css';
 import ToolbarIconButton from './layout/ToolbarIconButton';
 import reorder from './utils/reorderList'
 import {teal, amber} from '@material-ui/core/colors';
+import {IconButton} from '@material-ui/core';
+import {Close} from '@material-ui/icons';
 import createJsonLayer from './utils/createJsonLayer';
 import findIndexWithAttribute from './utils/findIndexWithAttribute';
 import Loadable from 'react-loadable'
@@ -40,7 +42,8 @@ const theme = createMuiTheme({
   },
   appBarHeight: 60,
   typography: {
-      fontFamily: 'Gamja+Flower'
+      //fontFamily: 'typeface-roboto'
+      useNextVariants: true,
     }
   });
 
@@ -209,8 +212,13 @@ const theme = createMuiTheme({
       drawerWidth } = this.state;
 
     return (
-      <SnackbarProvider maxSnack={3}>
+
       <MuiThemeProvider theme={theme}>
+            <SnackbarProvider
+          maxSnack={4}
+          action={[
+            <IconButton key={1} size="small"><Close/></IconButton>
+            ]}>
       <div className={classes.root}>
         <div className={classes.appFrame}>
 
@@ -256,8 +264,9 @@ const theme = createMuiTheme({
 
         </div>
       </div>
-      </MuiThemeProvider>
       </SnackbarProvider>
+      </MuiThemeProvider>
+      
     );
 
 
