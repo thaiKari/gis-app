@@ -15,6 +15,7 @@ import bboxFunction from '../../utils/geoprocessing/bboxFunction';
 import Loadable from 'react-loadable'
 import LoadingCircular from '../../utils/Loading/LoadingCirular';
 import MultiLayerSelect from '../MultiLayerSelect';
+import LayerNameTextField from '../LayerNameTextField';
 
 const BufferContent = Loadable({
   loader: () => import('../DialogContent/BufferContent'),
@@ -118,7 +119,6 @@ const styles = theme => ({
        let res = processingFunction(selectedLayersDataList)
         newJson = res.newJson;
        let bbox = res.bbox;
-        console.log(newJson, bbox);
       }
       
       else { //intersect, union or distance
@@ -185,7 +185,14 @@ const styles = theme => ({
             <DialogContent>
                 <MultiLayerSelect
                 layers={layers}
-                setLayerIds={this.setLayerIds.bind(this)}/>          
+                setLayerIds={this.setLayerIds.bind(this)}/>
+                <LayerNameTextField
+                  layerName={outputName}
+                  setName={this.setName.bind(this)}
+                  defaultName={outputName}
+                  layers={layers}
+                  layerIndex={-1}
+                  promt={'Output layer name'} />          
             </DialogContent> );
 
         }
