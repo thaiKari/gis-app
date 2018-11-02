@@ -10,10 +10,11 @@ import OkAction from '../DialogActions/OkAction'
 import intersectFunction from '../../utils/geoprocessing/intersectFunction';
 import differenceFunction from '../../utils/geoprocessing/differenceFunction';
 import unionFunction from '../../utils/geoprocessing/unionFunction';
-import bufferFunction from '../../utils/geoprocessing/bufferFunction'
-
+import bufferFunction from '../../utils/geoprocessing/bufferFunction';
+import bboxFunction from '../../utils/geoprocessing/bboxFunction';
 import Loadable from 'react-loadable'
 import LoadingCircular from '../../utils/Loading/LoadingCirular';
+import MultiLayerSelect from '../MultiLayerSelect';
 
 const BufferContent = Loadable({
   loader: () => import('../DialogContent/BufferContent'),
@@ -45,7 +46,7 @@ const styles = theme => ({
   class GeoProcessingDialog extends Component {
     state = {
         processingFunction: null,
-        layerIds: ['', ''], //Ids of the selectedLayers
+        layerIds: [], //Ids of the selectedLayers
         outputName:'',
         errorMessage:'',
     }
@@ -82,32 +83,46 @@ const styles = theme => ({
           case 'buffer':
             func = bufferFunction;
             break;
+          case 'bbox':
+            func = bboxFunction;
+            break;
           default:
             break;
         }
         this.setState({processingFunction: func});
       }
+    
+    findLayerById = (layerId) => {
+      const {layers} = this.props;
+      return layers.find( l => l.id === layerId );
+    }
 
     calculate = () => {
-    const {closeDialog, layers, receiveNewJson, type} = this.props;
+    const {closeDialog, receiveNewJson, type} = this.props;
     const {processingFunction, layerIds, outputName, distance} = this.state;
+    
+    let selectedLayersDataList = [];
 
-    let l1 = layers.find( l => l.id === layerIds[0] );
-    let l2 = layers.find( l => l.id === layerIds[1] );
-    let data1, data2;
-
-      if (l1) {
-        data1 = l1.data;
-      } if (l2) {
-        data2 = l2.data;
-      } 
+    for (var i in layerIds ) {
+      //let layer = layers.find( l => l.id === layerIds[i] );
+      let layer = this.findLayerById(layerIds[i]);
+      let data = layer ? layer.data : null;
+      selectedLayersDataList.push( data ) 
+    }
 
       let newJson;
 
-      if(type === 'buffer') {
-        newJson = processingFunction(data1, distance);
-      } else { //intersect, union or distance
-        newJson = processingFunction(data1, data2);
+      if (type === 'buffer') {       
+        newJson = processingFunction(selectedLayersDataList[0], distance);       
+      } else if (type === 'bbox') {
+       let res = processingFunction(selectedLayersDataList)
+        newJson = res.newJson;
+       let bbox = res.bbox;
+        console.log(newJson, bbox);
+      }
+      
+      else { //intersect, union or distance
+        newJson = processingFunction(selectedLayersDataList[0], selectedLayersDataList[1]);
       }
 
        if(newJson.type === "FeatureCollection") {
@@ -163,6 +178,15 @@ const styles = theme => ({
               setName={this.setName.bind(this)}
             />
              );
+        }
+
+        if (type === 'bbox') {
+          return (
+            <DialogContent>
+                <MultiLayerSelect
+                layers={layers}
+                setLayerIds={this.setLayerIds.bind(this)}/>          
+            </DialogContent> );
 
         }
 
