@@ -16,6 +16,8 @@ import Loadable from 'react-loadable'
 import LoadingCircular from '../../utils/Loading/LoadingCirular';
 import MultiLayerSelect from '../MultiLayerSelect';
 import LayerNameTextField from '../LayerNameTextField';
+import { withSnackbar } from 'notistack';
+import roundToNdecimals from '../../utils/roundToNdecimals';
 
 const BufferContent = Loadable({
   loader: () => import('../DialogContent/BufferContent'),
@@ -50,6 +52,7 @@ const styles = theme => ({
         layerIds: [], //Ids of the selectedLayers
         outputName:'',
         errorMessage:'',
+        distance: ''
     }
 
     componentDidMount() {
@@ -99,7 +102,7 @@ const styles = theme => ({
     }
 
     calculate = () => {
-    const {closeDialog, receiveNewJson, type} = this.props;
+    const {closeDialog, receiveNewJson, type, enqueueSnackbar} = this.props;
     const {processingFunction, layerIds, outputName, distance} = this.state;
     
     let selectedLayersDataList = [];
@@ -112,13 +115,17 @@ const styles = theme => ({
     }
 
       let newJson;
+      let feedbackText = '';
 
       if (type === 'buffer') {       
         newJson = processingFunction(selectedLayersDataList[0], distance);       
       } else if (type === 'bbox') {
        let res = processingFunction(selectedLayersDataList)
         newJson = res.newJson;
-       let bbox = res.bbox;
+        if(res.bbox) {
+          feedbackText = 'bbox calculated. [minX, minY, maxX, maxY] = [ ' +  roundToNdecimals(res.bbox[0] ,4) + ', '  +  roundToNdecimals(res.bbox[1] ,4) + ', ' +  roundToNdecimals(res.bbox[2] ,4) + ', ' +  roundToNdecimals(res.bbox[3] ,4) + ' ]';
+        }
+        
       }
       
       else { //intersect, union or distance
@@ -126,7 +133,15 @@ const styles = theme => ({
       }
 
        if(newJson.type === "FeatureCollection") {
-        receiveNewJson(newJson, outputName)
+        receiveNewJson(newJson, outputName);
+        let succesMessage =  type + ' layer was successfully created';
+        feedbackText = feedbackText ? feedbackText : succesMessage;
+        try {
+          enqueueSnackbar(feedbackText, {variant: 'success'});
+        } catch (error) {
+          console.log('error supressed')
+        }
+        
         closeDialog();
        } else {
          this.setState({errorMessage: newJson});
@@ -176,6 +191,7 @@ const styles = theme => ({
               changeDistance={this.changeDistance.bind(this)}
               outputName={outputName}
               setName={this.setName.bind(this)}
+              layerId={layerIds[0]}
             />
              );
         }
@@ -244,4 +260,4 @@ const styles = theme => ({
 
   }
 
-export default withStyles(styles, { withTheme: true })(GeoProcessingDialog);
+export default withStyles(styles, { withTheme: true })(withSnackbar(GeoProcessingDialog));

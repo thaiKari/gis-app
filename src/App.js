@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {MuiThemeProvider, createMuiTheme, withStyles} from '@material-ui/core/styles';
 import './App.css';
-//import LayerBar from './layout/LayerBar';
 import ToolbarIconButton from './layout/ToolbarIconButton';
 import reorder from './utils/reorderList'
 import {teal, amber} from '@material-ui/core/colors';
@@ -9,9 +8,10 @@ import createJsonLayer from './utils/createJsonLayer';
 import findIndexWithAttribute from './utils/findIndexWithAttribute';
 import Loadable from 'react-loadable'
 import LoadingFullPage from './utils/Loading/LoadingFullpageCirular';
-//import Loading from './utils/Loading/Loading';
 import checkIfLayerNameExists from './utils/checkIfLayerNameExists';
 import DrawerBtn from './components/DrawerBtn';
+import { SnackbarProvider } from 'notistack';
+
 
 const ToolkitBar = Loadable({
   loader: () => import('./layout/ToolkitBar'),
@@ -209,6 +209,7 @@ const theme = createMuiTheme({
       drawerWidth } = this.state;
 
     return (
+      <SnackbarProvider maxSnack={3}>
       <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <div className={classes.appFrame}>
@@ -256,6 +257,7 @@ const theme = createMuiTheme({
         </div>
       </div>
       </MuiThemeProvider>
+      </SnackbarProvider>
     );
 
 
