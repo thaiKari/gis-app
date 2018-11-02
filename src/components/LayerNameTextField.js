@@ -46,7 +46,6 @@ const styles = theme => ({
             error={Nameerror}
             onChange={this.nameChange('')}      
             margin="normal"
-            variant="outlined"
             helperText={errorText}
             InputLabelProps={{
             shrink: true,

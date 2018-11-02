@@ -258,7 +258,7 @@ const styles = theme => ({
       >
       <div className={classes.drawerHeader}>
         <Toolbar variant="dense">
-          <Typography color='primary' component="h2" variant="display1" gutterBottom style={{flex: 1}}>
+          <Typography color='primary' variant="h4" gutterBottom style={{flex: 1}}>
               Gis-App
           </Typography>  
         </Toolbar>

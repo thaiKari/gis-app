@@ -42,7 +42,11 @@ class LayersSelect extends React.Component {
   setCurLayer = () => {
     const {layerId} = this.props;
 
-    this.setState({curValue: layerId});
+    if( layerId ) {
+      this.setState({curValue: layerId});
+    }
+
+    
   }
 
   render() {

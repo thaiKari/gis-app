@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import {MuiThemeProvider, createMuiTheme, withStyles} from '@material-ui/core/styles';
 import './App.css';
-//import LayerBar from './layout/LayerBar';
 import ToolbarIconButton from './layout/ToolbarIconButton';
 import reorder from './utils/reorderList'
 import {teal, amber} from '@material-ui/core/colors';
+import {IconButton} from '@material-ui/core';
+import {Close} from '@material-ui/icons';
 import createJsonLayer from './utils/createJsonLayer';
 import findIndexWithAttribute from './utils/findIndexWithAttribute';
 import Loadable from 'react-loadable'
 import LoadingFullPage from './utils/Loading/LoadingFullpageCirular';
-//import Loading from './utils/Loading/Loading';
 import checkIfLayerNameExists from './utils/checkIfLayerNameExists';
 import DrawerBtn from './components/DrawerBtn';
+import { SnackbarProvider } from 'notistack';
 
 const ToolkitBar = Loadable({
   loader: () => import('./layout/ToolkitBar'),
@@ -40,8 +41,15 @@ const theme = createMuiTheme({
   },
   appBarHeight: 60,
   typography: {
-      fontFamily: 'Gamja+Flower'
-    }
+    useNextVariants: true,
+  },
+  overrides: {
+    SnackbarItem: { // Name of the component ⚛️ / style sheet
+      root: { // Name of the rule
+        color: 'white', // Some CSS
+      },
+    },
+  }
   });
 
   const styles = ({
@@ -56,6 +64,9 @@ const theme = createMuiTheme({
       position: 'relative',
       display: 'flex',
       width: '100%',
+    },
+    snackbarMessage: {
+      color:'white'
     }
   });
   
@@ -209,7 +220,17 @@ const theme = createMuiTheme({
       drawerWidth } = this.state;
 
     return (
+
       <MuiThemeProvider theme={theme}>
+        <SnackbarProvider
+          classes={{
+            message: classes.snackbarMessage, // class name, e.g. `classes-nesting-root-x`
+          }}
+          maxSnack={4}
+          action={[
+            <IconButton key={1} size="small"><Close/></IconButton>
+            ]}>
+
       <div className={classes.root}>
         <div className={classes.appFrame}>
 
@@ -255,7 +276,10 @@ const theme = createMuiTheme({
 
         </div>
       </div>
+      </SnackbarProvider>
       </MuiThemeProvider>
+      
+      
     );
 
 

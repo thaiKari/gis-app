@@ -10,27 +10,37 @@ const styles = theme => ({
   });
 
   class BufferContent extends Component {
+
+    
+    handleChange = event => {
+      const {changeDistance} = this.props;
+
+      changeDistance(event.target.value);
+    };
     
     render() {
 
-      const { theme, errorMessage, layers, changeLayer, distance, changeDistance, outputName, setName } = this.props;
-  
+      const { theme, errorMessage, layers, changeLayer, distance, outputName, setName, layerId } = this.props;
+      
+
       return (
         <DialogContent>
               {errorMessage.length > 0 ?
                 <DialogFeedback message={errorMessage} variant={'error'} />
                 : null
               }
-              
-              <LayersSelectSimple 
-                  layers={layers}
-                  changeLayer={changeLayer}/>
+
+              <LayersSelectSimple
+                layers={layers}
+                layerId={layerId}
+                changeLayer={changeLayer} />
+
                 <div style={{margin: theme.spacing.unit}}>
                 <TextField
                   error = {isNaN(distance) && distance}
                   value={distance}
                   label="Distance (m)"
-                  onChange={(e) => changeDistance(e.target.value)}
+                  onChange={this.handleChange}
                 />
 
                 <LayerNameTextField
