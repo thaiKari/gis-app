@@ -1,12 +1,15 @@
 //combines the features of two feature collections into one
-const combineFeatures = (FeatureCollection1, FeatureCollection2) => {
+const combineFeatures = (featureCollectionList) => {
 
     let newGeojson = {
       "type": "FeatureCollection",
       "features": []
     }
 
-    newGeojson.features = FeatureCollection1.features.concat(FeatureCollection2.features);
+    for (var i in featureCollectionList) {
+      newGeojson.features = newGeojson.features.concat( featureCollectionList[i].features )
+    }
+
     return(newGeojson);
   }
 

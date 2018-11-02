@@ -17,7 +17,7 @@ const unionFunction = (geojson1, geojson2) => {
   if(geojson1.features[0].geometry.type === 'Polygon') {
     newGeojson = performActionOnAllFeaturePairs(geojson1, geojson2, union);
   } else {
-    newGeojson =  combineFeatures(geojson1, geojson2)
+    newGeojson =  combineFeatures([geojson1, geojson2])
   }
     return(newGeojson);
   }
