@@ -17,7 +17,9 @@ import LayerNameTextField from '../LayerNameTextField';
 const styles = theme => ({
   dialogPaper: {
     minHeight: '50vh',
-    overflowX:'hidden'
+    overflowY: 'visible',
+    overflowX:'hidden',
+    maxHeight: '100vh'
   },
   spaced: {
     marginBottom: 50,
@@ -175,7 +177,7 @@ class EditLayerDialog extends React.Component {
     let content = layers.length > 0 ?
       this.getContent()
       : 
-      <DialogContent>
+      <DialogContent classes={{root: classes.dialogPaper}}>
         <Typography>Add some layers first</Typography>         
       </DialogContent>
 

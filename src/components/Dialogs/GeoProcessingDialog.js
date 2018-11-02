@@ -34,7 +34,8 @@ const LayerLayerGeoprocessingContent = Loadable({
 const styles = theme => ({
     dialogPaper: {
         minHeight: '50vh',
-        overflowX:'hidden'
+        overflowY: "visible",
+        maxHeight: '100vh'
       },
       spaced: {
         marginBottom: 50,
@@ -164,7 +165,7 @@ const styles = theme => ({
     
 
     getContent = type => {
-      const {layers} = this.props;
+      const {layers, classes} = this.props;
       const {outputName, errorMessage, distance, layerIds} = this.state;
       
       if(type === 'intersect' || type === 'difference' || type === 'union'){
@@ -198,7 +199,7 @@ const styles = theme => ({
 
         if (type === 'bbox') {
           return (
-            <DialogContent>
+            <DialogContent classes={{root: classes.dialogPaper}} >
                 <MultiLayerSelect
                 layers={layers}
                 setLayerIds={this.setLayerIds.bind(this)}/>
