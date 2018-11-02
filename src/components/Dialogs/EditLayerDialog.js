@@ -154,7 +154,7 @@ class EditLayerDialog extends React.Component {
             layers={layers}
             layerIndex={layerIndex} />
 
-        <Typography  style={{ marginTop: theme.spacing.unit * 2}} variant="caption" gutterBottom>Color</Typography>
+        <Typography  style={{ marginTop: theme.spacing.unit * 2}}  variant="caption" gutterBottom>Color</Typography>
         <ColorPicker
           setColor={this.setColor.bind(this)}
           setOpacity={this.setOpacity.bind(this)}

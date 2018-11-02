@@ -131,7 +131,7 @@ const styles = theme => ({
                 <Button key={b.type} onClick={() => this.openGeoProcessingDialog(b.type)}>
                 <div className={classes.button}>
                 <img  src={b.imgSource} alt="difference Icon" className={classes.image}/>
-                <Typography gutterBottom  className={classes.text} variant='button'> {b.type}</Typography>
+                <Typography gutterBottom  className={classes.text} variant="button"> {b.type}</Typography>
                 </div>
               </Button>
               );

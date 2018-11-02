@@ -13,6 +13,7 @@ import LoadingFullPage from './utils/Loading/LoadingFullpageCirular';
 import checkIfLayerNameExists from './utils/checkIfLayerNameExists';
 import DrawerBtn from './components/DrawerBtn';
 import { SnackbarProvider } from 'notistack';
+import classNames from 'classnames';
 
 
 const ToolkitBar = Loadable({
@@ -42,15 +43,17 @@ const theme = createMuiTheme({
   },
   appBarHeight: 60,
   typography: {
-      //fontFamily: 'typeface-roboto'
-      useNextVariants: true,
-    }
+    useNextVariants: true,
+  }
   });
 
   const styles = ({
     root: {
       flexGrow: 1,
       backgroundColor: theme.palette.background.default,
+    },
+    snackbarRoot: {
+      color: 'white  !important',
     },
     appFrame: {
       height: '100vh',
@@ -214,11 +217,16 @@ const theme = createMuiTheme({
     return (
 
       <MuiThemeProvider theme={theme}>
-            <SnackbarProvider
+        <SnackbarProvider
+          classes={{
+            MuiTypography: classes.snackbarRoot, // class name, e.g. `classes-nesting-root-x`
+          }}
+          className={classNames(classes.snackbarRoot)}
           maxSnack={4}
           action={[
             <IconButton key={1} size="small"><Close/></IconButton>
             ]}>
+
       <div className={classes.root}>
         <div className={classes.appFrame}>
 
@@ -266,6 +274,7 @@ const theme = createMuiTheme({
       </div>
       </SnackbarProvider>
       </MuiThemeProvider>
+      
       
     );
 

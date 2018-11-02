@@ -137,7 +137,7 @@ const styles = theme => ({
         let succesMessage =  type + ' layer was successfully created';
         feedbackText = feedbackText ? feedbackText : succesMessage;
         try {
-          enqueueSnackbar(feedbackText, {variant: 'success'});
+          enqueueSnackbar(feedbackText, {variant: 'success', autoHideDuration: 10000000});
         } catch (error) {
           console.log('error supressed')
         }

@@ -67,7 +67,7 @@ class ColorPicker extends React.Component {
         { this.state.displayColorPicker ?
         <div className = {classes.picker}>
         <SliderPicker  color={color} onChange={this.handleColorChange } />
-        <Typography  style={{ marginTop: theme.spacing.unit * 2}} variant="caption" gutterBottom>
+        <Typography  style={{ marginTop: theme.spacing.unit * 2}}  variant="caption" gutterBottom>
         Opacity</Typography>
         <AlphaPicker width={'100%'} color={color} onChange={this.handleAlphaChange }  />
         <ColorForm colorChanged={colorChanged} setColor={setColor} setOpacity={setOpacity} color={color}/>

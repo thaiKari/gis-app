@@ -16,8 +16,6 @@ const styles = theme => ({
       const {changeDistance} = this.props;
 
       changeDistance(event.target.value);
-     console.log(event.target.value)
-
     };
     
     render() {
