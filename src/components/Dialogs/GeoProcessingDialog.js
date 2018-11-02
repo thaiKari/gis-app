@@ -12,9 +12,9 @@ import differenceFunction from '../../utils/geoprocessing/differenceFunction';
 import unionFunction from '../../utils/geoprocessing/unionFunction';
 import bufferFunction from '../../utils/geoprocessing/bufferFunction';
 import bboxFunction from '../../utils/geoprocessing/bboxFunction';
-
 import Loadable from 'react-loadable'
 import LoadingCircular from '../../utils/Loading/LoadingCirular';
+import MultiLayerSelect from '../MultiLayerSelect';
 
 const BufferContent = Loadable({
   loader: () => import('../DialogContent/BufferContent'),
@@ -91,15 +91,21 @@ const styles = theme => ({
         }
         this.setState({processingFunction: func});
       }
+    
+    findLayerById = (layerId) => {
+      const {layers} = this.props;
+      return layers.find( l => l.id === layerId );
+    }
 
     calculate = () => {
-    const {closeDialog, layers, receiveNewJson, type} = this.props;
+    const {closeDialog, receiveNewJson, type} = this.props;
     const {processingFunction, layerIds, outputName, distance} = this.state;
     
     let selectedLayersDataList = [];
 
     for (var i in layerIds ) {
-      let layer = layers.find( l => l.id === layerIds[i] );
+      //let layer = layers.find( l => l.id === layerIds[i] );
+      let layer = this.findLayerById(layerIds[i]);
       let data = layer ? layer.data : null;
       selectedLayersDataList.push( data ) 
     }
@@ -109,9 +115,10 @@ const styles = theme => ({
       if (type === 'buffer') {       
         newJson = processingFunction(selectedLayersDataList[0], distance);       
       } else if (type === 'bbox') {
-       newJson = processingFunction(selectedLayersDataList).newJson;
-       let bbox = processingFunction(selectedLayersDataList).bbox;
-
+       let res = processingFunction(selectedLayersDataList)
+        newJson = res.newJson;
+       let bbox = res.bbox;
+        console.log(newJson, bbox);
       }
       
       else { //intersect, union or distance
@@ -176,7 +183,9 @@ const styles = theme => ({
         if (type === 'bbox') {
           return (
             <DialogContent>
-                <MultiLayerSelect layers={layers} />          
+                <MultiLayerSelect
+                layers={layers}
+                setLayerIds={this.setLayerIds.bind(this)}/>          
             </DialogContent> );
 
         }

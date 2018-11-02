@@ -10,7 +10,6 @@ import voronoi from '../icons/voronoi.png';
 import bbox from '../icons/bbox_primary.png';
 import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
 import Loadable from 'react-loadable'
-import bboxFunc from '../utils/geoprocessing/bboxFunction'
 
 const GeoProcessingDialog = Loadable({
   loader: () => import('../components/Dialogs/GeoProcessingDialog'),
