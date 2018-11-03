@@ -3,7 +3,7 @@ import {Dialog,
    Typography,
    DialogContent,
    DialogTitle,
-   Paper
+   Divider
    } from '@material-ui/core';
 import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
 import OkAction from '../DialogActions/OkAction'
@@ -35,24 +35,6 @@ const styles = theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     width:'100%'
-  },
-  cover: {
-    position: 'fixed',
-    top: '0px',
-    left: '0px',
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgb(0,0,0)',
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    zIndex: 10000
-  },
-  customModal: {
-    backgroundColor: 'grey',
-    width:500,
-    margin: '15% auto', 
-    maxWidth: 800,
-    width: '80%',
-    minHeight: 500
   }
 });
 
@@ -98,8 +80,6 @@ class EditLayerDialog extends React.Component {
   }
 
   setColor = (newColor) => {
-    console.log(newColor)
-    console.log('state', this.state.color)
 
     this.setState({
       color: newColor,
@@ -191,7 +171,7 @@ class EditLayerDialog extends React.Component {
 
         <div style={{display: 'flex',
                       flexWrap: 'wrap'}}>
-          <div  style={{ margin: theme.spacing.unit * 2, marginLeft: 0}}>
+          <div  style={{ margin: theme.spacing.unit * 2, marginLeft: 0, width:'100%'}}>
           <Typography variant="caption" gutterBottom>Color</Typography>
           <ColorPicker
             setColor={this.setColor.bind(this)}
@@ -199,14 +179,7 @@ class EditLayerDialog extends React.Component {
             colorChanged={colorChanged}
             setPickerOpen={this.setPickerOpen.bind(this)}/>
           </div>
-          <div style={{ margin: theme.spacing.unit * 2, marginLeft: 0}}>
-          <Typography  variant="caption" gutterBottom>Color</Typography>
-          <ColorPicker
-            setColor={this.setColor.bind(this)}
-            color={color}
-            colorChanged={colorChanged}
-            setPickerOpen={this.setPickerOpen.bind(this)}/>
-          </div>
+
         </div>
         </div> : null}  
         
@@ -217,10 +190,8 @@ class EditLayerDialog extends React.Component {
 
 
   render() {
-    const {open, layers, classes} = this.props;
+    const {open, layers, classes, theme} = this.props;
     const {layerName, pickerOpen} = this.state;
-
-    console.log(pickerOpen);
     
 
     let content = layers.length > 0 ?
@@ -242,8 +213,6 @@ class EditLayerDialog extends React.Component {
         [classes.dialogPaperNoScroll]: pickerOpen,
         [classes.dialogPaperAbsPos]: pickerOpen
       });
-
-
        
 
     return (
@@ -252,7 +221,10 @@ class EditLayerDialog extends React.Component {
         <Dialog fullWidth={true} open={open} classes={{
             paper: paperClasses, // class name, e.g. `classes-nesting-root-x`
           }} >
+
             <DialogTitle id="scroll-dialog-title">Edit Layers</DialogTitle>
+            <Divider style={{marginBottom: theme.spacing.unit}}/>
+
               {content}
               {actions}    
         </Dialog>

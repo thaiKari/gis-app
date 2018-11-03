@@ -1,9 +1,7 @@
 import React from 'react'
-import {SliderPicker, AlphaPicker, ChromePicker  } from 'react-color';
+import {ChromePicker} from 'react-color';
 import { withStyles } from '@material-ui/core/styles';
 import rgbObj2Css from '../utils/rgbObj2Css';
-import ColorForm from './ColorForm';
-import {Typography} from '@material-ui/core';
 import classNames from 'classnames';
 
 const styles = theme => ({
@@ -14,7 +12,7 @@ const styles = theme => ({
     },
     swatch: {
       height: 40,
-      width: 50,   
+      width: '100%',   
       borderRadius: '5px',
       boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
       display: 'inline-block',
@@ -62,9 +60,7 @@ class ColorPicker extends React.Component {
   };
 
   handleColorChange = (color) => {
-    const {setColor} = this.props;
-    console.log(color);
-    
+    const {setColor} = this.props;    
     setColor(color.rgb);
   };
 
@@ -75,7 +71,7 @@ class ColorPicker extends React.Component {
 
 
   render() {
-    let {color, classes, theme, setColor, colorChanged} = this.props;
+    let {color, classes} = this.props;
 
     let colorString = rgbObj2Css(color);
     let swatchDiv = document.getElementById('swatch');
