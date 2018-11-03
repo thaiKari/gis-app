@@ -1,9 +1,10 @@
 import React from 'react'
-import {SliderPicker, AlphaPicker } from 'react-color';
+import {SliderPicker, AlphaPicker, ChromePicker  } from 'react-color';
 import { withStyles } from '@material-ui/core/styles';
 import rgbObj2Css from '../utils/rgbObj2Css';
 import ColorForm from './ColorForm';
 import {Typography} from '@material-ui/core';
+import classNames from 'classnames';
 
 const styles = theme => ({
     color: {
@@ -18,13 +19,24 @@ const styles = theme => ({
       boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
       display: 'inline-block',
       cursor: 'pointer',
-      marginBottom: theme.spacing.unit * 3
+      //marginBottom: theme.spacing.unit * 3
     },
     picker: {
-      touchAction: 'none'
+      touchAction: 'none',
+      position: 'absolute',
+    },
+    bottomZero: {
+      bottom:0
     },
     AlphaPicker: {
       marginTop: theme.spacing.unit * 3
+    },
+    cover: {
+      position: 'fixed',
+      top: '0px',
+      right: '0px',
+      bottom: '0px',
+      left: '0px',
     }
   });
 
@@ -34,7 +46,9 @@ class ColorPicker extends React.Component {
   };
 
   handleClick = () => {
-    this.setState({ displayColorPicker: !this.state.displayColorPicker })
+    this.setState({ displayColorPicker: !this.state.displayColorPicker });
+    let pickerDiv = document.getElementById('picker');
+    console.log(pickerDiv, '?')
   };
 
   handleClose = () => {
@@ -56,21 +70,37 @@ class ColorPicker extends React.Component {
     let {color, classes, theme, setColor, setOpacity, colorChanged} = this.props;
 
     let colorString = rgbObj2Css(color);
+    let swatchDiv = document.getElementById('swatch');
+    let pickerDivOverflow = false;
+    if (swatchDiv) {
+      console.log('Found it!')
+      let swatchRect = swatchDiv.getBoundingClientRect()
+      console.log(window.innerHeight - swatchRect.bottom - 250 ); //250 is picker height
+      if ( (window.innerHeight - swatchRect.bottom - 250) < 0 ) {
+        pickerDivOverflow = true;
+      }
+      
+    }
+    
+    var pickerClasses = classNames({
+      [classes.picker]: true,
+      [classes.bottomZero]: pickerDivOverflow
+    });
+    
 
     return (
       <div>
-        <div className={ classes.swatch } onClick={ this.handleClick }>
+        <div id = 'swatch' className={ classes.swatch } onClick={ this.handleClick }>
           <div className={ classes.color} 
               style={{backgroundColor: `${colorString}`,
                     opacity: `${color.a}`}} />
         </div>
         { this.state.displayColorPicker ?
-        <div className = {classes.picker}>
-        <SliderPicker  color={color} onChange={this.handleColorChange } />
-        <Typography  style={{ marginTop: theme.spacing.unit * 2}}  variant="caption" gutterBottom>
-        Opacity</Typography>
-        <AlphaPicker width={'100%'} color={color} onChange={this.handleAlphaChange }  />
-        <ColorForm colorChanged={colorChanged} setColor={setColor} setOpacity={setOpacity} color={color}/>
+        <div>
+          <div className = {classes.cover} onClick={ this.handleClose }/>
+          <div id={'picker'} className = {pickerClasses}>
+            <ChromePicker />
+          </div>
         </div>
         : null }
 

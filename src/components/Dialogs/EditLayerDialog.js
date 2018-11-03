@@ -18,7 +18,7 @@ const styles = theme => ({
   dialogPaper: {
     minHeight: '50vh',
     overflowY: 'visible',
-    overflowX:'hidden',
+    //overflowX:'hidden',
     maxHeight: '100vh'
   },
   spaced: {
@@ -140,7 +140,7 @@ class EditLayerDialog extends React.Component {
     
 
     return (
-    <DialogContent>
+    <DialogContent className={classes.dialogPaper}>
       <form className={classes.container}>
         <LayersSelect
           className={classes.spaced}
