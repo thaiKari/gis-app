@@ -78,6 +78,10 @@ removeMapLayers(layerIds) {
     if(this._map.getSource(layerId)){
       this._map.removeLayer(layerId);
       this._map.removeSource(layerId);
+      if(this._map.getSource(layerId+'_outline')){
+        this._map.removeLayer(layerId+'_outline');
+        this._map.removeSource(layerId+'_outline');
+      }
     }
   }
 }
@@ -155,13 +159,21 @@ changeColor(colorChange) {
               this.setState({unidentifiedLayerType: unidentifiedLayerType})
           }
           
+        } else {
+          if ( layer.visible ) {
+            this._map.setLayoutProperty(layer.id, 'visibility', 'visible');
+            if (this._map.getSource(layer.id +'_outline')) {
+              this._map.setLayoutProperty(layer.id +'_outline', 'visibility', 'visible');
+            }
+          }
+          else {
+            this._map.setLayoutProperty(layer.id, 'visibility', 'none');
+            if (this._map.getSource(layer.id +'_outline')) {
+              this._map.setLayoutProperty(layer.id +'_outline', 'visibility', 'none');
+            }
+          }
         }
-        if ( layer.visible ) {
-          this._map.setLayoutProperty(layer.id, 'visibility', 'visible');
-        }
-        else {
-          this._map.setLayoutProperty(layer.id, 'visibility', 'none');
-        }
+
       }
     }
 
@@ -239,6 +251,21 @@ changeColor(colorChange) {
           'fill-opacity': layer.data.opacity
         }
       },layerAbove);
+
+      map.addLayer({
+        'id': layer.id + '_outline',
+        'type': 'line',
+        'source': {
+          'type': 'geojson',
+          'data': layer.data
+        },
+        'layout': {'visibility': visibility },
+        'paint': {
+          'line-color': layer.data.color,
+          'line-opacity': layer.data.opacity + 0.2,
+          'line-width': 3
+        }
+      }, layerAbove);
 
     }
 
