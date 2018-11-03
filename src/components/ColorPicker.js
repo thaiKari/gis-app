@@ -102,7 +102,9 @@ class ColorPicker extends React.Component {
         <div>
           <div className = {classes.cover} onClick={ this.handleClose }/>
           <div id={'picker'} className = {pickerClasses}>
-            <ChromePicker />
+            <ChromePicker
+              color={colorString}
+              onChangeComplete={this.handleColorChange}/>
           </div>
         </div>
         : null }

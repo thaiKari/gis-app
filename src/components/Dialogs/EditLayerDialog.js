@@ -3,6 +3,7 @@ import {Dialog,
    Typography,
    DialogContent,
    DialogTitle,
+   Paper
    } from '@material-ui/core';
 import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
 import OkAction from '../DialogActions/OkAction'
@@ -18,12 +19,14 @@ import classNames from 'classnames';
 const styles = theme => ({
   dialogPaper: {
     minHeight: '50vh',
-    //overflowY: 'visible',
     overflowX:'hidden',
     maxHeight: '100vh'
   },
   dialogPaperNoScroll: {
     overflowY: 'visible',
+  },
+  dialogPaperAbsPos: {
+    position: 'unset',
   },
   spaced: {
     marginBottom: 50,
@@ -33,6 +36,24 @@ const styles = theme => ({
     flexWrap: 'wrap',
     width:'100%'
   },
+  cover: {
+    position: 'fixed',
+    top: '0px',
+    left: '0px',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgb(0,0,0)',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    zIndex: 10000
+  },
+  customModal: {
+    backgroundColor: 'grey',
+    width:500,
+    margin: '15% auto', 
+    maxWidth: 800,
+    width: '80%',
+    minHeight: 500
+  }
 });
 
 class EditLayerDialog extends React.Component {
@@ -208,25 +229,25 @@ class EditLayerDialog extends React.Component {
 
       var paperClasses = classNames({
         [classes.dialogPaper]: true,
-        [classes.dialogPaperNoScroll]: pickerOpen
+        [classes.dialogPaperNoScroll]: pickerOpen,
+        [classes.dialogPaperAbsPos]: pickerOpen
       });
+
+
+       
 
     return (
       <div>
 
-        <Dialog
-          fullWidth={true}
-          open={open}
-          onClose={this.handleClose}
-          scroll={'paper'}
-          aria-labelledby="scroll-dialog-title"
-          classes={{ paper: paperClasses }}
-          
-        >
+        <Dialog fullWidth={true} open={open} classes={{
+            paper: paperClasses, // class name, e.g. `classes-nesting-root-x`
+          }} >
             <DialogTitle id="scroll-dialog-title">Edit Layers</DialogTitle>
               {content}
-              {actions}
+              {actions}    
         </Dialog>
+
+
       </div>
     );
   }
