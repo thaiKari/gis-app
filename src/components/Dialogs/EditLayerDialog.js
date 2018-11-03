@@ -98,22 +98,20 @@ class EditLayerDialog extends React.Component {
   }
 
   setColor = (newColor) => {
-    let {color} = this.state;
-      color.r = newColor.r;
-      color.g = newColor.g;
-      color.b = newColor.b;
+    console.log(newColor)
+    console.log('state', this.state.color)
 
     this.setState({
-      color: color,
+      color: newColor,
       colorChanged: !this.state.colorChanged})
   }
 
-  setOpacity = (opactity) => {
+  /*setOpacity = (opactity) => {
     let {color} = this.state;
     color.a = opactity
 
     this.setState({color: color})
-  } 
+  } */
 
   handleClose = () => {
     const {closeDialog} = this.props;
@@ -191,13 +189,25 @@ class EditLayerDialog extends React.Component {
             layers={layers}
             layerIndex={layerIndex} />
 
-        <Typography  style={{ marginTop: theme.spacing.unit * 2}}  variant="caption" gutterBottom>Color</Typography>
-        <ColorPicker
-          setColor={this.setColor.bind(this)}
-          setOpacity={this.setOpacity.bind(this)}
-          color={color}
-          colorChanged={colorChanged}
-          setPickerOpen={this.setPickerOpen.bind(this)}/> 
+        <div style={{display: 'flex',
+                      flexWrap: 'wrap'}}>
+          <div  style={{ margin: theme.spacing.unit * 2, marginLeft: 0}}>
+          <Typography variant="caption" gutterBottom>Color</Typography>
+          <ColorPicker
+            setColor={this.setColor.bind(this)}
+            color={color}
+            colorChanged={colorChanged}
+            setPickerOpen={this.setPickerOpen.bind(this)}/>
+          </div>
+          <div style={{ margin: theme.spacing.unit * 2, marginLeft: 0}}>
+          <Typography  variant="caption" gutterBottom>Color</Typography>
+          <ColorPicker
+            setColor={this.setColor.bind(this)}
+            color={color}
+            colorChanged={colorChanged}
+            setPickerOpen={this.setPickerOpen.bind(this)}/>
+          </div>
+        </div>
         </div> : null}  
         
     </DialogContent> );

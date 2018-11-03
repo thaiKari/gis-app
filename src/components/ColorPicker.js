@@ -14,7 +14,7 @@ const styles = theme => ({
     },
     swatch: {
       height: 40,
-      width: '100%',   
+      width: 50,   
       borderRadius: '5px',
       boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
       display: 'inline-block',
@@ -63,17 +63,19 @@ class ColorPicker extends React.Component {
 
   handleColorChange = (color) => {
     const {setColor} = this.props;
+    console.log(color);
+    
     setColor(color.rgb);
   };
 
-  handleAlphaChange = (color) => {
+ /* handleAlphaChange = (color) => {
     let {setOpacity} = this.props;
     setOpacity(color.rgb.a);
-  };
+  }; */
 
 
   render() {
-    let {color, classes, theme, setColor, setOpacity, colorChanged} = this.props;
+    let {color, classes, theme, setColor, colorChanged} = this.props;
 
     let colorString = rgbObj2Css(color);
     let swatchDiv = document.getElementById('swatch');
@@ -92,7 +94,7 @@ class ColorPicker extends React.Component {
     
 
     return (
-      <div>
+      <div style={{width:'auto'}}>
         <div id = 'swatch' className={ classes.swatch } onClick={ this.handleClick }>
           <div className={ classes.color} 
               style={{backgroundColor: `${colorString}`,
@@ -103,7 +105,7 @@ class ColorPicker extends React.Component {
           <div className = {classes.cover} onClick={ this.handleClose }/>
           <div id={'picker'} className = {pickerClasses}>
             <ChromePicker
-              color={colorString}
+              color={color}
               onChangeComplete={this.handleColorChange}/>
           </div>
         </div>
