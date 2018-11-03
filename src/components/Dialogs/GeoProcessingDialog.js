@@ -18,6 +18,8 @@ import MultiLayerSelect from '../MultiLayerSelect';
 import LayerNameTextField from '../LayerNameTextField';
 import { withSnackbar } from 'notistack';
 import roundToNdecimals from '../../utils/roundToNdecimals';
+import DialogFeedback from '../DialogContent/DialogFeedback';
+import BboxTextField from '../BboxTextField';
 
 const BufferContent = Loadable({
   loader: () => import('../DialogContent/BufferContent'),
@@ -53,7 +55,8 @@ const styles = theme => ({
         layerIds: [], //Ids of the selectedLayers
         outputName:'',
         errorMessage:'',
-        distance: ''
+        distance: '',
+        bbox: []
     }
 
     componentDidMount() {
@@ -120,14 +123,15 @@ const styles = theme => ({
 
       if (type === 'buffer') {       
         newJson = processingFunction(selectedLayersDataList[0], distance);       
-      } else if (type === 'bbox') {
+      }
+      
+      if (type === 'bbox') {
        let res = processingFunction(selectedLayersDataList)
         newJson = res.newJson;
         if(res.bbox) {
           feedbackText = 'bbox calculated. [minX, minY, maxX, maxY] = [ ' +  roundToNdecimals(res.bbox[0] ,4) + ', '  +  roundToNdecimals(res.bbox[1] ,4) + ', ' +  roundToNdecimals(res.bbox[2] ,4) + ', ' +  roundToNdecimals(res.bbox[3] ,4) + ' ]';
         }
-        
-      }
+      } 
       
       else { //intersect, union or distance
         newJson = processingFunction(selectedLayersDataList[0], selectedLayersDataList[1]);
@@ -161,6 +165,10 @@ const styles = theme => ({
 
     changeDistance = (value) => {
       this.setState({distance: value});
+    }
+
+    setBbox = (bbox) => {
+      this.setState({bbox: bbox});
     }
     
 
@@ -213,6 +221,29 @@ const styles = theme => ({
                   promt={'Output layer name'} />          
             </DialogContent> );
 
+        }
+        if (type === 'voronoi') {
+          let layerOptions = layers.filter(layer => layer.type === "Point");
+
+          return (
+            <DialogContent classes={{root: classes.dialogPaper}} >
+            <DialogFeedback message={type + ' operation only accepts Point layers'}/>
+                
+                <MultiLayerSelect
+                layers={layerOptions}
+                setLayerIds={this.setLayerIds.bind(this)}
+                />
+                <LayerNameTextField
+                  layerName={outputName}
+                  setName={this.setName.bind(this)}
+                  defaultName={outputName}
+                  layers={layers}
+                  layerIndex={-1}
+                  promt={'Output layer name'} /> 
+                <BboxTextField
+                  layers={layerOptions}
+                  setBbox={this.setBbox.bind(this)}/>
+            </DialogContent> );
         }
 
         return (
