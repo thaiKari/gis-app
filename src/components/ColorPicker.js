@@ -46,13 +46,19 @@ class ColorPicker extends React.Component {
   };
 
   handleClick = () => {
-    this.setState({ displayColorPicker: !this.state.displayColorPicker });
-    let pickerDiv = document.getElementById('picker');
-    console.log(pickerDiv, '?')
+    this.setState({ displayColorPicker: true });
+    const {setPickerOpen} = this.props;
+    if(setPickerOpen) {
+      setPickerOpen(true);
+    }
   };
 
   handleClose = () => {
-    this.setState({ displayColorPicker: false })
+    this.setState({ displayColorPicker: false });
+    const {setPickerOpen} = this.props;
+    if(setPickerOpen) {
+      setPickerOpen(false);
+    }
   };
 
   handleColorChange = (color) => {
@@ -73,13 +79,10 @@ class ColorPicker extends React.Component {
     let swatchDiv = document.getElementById('swatch');
     let pickerDivOverflow = false;
     if (swatchDiv) {
-      console.log('Found it!')
       let swatchRect = swatchDiv.getBoundingClientRect()
-      console.log(window.innerHeight - swatchRect.bottom - 250 ); //250 is picker height
       if ( (window.innerHeight - swatchRect.bottom - 250) < 0 ) {
         pickerDivOverflow = true;
       }
-      
     }
     
     var pickerClasses = classNames({

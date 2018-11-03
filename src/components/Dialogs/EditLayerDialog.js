@@ -13,13 +13,17 @@ import rgbCss2Obj from '../../utils/rgbCss2Obj';
 import rgbObj2Css from '../../utils/rgbObj2Css';
 import ColorPicker from '../ColorPicker';
 import LayerNameTextField from '../LayerNameTextField';
+import classNames from 'classnames';
 
 const styles = theme => ({
   dialogPaper: {
     minHeight: '50vh',
-    overflowY: 'visible',
-    //overflowX:'hidden',
+    //overflowY: 'visible',
+    overflowX:'hidden',
     maxHeight: '100vh'
+  },
+  dialogPaperNoScroll: {
+    overflowY: 'visible',
   },
   spaced: {
     marginBottom: 50,
@@ -39,7 +43,12 @@ class EditLayerDialog extends React.Component {
     colorChanged: false,
     layerIndex: null,
     layerName: '',
+    pickerOpen: false
   };
+
+  setPickerOpen = (pickerOpen) => {
+    this.setState({pickerOpen});
+  }
 
   submitChanges = () => {
     const {color, layerIndex, layerName } = this.state;
@@ -135,12 +144,17 @@ class EditLayerDialog extends React.Component {
   }
   
   getContent = () => {
-    let {layerIndex, color, colorChanged, layerName,} = this.state;
+    let {layerIndex, color, colorChanged, layerName, pickerOpen} = this.state;
     const {layers, classes, theme} = this.props;
+
+    var paperClasses = classNames({
+      [classes.dialogPaper]: true,
+      [classes.dialogPaperNoScroll]: pickerOpen
+    });
     
 
     return (
-    <DialogContent className={classes.dialogPaper}>
+    <DialogContent className={paperClasses}>
       <form className={classes.container}>
         <LayersSelect
           className={classes.spaced}
@@ -161,7 +175,8 @@ class EditLayerDialog extends React.Component {
           setColor={this.setColor.bind(this)}
           setOpacity={this.setOpacity.bind(this)}
           color={color}
-          colorChanged={colorChanged}/> 
+          colorChanged={colorChanged}
+          setPickerOpen={this.setPickerOpen.bind(this)}/> 
         </div> : null}  
         
     </DialogContent> );
@@ -172,7 +187,10 @@ class EditLayerDialog extends React.Component {
 
   render() {
     const {open, layers, classes} = this.props;
-    const {layerName} = this.state;
+    const {layerName, pickerOpen} = this.state;
+
+    console.log(pickerOpen);
+    
 
     let content = layers.length > 0 ?
       this.getContent()
@@ -188,6 +206,11 @@ class EditLayerDialog extends React.Component {
       : 
       <OkAction ok={this.handleClose}/>
 
+      var paperClasses = classNames({
+        [classes.dialogPaper]: true,
+        [classes.dialogPaperNoScroll]: pickerOpen
+      });
+
     return (
       <div>
 
@@ -197,7 +220,7 @@ class EditLayerDialog extends React.Component {
           onClose={this.handleClose}
           scroll={'paper'}
           aria-labelledby="scroll-dialog-title"
-          classes={{ paper: classes.dialogPaper }}
+          classes={{ paper: paperClasses }}
           
         >
             <DialogTitle id="scroll-dialog-title">Edit Layers</DialogTitle>
