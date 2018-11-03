@@ -33,7 +33,7 @@ const styles = theme => ({
         alignItems: 'center',
         justifyContent: 'center',
         flexWrap: 'wrap',
-        zIndex: 10000,
+        //zIndex: 10000,
         backgroundColor: theme.palette.grey[700]
       },
       smoothTransition: {
