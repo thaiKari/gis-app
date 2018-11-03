@@ -43,13 +43,10 @@ const styles = theme => ({
       },
       paper: {
         position: 'absolute',
-        zIndex: 1000000,
+        zIndex: 1,
         marginTop: theme.spacing.unit,
         left: 0,
         right: 0,
-        overflow: 'visible',
-        overflowX: 'hidden',
-        maxWidth: '100vh'
       },
       divider: {
         height: theme.spacing.unit * 2,
@@ -146,7 +143,7 @@ const styles = theme => ({
   
   function Menu(props) {
     return (
-      <Paper square className={props.selectProps.classes.paper}>
+      <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
         {props.children}
       </Paper>
     );
@@ -189,6 +186,10 @@ const styles = theme => ({
         
         setLayerIds(selectedIds)
 
+        this.setState({
+          multi: value,
+        });
+
       };
     
     render() {
@@ -205,6 +206,8 @@ const styles = theme => ({
             },
           }),
         };
+
+        console.log(this.state)
 
   
       return (
@@ -229,8 +232,6 @@ const styles = theme => ({
             </NoSsr>
         </div>
       );
-  
-  
     }
 
   }

@@ -138,7 +138,7 @@ const styles = theme => ({
         let succesMessage =  type + ' layer was successfully created';
         feedbackText = feedbackText ? feedbackText : succesMessage;
         try {
-          enqueueSnackbar(feedbackText, {variant: 'success', autoHideDuration: 10000000});
+          enqueueSnackbar(feedbackText, {variant: 'success'});
         } catch (error) {
           console.log('error supressed')
         }
@@ -202,7 +202,8 @@ const styles = theme => ({
             <DialogContent classes={{root: classes.dialogPaper}} >
                 <MultiLayerSelect
                 layers={layers}
-                setLayerIds={this.setLayerIds.bind(this)}/>
+                setLayerIds={this.setLayerIds.bind(this)}
+                />
                 <LayerNameTextField
                   layerName={outputName}
                   setName={this.setName.bind(this)}
