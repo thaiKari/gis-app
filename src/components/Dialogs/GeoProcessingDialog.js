@@ -12,12 +12,17 @@ import differenceFunction from '../../utils/geoprocessing/differenceFunction';
 import unionFunction from '../../utils/geoprocessing/unionFunction';
 import bufferFunction from '../../utils/geoprocessing/bufferFunction';
 import bboxFunction from '../../utils/geoprocessing/bboxFunction';
+import voronoiFunction from '../../utils/geoprocessing/voronoiFunction';
 import Loadable from 'react-loadable'
 import LoadingCircular from '../../utils/Loading/LoadingCirular';
 import MultiLayerSelect from '../MultiLayerSelect';
 import LayerNameTextField from '../LayerNameTextField';
 import { withSnackbar } from 'notistack';
 import roundToNdecimals from '../../utils/roundToNdecimals';
+import DialogFeedback from '../DialogContent/DialogFeedback';
+import BboxTextField from '../BboxTextField';
+import findLayerById from '../../utils/findLayerById';
+
 
 const BufferContent = Loadable({
   loader: () => import('../DialogContent/BufferContent'),
@@ -34,11 +39,14 @@ const LayerLayerGeoprocessingContent = Loadable({
 const styles = theme => ({
     dialogPaper: {
         minHeight: '50vh',
-        overflowY: "visible",
+        //overflowY: "visible",
         maxHeight: '100vh'
       },
       spaced: {
         marginBottom: 50,
+      },
+      spacedALittle: {
+        marginTop: theme.spacing.unit *3
       },
       container: {
         display: 'flex',
@@ -53,7 +61,8 @@ const styles = theme => ({
         layerIds: [], //Ids of the selectedLayers
         outputName:'',
         errorMessage:'',
-        distance: ''
+        distance: '',
+        bbox: ['','','','']
     }
 
     componentDidMount() {
@@ -91,26 +100,24 @@ const styles = theme => ({
           case 'bbox':
             func = bboxFunction;
             break;
+          case 'voronoi':
+            func = voronoiFunction;
+            break;
           default:
             break;
         }
         this.setState({processingFunction: func});
       }
-    
-    findLayerById = (layerId) => {
-      const {layers} = this.props;
-      return layers.find( l => l.id === layerId );
-    }
 
     calculate = () => {
-    const {closeDialog, receiveNewJson, type, enqueueSnackbar} = this.props;
-    const {processingFunction, layerIds, outputName, distance} = this.state;
+    const {closeDialog, receiveNewJson, type, enqueueSnackbar, layers} = this.props;
+    const {bbox, processingFunction, layerIds, outputName, distance} = this.state;
     
     let selectedLayersDataList = [];
 
     for (var i in layerIds ) {
       //let layer = layers.find( l => l.id === layerIds[i] );
-      let layer = this.findLayerById(layerIds[i]);
+      let layer = findLayerById(layerIds[i], layers);
       let data = layer ? layer.data : null;
       selectedLayersDataList.push( data ) 
     }
@@ -120,14 +127,18 @@ const styles = theme => ({
 
       if (type === 'buffer') {       
         newJson = processingFunction(selectedLayersDataList[0], distance);       
-      } else if (type === 'bbox') {
+      }
+      
+      if (type === 'bbox') {
        let res = processingFunction(selectedLayersDataList)
         newJson = res.newJson;
         if(res.bbox) {
           feedbackText = 'bbox calculated. [minX, minY, maxX, maxY] = [ ' +  roundToNdecimals(res.bbox[0] ,4) + ', '  +  roundToNdecimals(res.bbox[1] ,4) + ', ' +  roundToNdecimals(res.bbox[2] ,4) + ', ' +  roundToNdecimals(res.bbox[3] ,4) + ' ]';
         }
-        
       }
+      if (type === 'voronoi') {
+        newJson = processingFunction(selectedLayersDataList, bbox)
+       }
       
       else { //intersect, union or distance
         newJson = processingFunction(selectedLayersDataList[0], selectedLayersDataList[1]);
@@ -138,7 +149,7 @@ const styles = theme => ({
         let succesMessage =  type + ' layer was successfully created';
         feedbackText = feedbackText ? feedbackText : succesMessage;
         try {
-          enqueueSnackbar(feedbackText, {variant: 'success', autoHideDuration: 10000000});
+          enqueueSnackbar(feedbackText, {variant: 'success'});
         } catch (error) {
           console.log('error supressed')
         }
@@ -149,6 +160,10 @@ const styles = theme => ({
        }
        
     };
+
+    setError = (message) => {
+      this.setState({errorMessage: message});
+    }
 
     handleClose = () => {
         const {closeDialog} = this.props;
@@ -162,11 +177,15 @@ const styles = theme => ({
     changeDistance = (value) => {
       this.setState({distance: value});
     }
+
+    setBbox = (bbox) => {
+      this.setState({bbox: bbox});
+    }
     
 
     getContent = type => {
       const {layers, classes} = this.props;
-      const {outputName, errorMessage, distance, layerIds} = this.state;
+      const {outputName, errorMessage, distance, layerIds, bbox} = this.state;
       
       if(type === 'intersect' || type === 'difference' || type === 'union'){
 
@@ -202,7 +221,8 @@ const styles = theme => ({
             <DialogContent classes={{root: classes.dialogPaper}} >
                 <MultiLayerSelect
                 layers={layers}
-                setLayerIds={this.setLayerIds.bind(this)}/>
+                setLayerIds={this.setLayerIds.bind(this)}
+                />
                 <LayerNameTextField
                   layerName={outputName}
                   setName={this.setName.bind(this)}
@@ -212,6 +232,37 @@ const styles = theme => ({
                   promt={'Output layer name'} />          
             </DialogContent> );
 
+        }
+        if (type === 'voronoi') {
+          let layerOptions = layers.filter(layer => layer.type === "Point");
+          return (
+            <DialogContent classes={{root: classes.dialogPaper}} >
+            <DialogFeedback message={type + ' operation only accepts Point layers'}/>
+            {errorMessage.length > 0 ?
+                <DialogFeedback message={errorMessage} variant={'error'} />
+                : null
+              }   
+                <div className={classes.spacedALittle}></div>
+                <MultiLayerSelect
+                className={classes.spacedALittle}
+                layers={layerOptions}
+                setLayerIds={this.setLayerIds.bind(this)}
+                />
+                <div className={classes.spacedALittle}></div>
+                <BboxTextField
+                  layers={layerOptions}
+                  setBbox={this.setBbox.bind(this)}
+                  bbox={bbox}
+                  layerIds={layerIds}
+                  setError={this.setError.bind(this)}/>
+                <LayerNameTextField
+                  layerName={outputName}
+                  setName={this.setName.bind(this)}
+                  defaultName={outputName}
+                  layers={layers}
+                  layerIndex={-1}
+                  promt={'Output layer name'} /> 
+            </DialogContent> );
         }
 
         return (

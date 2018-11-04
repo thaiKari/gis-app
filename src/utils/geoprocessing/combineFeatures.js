@@ -1,4 +1,5 @@
 //combines the features of two feature collections into one
+// can have duplicates
 const combineFeatures = (featureCollectionList) => {
 
     let newGeojson = {
