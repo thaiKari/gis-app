@@ -129,18 +129,18 @@ const styles = theme => ({
         newJson = processingFunction(selectedLayersDataList[0], distance);       
       }
       
-      if (type === 'bbox') {
+      else if (type === 'bbox') {
        let res = processingFunction(selectedLayersDataList)
         newJson = res.newJson;
         if(res.bbox) {
           feedbackText = 'bbox calculated. [minX, minY, maxX, maxY] = [ ' +  roundToNdecimals(res.bbox[0] ,4) + ', '  +  roundToNdecimals(res.bbox[1] ,4) + ', ' +  roundToNdecimals(res.bbox[2] ,4) + ', ' +  roundToNdecimals(res.bbox[3] ,4) + ' ]';
         }
       }
-      if (type === 'voronoi') {
+      else if (type === 'voronoi') {
         newJson = processingFunction(selectedLayersDataList, bbox)
        }
       
-      else { //intersect, union or distance
+      else if (type === 'intersect' || type === 'union'  || type === 'difference'){
         newJson = processingFunction(selectedLayersDataList[0], selectedLayersDataList[1]);
       }
 
