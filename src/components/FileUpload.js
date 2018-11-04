@@ -1,6 +1,7 @@
 import React, {Component}  from 'react';
 import Dropzone from 'react-dropzone'
 import { withStyles } from '@material-ui/core/styles';
+import { withSnackbar } from 'notistack';
 
 const styles = theme => ({
   
@@ -14,6 +15,8 @@ const styles = theme => ({
 
     setupReader(file) {
         var {receiveNewJson} = this.props;
+        const { enqueueSnackbar } = this.props; 
+
         var reader = new FileReader();
 
         if( file.type ==="application/json") {
@@ -43,6 +46,8 @@ const styles = theme => ({
             }
 
             reader.readAsText(file);           
+        } else {
+            enqueueSnackbar('type ' + file.type + ' is not supported', {variant: 'error'});
         }
     }
 
@@ -69,4 +74,4 @@ const styles = theme => ({
     }
   }
 
-export default withStyles(styles, { withTheme: true })(FileUpload);
+export default withStyles(styles, { withTheme: true })(withSnackbar(FileUpload));

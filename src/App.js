@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {MuiThemeProvider, createMuiTheme, withStyles} from '@material-ui/core/styles';
 import './App.css';
-import ToolbarIconButton from './layout/ToolbarIconButton';
+//import ToolbarIconButton from './layout/ToolbarIconButton';
 import reorder from './utils/reorderList'
 import {teal, amber} from '@material-ui/core/colors';
 import {IconButton} from '@material-ui/core';
@@ -11,8 +11,10 @@ import findIndexWithAttribute from './utils/findIndexWithAttribute';
 import Loadable from 'react-loadable'
 import LoadingFullPage from './utils/Loading/LoadingFullpageCirular';
 import checkIfLayerNameExists from './utils/checkIfLayerNameExists';
-import DrawerBtn from './components/DrawerBtn';
+//import DrawerBtn from './components/DrawerBtn';
 import { SnackbarProvider } from 'notistack';
+import SnackbarQuer from './components/SnackbarQuer';
+
 
 const ToolkitBar = Loadable({
   loader: () => import('./layout/ToolkitBar'),
@@ -28,6 +30,18 @@ const Map = Loadable({
 
 const LayerBar = Loadable({
   loader: () => import('./layout/LayerBar'),
+  delay: 300, // 0.3 seconds
+  loading: LoadingFullPage
+});
+
+const ToolbarIconButton = Loadable({
+  loader: () => import('./layout/ToolbarIconButton'),
+  delay: 300, // 0.3 seconds
+  loading: LoadingFullPage
+});
+
+const DrawerBtn = Loadable({
+  loader: () => import('./components/DrawerBtn'),
   delay: 300, // 0.3 seconds
   loading: LoadingFullPage
 });
@@ -79,6 +93,7 @@ const theme = createMuiTheme({
     moveLayerUnder: [], //Array with values [layerID, layerAboveID]. Change in state prompts map
     deletedLayers:[],
     drawerWidth: 240,
+    acceptedTypes: ['Polygon', 'MultiPolygon', 'Point', 'LineString']
   };
   
   changeDrawerWidth = (newWidth) => {
@@ -96,15 +111,24 @@ const theme = createMuiTheme({
   }
 
   receiveNewJson = (json, name) => {
-    let {layers, layersChange} = this.state;
+    let {layers, layersChange, acceptedTypes} = this.state;
     let newName = this.checkLayerName(name)
     var layer = createJsonLayer(json, newName, layers.length -1)
+    
 
-    layers.unshift(layer);
-    layersChange = !layersChange;
-    this.setState({
-      layers: layers,
-      layersChange: layersChange });
+    if( !layer.type) {
+      this.setState({ snackbarMessages: {message: layer, options: {variant: 'error'}}  });
+    } else if ( !acceptedTypes.includes(layer.type) ) {
+      this.setState({ snackbarMessages: {message: 'type ' + layer.type + ' is not supported', options: {variant: 'error'}}  });
+    }
+    
+    else {
+      layers.unshift(layer);
+      layersChange = !layersChange;
+      this.setState({
+        layers: layers,
+        layersChange: layersChange });
+    }
   }
 
   addLayers = (newLayers) => {
@@ -217,7 +241,8 @@ const theme = createMuiTheme({
       toolDrawerOpen,
       layers,
       layersChange,
-      drawerWidth } = this.state;
+      drawerWidth,
+      snackbarMessages } = this.state;
 
     return (
 
@@ -233,6 +258,8 @@ const theme = createMuiTheme({
 
       <div className={classes.root}>
         <div className={classes.appFrame}>
+
+          <SnackbarQuer messages={snackbarMessages}/>
 
           <ToolbarIconButton
             toolDrawerOpen={toolDrawerOpen}
