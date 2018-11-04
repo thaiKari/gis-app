@@ -12,6 +12,7 @@ import differenceFunction from '../../utils/geoprocessing/differenceFunction';
 import unionFunction from '../../utils/geoprocessing/unionFunction';
 import bufferFunction from '../../utils/geoprocessing/bufferFunction';
 import bboxFunction from '../../utils/geoprocessing/bboxFunction';
+import voronoiFunction from '../../utils/geoprocessing/voronoiFunction';
 import Loadable from 'react-loadable'
 import LoadingCircular from '../../utils/Loading/LoadingCirular';
 import MultiLayerSelect from '../MultiLayerSelect';
@@ -21,6 +22,7 @@ import roundToNdecimals from '../../utils/roundToNdecimals';
 import DialogFeedback from '../DialogContent/DialogFeedback';
 import BboxTextField from '../BboxTextField';
 import findLayerById from '../../utils/findLayerById';
+
 
 const BufferContent = Loadable({
   loader: () => import('../DialogContent/BufferContent'),
@@ -98,20 +100,18 @@ const styles = theme => ({
           case 'bbox':
             func = bboxFunction;
             break;
+          case 'voronoi':
+            func = voronoiFunction;
+            break;
           default:
             break;
         }
         this.setState({processingFunction: func});
       }
-    
-    /*findLayerById = (layerId) => {
-      const {layers} = this.props;
-      return layers.find( l => l.id === layerId );
-    }*/
 
     calculate = () => {
     const {closeDialog, receiveNewJson, type, enqueueSnackbar, layers} = this.props;
-    const {processingFunction, layerIds, outputName, distance} = this.state;
+    const {bbox, processingFunction, layerIds, outputName, distance} = this.state;
     
     let selectedLayersDataList = [];
 
@@ -135,7 +135,10 @@ const styles = theme => ({
         if(res.bbox) {
           feedbackText = 'bbox calculated. [minX, minY, maxX, maxY] = [ ' +  roundToNdecimals(res.bbox[0] ,4) + ', '  +  roundToNdecimals(res.bbox[1] ,4) + ', ' +  roundToNdecimals(res.bbox[2] ,4) + ', ' +  roundToNdecimals(res.bbox[3] ,4) + ' ]';
         }
-      } 
+      }
+      if (type === 'voronoi') {
+        newJson = processingFunction(selectedLayersDataList, bbox)
+       }
       
       else { //intersect, union or distance
         newJson = processingFunction(selectedLayersDataList[0], selectedLayersDataList[1]);

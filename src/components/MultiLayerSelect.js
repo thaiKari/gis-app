@@ -207,8 +207,6 @@ const styles = theme => ({
           }),
         };
 
-        console.log(this.state)
-
   
       return (
         <div className={classes.root}>
