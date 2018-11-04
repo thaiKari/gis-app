@@ -1,19 +1,40 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { TextField } from '@material-ui/core';
+import { TextField, Button, Typography } from '@material-ui/core';
+import findLayerById from '../utils/findLayerById';
+import bboxFunction from '../utils/geoprocessing/bboxFunction';
 
 const styles = theme => ({
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        width: 100,
+        width: 150,
       },
   });
 
   class BboxTextField extends Component {
-    state = {
-        bbox:[0,0,0,0]
+
+    calculateBbox = () => {
+        let { layerIds, setBbox, layers, setError } = this.props;
+
+        let selectedLayersDataList = [];
+
+        for (var i in layerIds ) {
+            let layer = findLayerById(layerIds[i], layers);
+            let data = layer ? layer.data : null;
+            selectedLayersDataList.push( data ) 
+          }
+        
+        let res = bboxFunction(selectedLayersDataList)
+        if(res.bbox) {
+            setBbox(res.bbox);
+        } else {
+            setError(res.newJson);
+        }
+        
+        
     }
+
 
     handleChange = index => event => {
         let {bbox} = this.state;
@@ -25,12 +46,13 @@ const styles = theme => ({
       };
     
     render() {
-    const { bbox } = this.state
-      const { classes } = this.props;
+    
+      const { classes, theme, bbox } = this.props;
       // minX, minY, maxX, maxY]
   
       return (
         <div>
+            <Typography style={{marginTop: theme.spacing.unit}} variant='caption'>Bounding box</Typography>
             <div style={{ display: 'flex', justifyContent: 'space-between'}}>
             <TextField
                 label="minX"
@@ -60,6 +82,9 @@ const styles = theme => ({
                 onChange={this.handleChange(3)}
                 margin="normal"
                 />
+            </div>
+            <div style={{display:'flex', justifyContent: 'flex-end'}}>
+                <Button color='secondary' onClick={this.calculateBbox}>Calculate bbox from geometry</Button>
             </div>
 
         </div>
