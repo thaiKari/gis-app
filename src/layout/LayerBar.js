@@ -6,6 +6,8 @@ import DragNDropBox from '../components/DragNDropBox';
 import LayersToolbar from '../components/LayersToolbar';
 import Loading from '../utils/Loading/Loading';
 import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
+import { withSnackbar } from 'notistack';
+
 
 import Loadable from 'react-loadable'
 
@@ -313,7 +315,7 @@ const styles = theme => ({
 
   }
 
-export default withStyles(styles, { withTheme: true })(LayerBar);
+export default withStyles(styles, { withTheme: true })(withSnackbar(LayerBar));
 
 /**
  * OLD HEADER

@@ -1,6 +1,7 @@
 import React, {Component}  from 'react';
 import Dropzone from 'react-dropzone'
 import { withStyles } from '@material-ui/core/styles';
+import { withSnackbar } from 'notistack';
 
 const styles = theme => ({
   
@@ -9,11 +10,15 @@ const styles = theme => ({
   class FileUpload extends Component {
     constructor() {
         super()
-        this.state = { };
+        this.state = {
+
+         };
       }
 
-    setupReader(file) {
+    setupReader(file, cb) {
         var {receiveNewJson} = this.props;
+        const { enqueueSnackbar } = this.props; 
+
         var reader = new FileReader();
 
         if( file.type ==="application/json") {
@@ -27,9 +32,11 @@ const styles = theme => ({
                         var name = file.name.replace('.json', '');
 
                         receiveNewJson(json, name);
+                        file.valid = true;
+                        
 
                     } catch (ex) {
-                        console.log('error parsing JSON', ex);
+                        enqueueSnackbar('something went wrong while reading ' + file.name, {variant: 'error'});
                     }
                 }
             })(file);
@@ -40,19 +47,32 @@ const styles = theme => ({
 
             reader.onloadend = () => {
                 //console.log('done Loading!')
+                cb(); 
             }
 
-            reader.readAsText(file);           
+            reader.readAsText(file);
+                    
+        } else {
+            file.valid = false;
+            enqueueSnackbar(file.name +  ': type ' + file.type + ' is not supported' , {variant: 'error'});
+            cb();
         }
+
+        
+
     }
 
     readFiles(files){
+        const { enqueueSnackbar } = this.props;
+        enqueueSnackbar('processing ' + files.length + ' files',  {variant: 'info'});
 
-        for( var i in files) {            
-            var file = files[i];
-            this.setupReader(file);
-        }
+        let requests = files.map((file) => {
+            return new Promise((resolve) => {
+                this.setupReader(file, resolve);
+            });
+        })
         
+        Promise.all(requests).then(() => enqueueSnackbar('Done reading files', {variant: 'success'}));        
     }
     
     render() {
@@ -69,4 +89,4 @@ const styles = theme => ({
     }
   }
 
-export default withStyles(styles, { withTheme: true })(FileUpload);
+export default withStyles(styles, { withTheme: true })(withSnackbar(FileUpload));

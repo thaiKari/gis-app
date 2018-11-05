@@ -3,6 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import FileUpload from './FileUpload';
 import { Typography, Button } from '../../node_modules/@material-ui/core';
 import classNames from 'classnames';
+import { withSnackbar } from 'notistack';
+
 
 const styles = theme => ({
     dropBox: {
@@ -68,4 +70,4 @@ const styles = theme => ({
 
   }
 
-export default withStyles(styles, { withTheme: true })(DragNDropBox);
+export default withStyles(styles, { withTheme: true })(withSnackbar(DragNDropBox));
