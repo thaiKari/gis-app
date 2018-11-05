@@ -27,8 +27,6 @@ const styles = theme => ({
     }
     
     render() {
-
-      const {} = this.props;
   
       return (
         <div></div>

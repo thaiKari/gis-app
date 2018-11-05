@@ -80,7 +80,11 @@ const theme = createMuiTheme({
       width: '100%',
     },
     snackbarMessage: {
-      color:'white'
+      color:'white',
+      overflowX: 'visible'
+    },
+    allowFullWidth: {
+      maxWidth: '100%'
     }
   });
   
@@ -119,7 +123,7 @@ const theme = createMuiTheme({
     if( !layer.type) {
       this.setState({ snackbarMessages: {message: layer, options: {variant: 'error'}}  });
     } else if ( !acceptedTypes.includes(layer.type) ) {
-      this.setState({ snackbarMessages: {message: 'type ' + layer.type + ' is not supported', options: {variant: 'error'}}  });
+      this.setState({ snackbarMessages: {message: name + ': type ' + layer.type + ' is not supported', options: {variant: 'error'}}  });
     }
     
     else {
@@ -250,6 +254,10 @@ const theme = createMuiTheme({
         <SnackbarProvider
           classes={{
             message: classes.snackbarMessage, // class name, e.g. `classes-nesting-root-x`
+            variantSuccess: classes.allowFullWidth,
+            variantError: classes.allowFullWidth,
+            variantWarning: classes.allowFullWidth,
+            variantInfo: classes.allowFullWidth,
           }}
           maxSnack={4}
           action={[
