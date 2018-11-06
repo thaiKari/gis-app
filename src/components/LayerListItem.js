@@ -31,7 +31,15 @@ const styles = theme => ({
     render() {
     
       const {hoverVisible} = this.state;
-      const {deleteLayer, classes, theme, layer, index, layerSelected, handleListItemClick, toggleVisibility } = this.props;
+      const {deleteLayer,
+        classes,
+        theme,
+        layer,
+        index,
+        layerSelected,
+        handleListItemClick,
+        toggleVisibility,
+        handleListItemRightClick } = this.props;
       var textColor = layer.visible ? 'textPrimary' : 'textSecondary'
       var visibleIcon = layer.visible ? <VisibleIcon/> : <NotVisibleIcon style={{color: theme.palette.text.disabled}} />
   
@@ -63,7 +71,8 @@ const styles = theme => ({
           button
           style={{padding:5, overflow:'hidden'}}
           selected={layerSelected}
-          onClick={event => handleListItemClick(layer.id)}>
+          onClick={event => handleListItemClick(layer.id)}
+          onContextMenu={event => {handleListItemRightClick(layer.id, event.currentTarget); event.preventDefault();}}>
 
           {visibilityIcon}
 
