@@ -12,7 +12,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import UploadContent from '../DialogContent/UploadContent';
 import createJsonLayer from '../../utils/createJsonLayer';
 import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
-
+import { withSnackbar } from 'notistack';
 
 const styles = theme => ({
 
@@ -28,14 +28,24 @@ class AddLayerDialog extends React.Component {
 
   handleFile(json, name) {
     let {layers} = this.state;
-    const {checkLayerName} = this.props;
+    const {checkLayerName, acceptedTypes, enqueueSnackbar} = this.props;
 
     let newName = checkLayerName(name);
 
     let layer =  createJsonLayer(json, newName, layers.length);
+   // console.log('lyr typ', layer.type);
     layers.push(layer);
 
-    this.setState({layers: layers});
+    if( !(layer.type)) {
+      console.log('SUP', layer.type)
+      //enqueueSnackbar('something went wrong while reading ' + name, {variant: 'error'});
+    } else if ( !acceptedTypes.includes(layer.type) ) {
+      enqueueSnackbar( name + ': type ' + layer.type + ' is not supported', {variant: 'error'});
+    } else {
+      this.setState({layers: layers});
+    }
+
+    
   }
 
   deleteLayer(index) {
@@ -129,4 +139,4 @@ class AddLayerDialog extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(AddLayerDialog);
+export default withStyles(styles, { withTheme: true })(withSnackbar(AddLayerDialog));

@@ -33,13 +33,20 @@ const styles = theme => ({
     render() {
 
       const {addLayerDialogOpen} = this.state;
-      const { classes, layers, hasLayers, addLayers, openDeleteLayersDialog, openEditLayersDialog, checkLayerName } = this.props;
+      const { classes,
+        layers,
+        hasLayers,
+        addLayers,
+        openDeleteLayersDialog,
+        openEditLayersDialog,
+        checkLayerName,
+        acceptedTypes } = this.props;
   
       return (
         <div>
 
         {addLayerDialogOpen ?
-        <AddLayerDialog addLayers={addLayers} checkLayerName={checkLayerName} open={addLayerDialogOpen} closeDialog={this.closeAddLayerDialog.bind(this)}/>    
+        <AddLayerDialog acceptedTypes={acceptedTypes} addLayers={addLayers} checkLayerName={checkLayerName} open={addLayerDialogOpen} closeDialog={this.closeAddLayerDialog.bind(this)}/>    
         : null}
         <Divider />
         <Toolbar className={classes.layersToolbar} disableGutters={true}>

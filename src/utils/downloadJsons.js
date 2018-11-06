@@ -7,7 +7,6 @@ const downloadJsons = (layers ) => {
     let usedNames = {};
     
     layers.forEach(layer => {
-        console.log(usedNames);
         let filename = layer.displayName;
         let i = 1;
         

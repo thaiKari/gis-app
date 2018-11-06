@@ -246,7 +246,8 @@ const theme = createMuiTheme({
       layers,
       layersChange,
       drawerWidth,
-      snackbarMessages } = this.state;
+      snackbarMessages,
+      acceptedTypes } = this.state;
 
     return (
 
@@ -285,7 +286,8 @@ const theme = createMuiTheme({
             addLayers={this.addLayers.bind(this)}
             checkLayerName={this.checkLayerName.bind(this)}
             deleteLayers={this.deleteLayers.bind(this)}
-            submitChanges={this.submitChanges.bind(this)}/>
+            submitChanges={this.submitChanges.bind(this)}
+            acceptedTypes={acceptedTypes}/>
           {toolDrawerOpen ?
           <ToolkitBar
             toolDrawerOpen={toolDrawerOpen}

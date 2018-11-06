@@ -131,9 +131,7 @@ changeColor(colorChange) {
       const {layers} = this.props;
 
       if (!this._map.isStyleLoaded()) {
-        
-        //this.waitForStyleLoad(this.handleSingleLayerVisibility.bind(this), layer, i);
-        this.waitForSomething(this._map.isStyleLoaded(), this.handleSingleLayerVisibility.bind(this), layer, i);
+         this.waitForSomething(this._map.isStyleLoaded(), this.handleSingleLayerVisibility.bind(this), layer, i);
       } else if ( i > 0 && !this._map.getSource(layers[i-1].id) && !unidentifiedLayerType[layers[i-1].id] ) {
         this.waitForSomething(this._map.getSource(layers[i-1].id), this.handleSingleLayerVisibility.bind(this), layer, i)
       }
@@ -155,8 +153,8 @@ changeColor(colorChange) {
               break;
             default:
               console.log('unidentified layer type', layer.type);
-              unidentifiedLayerType.push(layer.id);
-              this.setState({unidentifiedLayerType: unidentifiedLayerType})
+              //unidentifiedLayerType.push(layer.id);
+              //this.setState({unidentifiedLayerType: unidentifiedLayerType})
           }
           
         } else {

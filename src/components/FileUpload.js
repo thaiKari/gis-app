@@ -36,6 +36,7 @@ const styles = theme => ({
                         
 
                     } catch (ex) {
+                        console.log(ex)
                         enqueueSnackbar('something went wrong while reading ' + file.name, {variant: 'error'});
                     }
                 }

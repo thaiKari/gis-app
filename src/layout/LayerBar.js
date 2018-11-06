@@ -234,7 +234,8 @@ const styles = theme => ({
         toggleVisibility,
         checkLayerName,
         submitChanges,
-        drawerWidth} = this.props;
+        drawerWidth,
+        acceptedTypes} = this.props;
       const {selectedLayers,
         deleteLayersDialogOpen,
         editLayersDialogOpen,
@@ -242,7 +243,6 @@ const styles = theme => ({
         } = this.state;
 
         let hasLayers = layers.length > 0;
-
       return (
         <div style={{
           position: 'absolute',
@@ -291,7 +291,8 @@ const styles = theme => ({
         addLayers={addLayers}
         hasLayers={hasLayers}
         checkLayerName={checkLayerName}
-        layers={layers}/>
+        layers={layers}
+        acceptedTypes={acceptedTypes}/>
   
         <div className={classes.content}>
 

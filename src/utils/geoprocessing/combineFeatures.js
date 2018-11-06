@@ -1,9 +1,6 @@
 //combines the features of two feature collections into one
 // can have duplicates
 const combineFeatures = (featureCollectionList) => {
-
-  console.log('combineFeatures', featureCollectionList)
-
     let newGeojson = {
       "type": "FeatureCollection",
       "features": []
