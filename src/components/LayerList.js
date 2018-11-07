@@ -25,8 +25,13 @@ const getItemStyle = (theme, isDragging, draggableStyle ) => ({
 
     render() {
 
-      const {handleListItemClick, onDragEnd, layers, toggleVisibility, theme, selectedLayers } = this.props;
-
+      const {handleListItemClick,
+        handleListItemRightClick,
+        onDragEnd,
+        layers,
+        toggleVisibility,
+        theme,
+        selectedLayers } = this.props;
   
       return (
         <DragDropContext onDragEnd={onDragEnd}>
@@ -53,6 +58,7 @@ const getItemStyle = (theme, isDragging, draggableStyle ) => ({
                       index={index}
                       layerSelected={selectedLayers[layer.id]}
                       handleListItemClick={handleListItemClick}
+                      handleListItemRightClick={handleListItemRightClick}
                       toggleVisibility={toggleVisibility}/>
                       
                     </div>

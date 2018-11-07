@@ -7,9 +7,10 @@ import LayersToolbar from '../components/LayersToolbar';
 import Loading from '../utils/Loading/Loading';
 import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
 import { withSnackbar } from 'notistack';
-
+import RightClickMenu from '../components/RightClickMenu'
 
 import Loadable from 'react-loadable'
+
 
 const DeleteLayerDialog = Loadable({
   loader: () => import('../components/Dialogs/DeleteLayerDialog'),
@@ -59,6 +60,7 @@ const styles = theme => ({
         shiftPressed: false,
         deleteLayersDialogOpen: false,
         editLayersDialogOpen: false,
+        RightClickMenuOpen: false
       }
         this.onDragEnd = this.onDragEnd.bind(this);
     }
@@ -159,6 +161,19 @@ const styles = theme => ({
 
     }
 
+    
+
+    handleListItemRightClick = (layerId, anchorEl) => {
+      this.handleListItemClick(layerId);
+      this.setState({RightClickMenuOpen: true,
+                      anchorEl: anchorEl});
+      return false;
+    }
+
+    closeRightClickMenu = () => {
+      this.setState({RightClickMenuOpen: false});
+    } 
+
     handleListItemClick = (layerId) => {
       
         let {selectedLayers, ctrlPressed, shiftPressed, lastClickedLayer} = this.state;
@@ -235,11 +250,14 @@ const styles = theme => ({
         checkLayerName,
         submitChanges,
         drawerWidth,
-        acceptedTypes} = this.props;
+        acceptedTypes,
+        zoomTo} = this.props;
       const {selectedLayers,
         deleteLayersDialogOpen,
         editLayersDialogOpen,
         lastClickedLayer,
+        RightClickMenuOpen,
+        anchorEl
         } = this.state;
 
         let hasLayers = layers.length > 0;
@@ -261,11 +279,19 @@ const styles = theme => ({
       <div className={classes.drawerHeader}>
         <Toolbar variant="dense">
           <Typography color='primary' variant="h4" gutterBottom style={{flex: 1}}>
-              Gis-App
+              MapitApp
           </Typography>  
         </Toolbar>
             
         </div>
+
+        <RightClickMenu
+          open={RightClickMenuOpen}
+          anchorEl={anchorEl}
+          closeRightClickMenu={this.closeRightClickMenu.bind(this)}
+          drawerWidth={drawerWidth}
+          layerId={lastClickedLayer}
+          zoomTo={zoomTo}/>
         
         {deleteLayersDialogOpen ?
         <DeleteLayerDialog closeDialog={this.closeDeleteLayersDialog.bind(this)}
@@ -302,7 +328,8 @@ const styles = theme => ({
                     toggleVisibility={toggleVisibility}
                     handleListItemClick={this.handleListItemClick.bind(this)}
                     onDragEnd={this.onDragEnd.bind(this)}
-                    selectedLayers={selectedLayers}/>
+                    selectedLayers={selectedLayers}
+                    handleListItemRightClick={this.handleListItemRightClick.bind(this)}/>
           : null}
           <DragNDropBox receiveNewJson={receiveNewJson}/>
         </div>
