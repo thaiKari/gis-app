@@ -97,7 +97,8 @@ const theme = createMuiTheme({
     moveLayerUnder: [], //Array with values [layerID, layerAboveID]. Change in state prompts map
     deletedLayers:[],
     drawerWidth: 240,
-    acceptedTypes: ['Polygon', 'MultiPolygon', 'Point', 'LineString']
+    acceptedTypes: ['Polygon', 'MultiPolygon', 'Point', 'LineString'],
+    zoomTo: ''
   };
   
   changeDrawerWidth = (newWidth) => {
@@ -214,6 +215,11 @@ const theme = createMuiTheme({
     });
   }
 
+  zoomTo = (layerId) => {
+    console.log('zoom to', layerId)
+    this.setState({zoomTo: layerId})
+  }
+
   checkLayerName = (name) => {
     let {layers} = this.state;
     let i = 1;
@@ -247,7 +253,8 @@ const theme = createMuiTheme({
       layersChange,
       drawerWidth,
       snackbarMessages,
-      acceptedTypes } = this.state;
+      acceptedTypes,
+      zoomTo } = this.state;
 
     return (
 
@@ -287,7 +294,8 @@ const theme = createMuiTheme({
             checkLayerName={this.checkLayerName.bind(this)}
             deleteLayers={this.deleteLayers.bind(this)}
             submitChanges={this.submitChanges.bind(this)}
-            acceptedTypes={acceptedTypes}/>
+            acceptedTypes={acceptedTypes}
+            zoomTo = {this.zoomTo.bind(this)}/>
           {toolDrawerOpen ?
           <ToolkitBar
             toolDrawerOpen={toolDrawerOpen}
@@ -302,7 +310,9 @@ const theme = createMuiTheme({
                deletedLayers={deletedLayers}
                colorChange={colorChange}
                drawerWidth={drawerWidth}
-               drawerOpen={drawerOpen}/>
+               drawerOpen={drawerOpen}
+               zoomTo={zoomTo}
+               zoomToReset={this.zoomTo.bind(this)}/>
 
               <DrawerBtn 
               handleDrawerToggle={this.handleDrawerToggle.bind(this)}

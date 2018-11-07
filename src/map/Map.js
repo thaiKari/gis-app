@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import {getSetting} from 'config';
+import bbox from '@turf/bbox';
 
 const styles = theme => ({
     map: {
@@ -63,13 +64,33 @@ componentDidUpdate(prevProps) {
   }
   else if (prevProps.deletedLayers !== this.props.deletedLayers){
     this.removeMapLayers(this.props.deletedLayers);
-  }else if (prevProps.colorChange !== this.props.colorChange){
+  } else if (prevProps.colorChange !== this.props.colorChange){
     this.changeColor(this.props.colorChange);
+  } else if (prevProps.zoomTo != this.props.zoomTo) {
+    if(this.props.zoomTo) {
+      this.zoomToLayer(this.props.zoomTo);
+    }
   }
   else {
     // Assume layer visibility toggled or layer added
     this.updateLayerVisibility();
   }
+}
+
+zoomToLayer(layerId) {
+  const {layers, zoomToReset, drawerWidth, drawerOpen} = this.props;
+  let layer  = layers.find( l => l.id === layerId);
+  let leftPadding = drawerOpen ? drawerWidth + 10 : 10; 
+
+  if(layer) {
+    let minXminYmaxXmaxY = bbox(layer.data);
+    this._map.fitBounds([
+      [minXminYmaxXmaxY[0], minXminYmaxXmaxY[1]],
+      [minXminYmaxXmaxY[2], minXminYmaxXmaxY[3]]
+    ], {padding: {top: 10, bottom:10, left: leftPadding, right: 10}});
+   zoomToReset('');
+  }
+
 }
 
 removeMapLayers(layerIds) {

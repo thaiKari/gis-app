@@ -250,7 +250,8 @@ const styles = theme => ({
         checkLayerName,
         submitChanges,
         drawerWidth,
-        acceptedTypes} = this.props;
+        acceptedTypes,
+        zoomTo} = this.props;
       const {selectedLayers,
         deleteLayersDialogOpen,
         editLayersDialogOpen,
@@ -278,7 +279,7 @@ const styles = theme => ({
       <div className={classes.drawerHeader}>
         <Toolbar variant="dense">
           <Typography color='primary' variant="h4" gutterBottom style={{flex: 1}}>
-              Gis-App
+              MapitApp
           </Typography>  
         </Toolbar>
             
@@ -287,7 +288,10 @@ const styles = theme => ({
         <RightClickMenu
           open={RightClickMenuOpen}
           anchorEl={anchorEl}
-          closeRightClickMenu={this.closeRightClickMenu.bind(this)}/>
+          closeRightClickMenu={this.closeRightClickMenu.bind(this)}
+          drawerWidth={drawerWidth}
+          layerId={lastClickedLayer}
+          zoomTo={zoomTo}/>
         
         {deleteLayersDialogOpen ?
         <DeleteLayerDialog closeDialog={this.closeDeleteLayersDialog.bind(this)}
