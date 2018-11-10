@@ -137,7 +137,8 @@ const theme = createMuiTheme({
   }
 
   addLayers = (newLayers) => {
-    let {layers, layersChange} = this.state;
+    let {layers, layersChange, acceptedTypes} = this.state;
+    newLayers = newLayers.filter(l => acceptedTypes.includes(l.type));
     
 
     layers.push.apply(layers, newLayers)
@@ -241,6 +242,13 @@ const theme = createMuiTheme({
     return newName;
   }
 
+  removeLayer = (layerId) => {
+    let {layers} = this.state;
+
+    layers = layers.filter(l => l.id !== layerId);
+    this.setState({layers: layers})
+  }
+
   render() {
 
     const { classes } = this.props;
@@ -312,7 +320,8 @@ const theme = createMuiTheme({
                drawerWidth={drawerWidth}
                drawerOpen={drawerOpen}
                zoomTo={zoomTo}
-               zoomToReset={this.zoomTo.bind(this)}/>
+               zoomToReset={this.zoomTo.bind(this)}
+               removeLayer={this.removeLayer.bind(this)}/>
 
               <DrawerBtn 
               handleDrawerToggle={this.handleDrawerToggle.bind(this)}

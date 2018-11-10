@@ -174,6 +174,8 @@ changeColor(colorChange) {
               break;
             default:
               console.log('unidentified layer type', layer.type);
+              const {removeLayer} = this.props;
+              removeLayer(layer.id);
               //unidentifiedLayerType.push(layer.id);
               //this.setState({unidentifiedLayerType: unidentifiedLayerType})
           }
