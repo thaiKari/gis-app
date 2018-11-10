@@ -61,7 +61,7 @@ class LayersSelect extends React.Component {
 
     return (
 
-    <FormControl fullWidth={true} className={classes.formControl}>
+    <FormControl required fullWidth={true} className={classes.formControl}>
       <InputLabel htmlFor="age-simple">{promtText}</InputLabel>
       <Select
         value={this.state.curValue}
