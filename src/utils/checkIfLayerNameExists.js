@@ -2,11 +2,11 @@
  * Checks if there exists a layer with a different index than layerIndex
  * that has the same name
  */ 
-const checkIfLayerNameExists = (name, layers, layerIndex) => {
+const checkIfLayerNameExists = (name, layers, acceptedLayerId) => {
     let haslayer = false
 
     layers.forEach((layer, index) => {
-      if(index != layerIndex) {
+      if(layer.id !== acceptedLayerId) {
         if(layer.displayName === name) {
           haslayer = true;
         }

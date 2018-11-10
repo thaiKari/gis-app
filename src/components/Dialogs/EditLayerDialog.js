@@ -7,7 +7,7 @@ import {Dialog,
    } from '@material-ui/core';
 import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
 import OkAction from '../DialogActions/OkAction'
-import LayersSelect from '../LayersSelectSimple';
+import LayersSelect from '../LayersSelectSimple2';
 import findIndexWithAttribute from '../../utils/findIndexWithAttribute';
 import { withStyles } from '@material-ui/core/styles';
 import rgbCss2Obj from '../../utils/rgbCss2Obj';
@@ -44,7 +44,7 @@ class EditLayerDialog extends React.Component {
     scroll: 'paper',
     color: {r:0, g: 0, b:0, a:0},
     colorChanged: false,
-    layerIndex: null,
+    layerId: null,
     layerName: '',
     pickerOpen: false
   };
@@ -54,21 +54,21 @@ class EditLayerDialog extends React.Component {
   }
 
   submitChanges = () => {
-    const {color, layerIndex, layerName } = this.state;
+    const {color, layerId, layerName } = this.state;
     const {submitChanges, closeDialog, layers} = this.props;
-    if(color && layerIndex) {
+    if(color && layerId) {
       let colorString = rgbObj2Css(color);
-      submitChanges(layers[layerIndex].id, colorString, color.a, layerName );
+      submitChanges(layerId, colorString, color.a, layerName );
     }
 
     closeDialog();
   };
 
-  setColorObj = (layerIndex) => {
+  setColorObj = (layerId) => {
     const {layers} = this.props;
 
-    if(layerIndex >= 0) {
-      const layer = layers[layerIndex];
+    if(layerId) {
+      const layer = layers.find( l => l.id === layerId);
       let colorString = layer.data.color;
       let color =  rgbCss2Obj(colorString, layer.data.opacity);
   
@@ -101,39 +101,40 @@ class EditLayerDialog extends React.Component {
 
   componentDidMount = () => {
     const{currLayer} = this.props;
-    this.setLayerIndex(currLayer);
+    this.setLayerId(currLayer);
   }
 
   componentDidUpdate = (prevProps) => {
     const{currLayer} = this.props;
     if(prevProps.currLayer !== currLayer){
-      this.setLayerIndex(currLayer);
+      this.setLayerId(currLayer);
     }
     
   }
 
-  setLayerIndex = (layerId) => {
+  setLayerId = (layerId) => {
     const{layers} = this.props;
 
     if(layerId){
-      let layerIndex = findIndexWithAttribute(layers, 'id', layerId);
-      let layerName = layers[layerIndex] ? layers[layerIndex].displayName: '';
+      let layer = layers.find( l => l.id === layerId);
+      let layerName = layer ? layer.displayName: '';
       this.setState({
-        layerIndex: layerIndex,
+        layerId: layerId,
         layerName: layerName
       });
-      this.setColorObj(layerIndex);
+      this.setColorObj(layerId);
     }
 
   }
 
-  changeLayer = (layerIndex) => {
+  changeLayer = (layerId) => {
     const{layers} = this.props;
-    let layerName = layers[layerIndex] ? layers[layerIndex].displayName : '';
+    let layer = layers.find( l => l.id === layerId);
+    let layerName = layer ? layer.displayName : '';
 
-    this.setColorObj(layerIndex);
+    this.setColorObj(layerId);
     this.setState({
-      layerIndex: layerIndex,
+      layerId: layerId,
       layerName: layerName
     });
   }
@@ -143,7 +144,7 @@ class EditLayerDialog extends React.Component {
   }
   
   getContent = () => {
-    let {layerIndex, color, colorChanged, layerName, pickerOpen} = this.state;
+    let {layerId, color, colorChanged, layerName, pickerOpen} = this.state;
     const {layers, classes, theme} = this.props;
 
     var paperClasses = classNames({
@@ -158,16 +159,17 @@ class EditLayerDialog extends React.Component {
         <LayersSelect
           className={classes.spaced}
           layers={layers}
-          layerIndex={layerIndex}
+          layerId={layerId}
           changeLayer={this.changeLayer.bind(this)} />  
         </form>
-        {layerIndex >= 0 && layerIndex !== null ? 
+        {layerId ? 
         <div style={{ margin: theme.spacing.unit * 2}}>
         <LayerNameTextField layerName={layerName}
             setName={this.setName.bind(this)}
             defaultName={layerName}
             layers={layers}
-            layerIndex={layerIndex} />
+            acceptedLayerId={layerId}
+             />
 
         <div style={{display: 'flex',
                       flexWrap: 'wrap'}}>

@@ -217,7 +217,6 @@ const theme = createMuiTheme({
   }
 
   zoomTo = (layerId) => {
-    console.log('zoom to', layerId)
     this.setState({zoomTo: layerId})
   }
 
