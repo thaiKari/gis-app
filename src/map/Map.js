@@ -61,6 +61,9 @@ componentDidUpdate(prevProps) {
     let layerId = moveLayerUnder[0];
     let layerAbove = moveLayerUnder[1];
     this._map.moveLayer(layerId, layerAbove);
+    if (this._map.getSource(layerId +'_outline')) {
+      this._map.moveLayer(layerId +'_outline', layerAbove);
+    }
   }
   else if (prevProps.deletedLayers !== this.props.deletedLayers){
     this.removeMapLayers(this.props.deletedLayers);
