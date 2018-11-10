@@ -47,12 +47,13 @@ const styles = theme => ({
     
     render() {
     
-      const { classes, theme, bbox } = this.props;
+      const { classes, theme, bbox, optional } = this.props;
       // minX, minY, maxX, maxY]
+      let promtText = optional ? 'Bounding box (optional)': 'Bounding box';
   
       return (
         <div>
-            <Typography style={{marginTop: theme.spacing.unit}} variant='caption'>Bounding box</Typography>
+            <Typography style={{marginTop: theme.spacing.unit}} variant='caption'>{promtText}</Typography>
             <div style={{ display: 'flex', justifyContent: 'space-between'}}>
             <TextField
                 label="minX"

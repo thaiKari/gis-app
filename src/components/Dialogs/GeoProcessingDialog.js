@@ -250,6 +250,7 @@ const styles = theme => ({
                 />
                 <div className={classes.spacedALittle}></div>
                 <BboxTextField
+                  optional={true}
                   layers={layerOptions}
                   setBbox={this.setBbox.bind(this)}
                   bbox={bbox}

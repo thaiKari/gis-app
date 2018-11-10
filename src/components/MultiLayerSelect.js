@@ -215,7 +215,7 @@ const styles = theme => ({
                 classes={classes}
                 styles={selectStyles}
                 textFieldProps={{
-                label: 'choose layers',
+                label: 'choose layers *',
                 InputLabelProps: {
                     shrink: true,
                 },
