@@ -5,14 +5,16 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
-  
+    root: {
+      position: 'unset'
+    }
   });
 
   class SubmitOrCancelAction extends Component {
     
     render() {
 
-      const { submit, submitText , cancel, cancelText, submitDisabled } = this.props;
+      const { classes, submit, submitText , cancel, cancelText, submitDisabled } = this.props;
 
       let submitBtnTxt = submitText ? submitText: 'Submit';
       let cancelBtnTxt = cancelText ? cancelText: 'Cancel';
@@ -20,10 +22,18 @@ const styles = theme => ({
   
       return (
         <DialogActions>
-            <Button variant='contained' disabled={disabled} onClick={submit}  color="primary">
+            <Button
+            classes={{ root: classes.root }}
+            variant='contained'
+            disabled={disabled}
+            onClick={submit}
+             color="primary">
               {submitBtnTxt}
             </Button>
-            <Button onClick={cancel} color="primary">
+            <Button
+              classes={{ root: classes.root }}
+              onClick={cancel}
+              color="primary">
               {cancelBtnTxt}
             </Button>
       </DialogActions>   
