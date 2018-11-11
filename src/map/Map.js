@@ -120,14 +120,15 @@ changeColor(colorChange) {
   let map = this._map;
 
   switch (layer.type) {
-    case 'Polygon':
+    case 'Polygon' || 'MultiPolygon':
         map.setPaintProperty(layerId, 'fill-color', color);
         map.setPaintProperty(layerId, 'fill-opacity', opacity);
+        if(map.getSource(layerId +'_outline')) {
+          map.setPaintProperty(layerId +'_outline', 'line-color', colorChange.strokeColor );
+          map.setPaintProperty(layerId +'_outline', 'line-opacity', colorChange.strokeOpacity );
+        }
+      
       break;
-    case 'MultiPolygon':
-      map.setPaintProperty(layerId, 'fill-color', color);
-      map.setPaintProperty(layerId, 'fill-opacity', opacity);
-    break;
     case 'LineString':
         map.setPaintProperty(layerId, 'line-color', color);
         map.setPaintProperty(layerId, 'line-opacity', opacity);

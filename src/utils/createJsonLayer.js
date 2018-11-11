@@ -16,6 +16,12 @@ const createJsonLayer = (json, name, index) => {
     var id = generateUniqueID(name);
     json.color= json.color ?json.color: getDefaultColor(index);
     json.opacity = json.opacity? json.opacity: 0.8;
+    
+    if(type === 'Polygon' || type ==='MultiPolygon') {
+      json.strokeColor = json.strokeColor ? json.strokeColor: json.color;
+      json.strokeOpacity = json.strokeOpacity ? json.strokeOpacity: 1;
+    }
+    
 
     var layer = {
       id: id,
