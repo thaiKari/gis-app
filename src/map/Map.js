@@ -114,7 +114,7 @@ changeColor(colorChange) {
   const {layers} = this.props;
   let layerId = colorChange.layerId;
   let color = colorChange.color;
-  let opacity = colorChange.opacity;
+  let opacity = colorChange.opacity > 1 ? 1 : colorChange.opacity;
 
   let layer = layers.find(l => l.id === layerId);
   let map = this._map;
@@ -277,6 +277,10 @@ changeColor(colorChange) {
         }
       },layerAbove);
 
+      let strokeOpacity = layer.data.strokeOpacity ? layer.data.strokeOpacity : 1;
+      strokeOpacity = strokeOpacity > 1? strokeOpacity : 1;
+      let strokeColor = layer.data.strokeColor ? layer.data.strokeColor: layer.data.color;
+
       map.addLayer({
         'id': layer.id + '_outline',
         'type': 'line',
@@ -286,8 +290,8 @@ changeColor(colorChange) {
         },
         'layout': {'visibility': visibility },
         'paint': {
-          'line-color': layer.data.color,
-          'line-opacity': layer.data.opacity + 0.2,
+          'line-color': strokeColor,
+          'line-opacity': strokeOpacity ,
           'line-width': 3
         }
       }, layerAbove);
