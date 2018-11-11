@@ -21,7 +21,7 @@ const styles = theme => ({
     
     render() {
 
-      const { promt, layerName, layers, layerIndex} = this.props;
+      const { promt, layerName, layers, acceptedLayerId} = this.props;
 
       let Nameerror = false;
       let errorText = '';
@@ -29,7 +29,7 @@ const styles = theme => ({
       if(layerName === '') {
         errorText ='layer name cannot be empty';
         Nameerror = true;
-      } else if ( checkIfLayerNameExists(layerName, layers, layerIndex)) {
+      } else if ( checkIfLayerNameExists(layerName, layers, acceptedLayerId)) {
         // Name exists already and is not the same as this layers names
         errorText ='That name is already in use';
         Nameerror = true;

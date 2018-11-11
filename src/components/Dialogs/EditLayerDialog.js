@@ -7,8 +7,7 @@ import {Dialog,
    } from '@material-ui/core';
 import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
 import OkAction from '../DialogActions/OkAction'
-import LayersSelect from '../LayersSelectSimple';
-import findIndexWithAttribute from '../../utils/findIndexWithAttribute';
+import LayersSelect from '../LayersSelectSimple2';
 import { withStyles } from '@material-ui/core/styles';
 import rgbCss2Obj from '../../utils/rgbCss2Obj';
 import rgbObj2Css from '../../utils/rgbObj2Css';
@@ -43,8 +42,9 @@ class EditLayerDialog extends React.Component {
   state = {
     scroll: 'paper',
     color: {r:0, g: 0, b:0, a:0},
+    strokeColor: {r:0, g: 0, b:0, a:0},
     colorChanged: false,
-    layerIndex: null,
+    layerId: null,
     layerName: '',
     pickerOpen: false
   };
@@ -54,24 +54,31 @@ class EditLayerDialog extends React.Component {
   }
 
   submitChanges = () => {
-    const {color, layerIndex, layerName } = this.state;
-    const {submitChanges, closeDialog, layers} = this.props;
-    if(color && layerIndex) {
+    const {color, strokeColor, layerId, layerName } = this.state;
+    const {submitChanges, closeDialog} = this.props;
+    if(color && layerId) {
       let colorString = rgbObj2Css(color);
-      submitChanges(layers[layerIndex].id, colorString, color.a, layerName );
+      let strokeColorString= strokeColor ? rgbObj2Css(strokeColor): '';
+      let strokeOpacity = strokeColor ? strokeColor.a : ''
+      submitChanges(layerId, colorString, color.a, layerName, strokeColorString, strokeOpacity);
     }
 
     closeDialog();
   };
 
-  setColorObj = (layerIndex) => {
+  setColorObj = (layerId) => {
     const {layers} = this.props;
 
-    if(layerIndex >= 0) {
-      const layer = layers[layerIndex];
+    if(layerId) {
+      const layer = layers.find( l => l.id === layerId);
       let colorString = layer.data.color;
       let color =  rgbCss2Obj(colorString, layer.data.opacity);
-  
+      let strokeColorString = layer.data.strokeColor;
+      if (strokeColorString) {
+        let strokeColor = rgbCss2Obj(strokeColorString, layer.data.strokeOpacity);
+        this.setState({strokeColor: strokeColor});
+      }
+      
       this.setState({
         color: color,
         colorChanged: !this.state.colorChanged
@@ -83,6 +90,12 @@ class EditLayerDialog extends React.Component {
 
     this.setState({
       color: newColor,
+      colorChanged: !this.state.colorChanged})
+  }
+
+  setstrokeColor = (newColor) => {
+    this.setState({
+      strokeColor: newColor,
       colorChanged: !this.state.colorChanged})
   }
 
@@ -101,39 +114,40 @@ class EditLayerDialog extends React.Component {
 
   componentDidMount = () => {
     const{currLayer} = this.props;
-    this.setLayerIndex(currLayer);
+    this.setLayerId(currLayer);
   }
 
   componentDidUpdate = (prevProps) => {
     const{currLayer} = this.props;
     if(prevProps.currLayer !== currLayer){
-      this.setLayerIndex(currLayer);
+      this.setLayerId(currLayer);
     }
     
   }
 
-  setLayerIndex = (layerId) => {
+  setLayerId = (layerId) => {
     const{layers} = this.props;
 
     if(layerId){
-      let layerIndex = findIndexWithAttribute(layers, 'id', layerId);
-      let layerName = layers[layerIndex] ? layers[layerIndex].displayName: '';
+      let layer = layers.find( l => l.id === layerId);
+      let layerName = layer ? layer.displayName: '';
       this.setState({
-        layerIndex: layerIndex,
+        layerId: layerId,
         layerName: layerName
       });
-      this.setColorObj(layerIndex);
+      this.setColorObj(layerId);
     }
 
   }
 
-  changeLayer = (layerIndex) => {
+  changeLayer = (layerId) => {
     const{layers} = this.props;
-    let layerName = layers[layerIndex] ? layers[layerIndex].displayName : '';
+    let layer = layers.find( l => l.id === layerId);
+    let layerName = layer ? layer.displayName : '';
 
-    this.setColorObj(layerIndex);
+    this.setColorObj(layerId);
     this.setState({
-      layerIndex: layerIndex,
+      layerId: layerId,
       layerName: layerName
     });
   }
@@ -143,34 +157,50 @@ class EditLayerDialog extends React.Component {
   }
   
   getContent = () => {
-    let {layerIndex, color, colorChanged, layerName, pickerOpen} = this.state;
+    let {layerId, color, strokeColor, colorChanged, layerName, pickerOpen} = this.state;
     const {layers, classes, theme} = this.props;
 
     var paperClasses = classNames({
       [classes.dialogPaper]: true,
       [classes.dialogPaperNoScroll]: pickerOpen
     });
-    
+    let styleContent= '';
 
-    return (
-    <DialogContent className={paperClasses}>
-      <form className={classes.container}>
-        <LayersSelect
-          className={classes.spaced}
-          layers={layers}
-          layerIndex={layerIndex}
-          changeLayer={this.changeLayer.bind(this)} />  
-        </form>
-        {layerIndex >= 0 && layerIndex !== null ? 
-        <div style={{ margin: theme.spacing.unit * 2}}>
-        <LayerNameTextField layerName={layerName}
-            setName={this.setName.bind(this)}
-            defaultName={layerName}
-            layers={layers}
-            layerIndex={layerIndex} />
+    if (layerId ) {
+      let layer = layers.find(l => l.id == layerId);
+          
+      switch (layer.type) {
+        case 'Polygon' || 'MultiPolygon':
+        styleContent =          
+        <div  style={{display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: "space-between",
+          margin: theme.spacing.unit * 2,
+          marginLeft: 0,
+          width:'100%'}}>
+        <div style={{width: '40%'}}>
+        <Typography variant="caption" gutterBottom>Fill Color</Typography>
+        <ColorPicker
+          setColor={this.setColor.bind(this)}
+          color={color}
+          colorChanged={colorChanged}
+          setPickerOpen={this.setPickerOpen.bind(this)}/>
+        </div>
+        <div style={{width: '40%'}}>
+        <Typography variant="caption" gutterBottom>Outline Color</Typography>
+        <ColorPicker
+          setColor={this.setstrokeColor.bind(this)}
+          color={strokeColor}
+          colorChanged={colorChanged}
+          setPickerOpen={this.setPickerOpen.bind(this)}/>
+          </div>
+        </div>
 
-        <div style={{display: 'flex',
-                      flexWrap: 'wrap'}}>
+
+          break;
+      
+        default:
+          styleContent =          
           <div  style={{ margin: theme.spacing.unit * 2, marginLeft: 0, width:'100%'}}>
           <Typography variant="caption" gutterBottom>Color</Typography>
           <ColorPicker
@@ -179,6 +209,35 @@ class EditLayerDialog extends React.Component {
             colorChanged={colorChanged}
             setPickerOpen={this.setPickerOpen.bind(this)}/>
           </div>
+
+      }
+    }
+
+
+    
+
+    return (
+    <DialogContent className={paperClasses}>
+      <form className={classes.container}>
+        <LayersSelect
+          className={classes.spaced}
+          layers={layers}
+          layerId={layerId}
+          changeLayer={this.changeLayer.bind(this)} />  
+        </form>
+        {layerId ? 
+        <div style={{ margin: theme.spacing.unit * 2}}>
+        <LayerNameTextField layerName={layerName}
+            setName={this.setName.bind(this)}
+            defaultName={layerName}
+            layers={layers}
+            acceptedLayerId={layerId}
+             />
+
+        <div style={{display: 'flex',
+                      flexWrap: 'wrap'}}>
+
+          {styleContent}
 
         </div>
         </div> : null}  

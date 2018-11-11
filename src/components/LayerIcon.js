@@ -40,14 +40,16 @@ import { withStyles } from '@material-ui/core/styles';;
       var icon;
 
       switch (layer.type) {
-        case 'Polygon' :
+        case 'Polygon' || 'MultiPolygon' :
           iconStyles.backgroundColor = color;
+          iconStyles.borderStyle = 'solid';
+          iconStyles.borderWidth = 'thin';
+          iconStyles.borderRadius = 3;
+          iconStyles.borderColor = layer.data.strokeColor;
+          iconStyles.opactiy = layer.data.opactiy;
           icon = <PolygonIcon style={iconStyles}/>
           break;
-        case 'MultiPolygon' :
-          iconStyles.backgroundColor = color;
-          icon = <PolygonIcon style={iconStyles}/>
-          break;
+
         case 'LineString':
           iconStyles.color = color;
           iconStyles.backgroundColor = 'rgba(255, 255, 255, 0.1)';

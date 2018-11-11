@@ -193,7 +193,7 @@ const theme = createMuiTheme({
      });
   }
 
-  submitChanges = (layerId, color, opacity, layerName) => {
+  submitChanges = (layerId, color, opacity, layerName, strokeColor, strokeOpacity) => {
     let {layers} = this.state;
 
     let layer = layers.find((l) => l.id === layerId);
@@ -201,6 +201,8 @@ const theme = createMuiTheme({
 
     layer.data.color= color;
     layer.data.opacity = opacity;
+    layer.data.strokeColor = strokeColor;
+    layer.data.strokeOpacity = strokeOpacity;
     let i = 1;
     let newLayerName = layerName;
     while(checkIfLayerNameExists(newLayerName, layers, index)){
@@ -212,12 +214,11 @@ const theme = createMuiTheme({
 
     this.setState({
       layers: layers,
-      colorChange: {layerId: layerId, color: color, opacity: opacity}
+      colorChange: {layerId: layerId, color: color, opacity: opacity, strokeColor:strokeColor, strokeOpacity:strokeOpacity}
     });
   }
 
   zoomTo = (layerId) => {
-    console.log('zoom to', layerId)
     this.setState({zoomTo: layerId})
   }
 
