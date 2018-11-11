@@ -137,7 +137,8 @@ const styles = theme => ({
         }
       }
       else if (type === 'voronoi') {
-        newJson = processingFunction(selectedLayersDataList, bbox)
+        newJson = processingFunction(selectedLayersDataList, bbox);
+        newJson.opacity = 0.5;
        }
       
       else if (type === 'intersect' || type === 'union'  || type === 'difference'){

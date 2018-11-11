@@ -46,7 +46,7 @@ import { withStyles } from '@material-ui/core/styles';;
           iconStyles.borderWidth = 'thin';
           iconStyles.borderRadius = 3;
           iconStyles.borderColor = layer.data.strokeColor;
-          iconStyles.opactiy = layer.data.opactiy
+          iconStyles.opactiy = layer.data.opactiy;
           icon = <PolygonIcon style={iconStyles}/>
           break;
 
