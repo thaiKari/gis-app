@@ -1,21 +1,39 @@
 import getJsonType from '../getJsonType';
 import intersect from './intersectFunction';
+import pointsWithinPolygon from '@turf/points-within-polygon';
 
 const clipFunction = (geojsonList, clipArea) => {
-    console.log(clipArea)
+    
+    if (geojsonList.length === 0 || !clipArea) {
+        return 'Select layers to proceed';
+    }
 
     let newJsons = geojsonList.map(data => {
-        console.log(data.dispName)
         let type = getJsonType(data);
         let newJson;
         if (type === 'Polygon' || type === 'MultiPolygon') {
-            newJson = intersect(data, clipArea);
-            return newJson;
+            newJson = intersect(data, clipArea);         
+        }
+        if (type === 'Point') {
+            newJson = pointsWithinPolygon(data, clipArea);
         }
 
-        newJson.dispName = data.dispName;
+        if(newJson) {
+           if (newJson.type === "FeatureCollection") {
+               if(newJson.features.length === 0){
+                   return data.dispName + 'has no overlapping geometry'
+               }
+            newJson.dispName = data.dispName;
+            return newJson;     
+            }
+            if (typeof newJson === 'string'){
+                return data.dispName + ': ' + newJson; 
+            }
+        }
 
-        //console.log(type, data);
+        return 'something went wrong during clip operations';
+        
+
 
     });
 

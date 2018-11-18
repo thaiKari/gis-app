@@ -116,7 +116,7 @@ const styles = theme => ({
       }
 
     calculate = () => {
-    const {closeDialog, type, layers} = this.props;
+    const {closeDialog, type, layers, enqueueSnackbar} = this.props;
     const {bbox, processingFunction, layerIds, outputName, distance, clipLayer} = this.state;
     
     let selectedLayersDataList = [];
@@ -148,11 +148,39 @@ const styles = theme => ({
         newJson.opacity = 0.5;
        }
       else if (type === 'clip') {
-        let clipArea = layers.find( l => l.id === clipLayer).data;
+        let clipAreaLayer = layers.find( l => l.id === clipLayer);
+        let errorMessage = '';
+        
+        if(clipAreaLayer && selectedLayersDataList.length > 0) {
+         let clipArea = clipAreaLayer.data
+        
         let newJsons = processingFunction(selectedLayersDataList, clipArea);
-        newJsons.forEach(newJson => {
-          this.submitNewLayer(newJson,'','clip_' + newJson.dispName);
-        });
+        
+          if( newJson === 'Select layers to proceed') {
+            errorMessage = newJson;
+            this.setState({errorMessage: errorMessage});
+          } else {
+            newJsons.forEach(newJson => {
+              if (typeof newJson === 'string') {
+                enqueueSnackbar(newJson, {variant: 'error'});
+              }
+              else {
+                let newName = newJson ? 'clip_' + newJson.dispName : ';';  
+                this.submitNewLayer(newJson,'',newName, false);
+              }
+            });
+          }
+      } else if (!clipAreaLayer ) {
+        errorMessage = 'select clip layer'
+        this.setState({errorMessage: errorMessage});
+      } else if ( selectedLayersDataList.length === 0) {
+        errorMessage = 'Select layers to proceed';
+        this.setState({errorMessage: errorMessage});
+      }
+
+        if(errorMessage.length === 0 ) {
+          closeDialog();
+        }
       }
       
       else if (type === 'intersect' || type === 'union'  || type === 'difference'){
@@ -161,14 +189,12 @@ const styles = theme => ({
 
       if(newJson) {
         this.submitNewLayer(newJson, feedbackText, outputName);
-      }
-
-       closeDialog();
+      }       
        
     };
 
-    submitNewLayer = (newJson, feedbackText, outputName) => {
-      const {receiveNewJson, type, enqueueSnackbar} = this.props;
+    submitNewLayer = (newJson, feedbackText, outputName, closeAfter=true) => {
+      const {receiveNewJson, type, enqueueSnackbar, closeDialog} = this.props;
       if(newJson.type === "FeatureCollection") {
         receiveNewJson(newJson, outputName);
         let succesMessage =  type + ' layer was successfully created';
@@ -177,6 +203,9 @@ const styles = theme => ({
           enqueueSnackbar(feedbackText, {variant: 'success'});
         } catch (error) {
           console.log('error supressed')
+        }
+        if (closeAfter) {
+          closeDialog();
         }
        } else {
          this.setState({errorMessage: newJson});
