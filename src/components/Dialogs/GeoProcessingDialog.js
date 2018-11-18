@@ -347,7 +347,7 @@ const styles = theme => ({
                 
                 <div className={classes.spacedALittle}></div>
                 <Typography>This operation will clip all selected layers to the area defined by the clip polygon.
-                  Output layer names will by 'clipped_' + layer name </Typography>
+                  Output layer names will by 'clip_' + layer name </Typography>
 
             </DialogContent> );
         }
