@@ -1,9 +1,9 @@
 import getJsonType from '../getJsonType';
 import intersect from './intersectFunction';
+import isLineSegmentWithinPolygon from './isLineSegmentWithinPolygon';
 import pointsWithinPolygon from '@turf/points-within-polygon';
 import lineSplit from '@turf/line-split';
 import polygonToLine from '@turf/polygon-to-line';
-import {point} from '@turf/helpers';
 
 const clipFunction = (geojsonList, clipArea) => {
     
@@ -26,15 +26,19 @@ const clipFunction = (geojsonList, clipArea) => {
               }
             data.features.forEach(line => {
                 clipArea.features.forEach(poly => {
-                    let splitLines = lineSplit(line, polygonToLine(poly))
-                    splitLines.features.forEach( lineSegment => {
-                       let segCoords = lineSegment.geometry.coordinates
+                    let splitLines = lineSplit(line, polygonToLine(poly));
+                    
+                    if(splitLines.features.length === 0) {
+                        if(isLineSegmentWithinPolygon(line, clipArea)) {
+                            newJson.features.push(line);
+                        }
+                    }
 
-                       let p1_within = pointsWithinPolygon(point(segCoords[0]), clipArea).features.length;
-                       let plast_within = pointsWithinPolygon(point(segCoords[segCoords.length -1]), clipArea).features.length;
-                       if(p1_within > 0 &&  plast_within > 0) {
+                    splitLines.features.forEach( lineSegment => {
+                        if(isLineSegmentWithinPolygon(lineSegment, clipArea)) {
                             newJson.features.push(lineSegment);
                         }
+                        
                     });
               });
             });
@@ -62,4 +66,4 @@ const clipFunction = (geojsonList, clipArea) => {
   return newJsons;
 
 }
-  export default clipFunction
+export default clipFunction
