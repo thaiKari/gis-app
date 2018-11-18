@@ -8,6 +8,7 @@ import intersect from '../icons/intersect_primary.png';
 import buffer from '../icons/buffer_primary.png';
 import voronoi from '../icons/voronoi.png';
 import bbox from '../icons/bbox_primary.png';
+import clip from '../icons/clip_primary2.png';
 import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
 import Loadable from 'react-loadable'
 
@@ -38,9 +39,14 @@ const buttons= [{
   imgSource: bbox
 },
 {
+  type: 'clip',
+  imgSource: clip,
+  wideIcon: true
+},
+{
   type: 'voronoi',
   imgSource: voronoi
-}
+},
 
 ];
 
@@ -127,10 +133,11 @@ const styles = theme => ({
           <div style={{width: 95* numCols}}>          
 
             {buttons.map( (b) => {
+              let imWidth = b.wideIcon ? 40: 30;
               return (
                 <Button key={b.type} onClick={() => this.openGeoProcessingDialog(b.type)}>
                 <div className={classes.button}>
-                <img  src={b.imgSource} alt="difference Icon" className={classes.image}/>
+                <img  src={b.imgSource} alt="difference Icon" className={classes.image} style={{width: imWidth}}/>
                 <Typography gutterBottom  className={classes.text} variant="button"> {b.type}</Typography>
                 </div>
               </Button>

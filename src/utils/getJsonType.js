@@ -1,4 +1,3 @@
-
 const getJsonType = (json) => {
     var type;
 
