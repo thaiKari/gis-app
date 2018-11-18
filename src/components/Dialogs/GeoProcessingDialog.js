@@ -13,6 +13,7 @@ import unionFunction from '../../utils/geoprocessing/unionFunction';
 import bufferFunction from '../../utils/geoprocessing/bufferFunction';
 import bboxFunction from '../../utils/geoprocessing/bboxFunction';
 import voronoiFunction from '../../utils/geoprocessing/voronoiFunction';
+import clipFunction from '../../utils/geoprocessing/clipFunction';
 import Loadable from 'react-loadable'
 import LoadingCircular from '../../utils/Loading/LoadingCirular';
 import MultiLayerSelect from '../MultiLayerSelect';
@@ -22,6 +23,7 @@ import roundToNdecimals from '../../utils/roundToNdecimals';
 import DialogFeedback from '../DialogContent/DialogFeedback';
 import BboxTextField from '../BboxTextField';
 import findLayerById from '../../utils/findLayerById';
+import LayersSelect from '../LayersSelectSimple2';
 
 
 const BufferContent = Loadable({
@@ -62,7 +64,8 @@ const styles = theme => ({
         outputName:'',
         errorMessage:'',
         distance: '',
-        bbox: ['','','','']
+        bbox: ['','','',''],
+        clipLayer: ''
     }
 
     componentDidMount() {
@@ -103,6 +106,9 @@ const styles = theme => ({
           case 'voronoi':
             func = voronoiFunction;
             break;
+          case 'clip':
+            func = clipFunction;
+            break;
           default:
             break;
         }
@@ -110,8 +116,8 @@ const styles = theme => ({
       }
 
     calculate = () => {
-    const {closeDialog, receiveNewJson, type, enqueueSnackbar, layers} = this.props;
-    const {bbox, processingFunction, layerIds, outputName, distance} = this.state;
+    const {closeDialog, type, layers} = this.props;
+    const {bbox, processingFunction, layerIds, outputName, distance, clipLayer} = this.state;
     
     let selectedLayersDataList = [];
 
@@ -119,6 +125,7 @@ const styles = theme => ({
       //let layer = layers.find( l => l.id === layerIds[i] );
       let layer = findLayerById(layerIds[i], layers);
       let data = layer ? layer.data : null;
+      data.dispName = layer.displayName;
       selectedLayersDataList.push( data ) 
     }
 
@@ -140,12 +147,29 @@ const styles = theme => ({
         newJson = processingFunction(selectedLayersDataList, bbox);
         newJson.opacity = 0.5;
        }
+      else if (type === 'clip') {
+        let clipArea = layers.find( l => l.id === clipLayer).data;
+        let newJsons = processingFunction(selectedLayersDataList, clipArea);
+        newJsons.forEach(newJson => {
+          this.submitNewLayer(newJson,'','clip_' + newJson.dispName);
+        });
+      }
       
       else if (type === 'intersect' || type === 'union'  || type === 'difference'){
         newJson = processingFunction(selectedLayersDataList[0], selectedLayersDataList[1]);
       }
 
-       if(newJson.type === "FeatureCollection") {
+      if(newJson) {
+        this.submitNewLayer(newJson, feedbackText, outputName);
+      }
+
+       closeDialog();
+       
+    };
+
+    submitNewLayer = (newJson, feedbackText, outputName) => {
+      const {receiveNewJson, type, enqueueSnackbar} = this.props;
+      if(newJson.type === "FeatureCollection") {
         receiveNewJson(newJson, outputName);
         let succesMessage =  type + ' layer was successfully created';
         feedbackText = feedbackText ? feedbackText : succesMessage;
@@ -154,13 +178,10 @@ const styles = theme => ({
         } catch (error) {
           console.log('error supressed')
         }
-        
-        closeDialog();
        } else {
          this.setState({errorMessage: newJson});
        }
-       
-    };
+    }
 
     setError = (message) => {
       this.setState({errorMessage: message});
@@ -181,6 +202,10 @@ const styles = theme => ({
 
     setBbox = (bbox) => {
       this.setState({bbox: bbox});
+    }
+
+    setClipLayer = (layerId) => {
+      this.setState({clipLayer: layerId});
     }
     
 
@@ -266,6 +291,38 @@ const styles = theme => ({
                   promt={'Output layer name'} /> 
             </DialogContent> );
         }
+        if (type === 'clip') {
+          let polygonLayers = layers.filter(layer => layer.type === "Polygon" || layer.type === "MultiPolygon"  );
+          let {clipLayer} = this.state;
+          return (
+            <DialogContent classes={{root: classes.dialogPaper}} >
+            {errorMessage.length > 0 ?
+                <DialogFeedback message={errorMessage} variant={'error'} />
+                : null
+              }   
+                <div className={classes.spacedALittle}></div>
+                <MultiLayerSelect
+                className={classes.spacedALittle}
+                layers={layers}
+                setLayerIds={this.setLayerIds.bind(this)}
+                promt={'Choose layers to clip'}
+                />
+               
+                <div className={classes.spacedALittle}></div>
+                <LayersSelect
+                className={classes.spaced}
+                layers={polygonLayers}
+                layerId={clipLayer}
+                changeLayer={this.setClipLayer.bind(this)}
+                promt = {'Choose clip layer (polygon)'} />
+                
+                <div className={classes.spacedALittle}></div>
+                <Typography>This operation will clip all selected layers to the area defined by the clip polygon.
+                  Output layer names will by 'clipped_' + layer name </Typography>
+
+            </DialogContent> );
+        }
+
 
         return (
             <DialogContent>

@@ -194,7 +194,7 @@ const styles = theme => ({
     
     render() {
 
-        const { classes, theme } = this.props;
+        const { classes, theme, promt } = this.props;
         const { suggestions } = this.state;
 
         const selectStyles = {
@@ -207,6 +207,7 @@ const styles = theme => ({
           }),
         };
 
+        let label = promt ? promt :'choose layers *';
   
       return (
         <div className={classes.root}>
@@ -215,7 +216,7 @@ const styles = theme => ({
                 classes={classes}
                 styles={selectStyles}
                 textFieldProps={{
-                label: 'choose layers *',
+                label: label,
                 InputLabelProps: {
                     shrink: true,
                 },
