@@ -102,7 +102,9 @@ const theme = createMuiTheme({
   };
   
   changeDrawerWidth = (newWidth) => {
-    this.setState({ drawerWidth: newWidth});
+    this.setState({
+      drawerOpen: true,
+      drawerWidth: newWidth});
   }
 
   handleDrawerToggle = () => {
