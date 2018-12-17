@@ -18,6 +18,12 @@ const styles = theme => ({
         closeRightClickMenu();
       };
 
+    openAtributeTable = () => {
+        const {closeRightClickMenu, openAttribTable, layerId} = this.props;
+        openAttribTable(layerId);
+        closeRightClickMenu();
+      };
+
     handleClose = () => {
       const {closeRightClickMenu} = this.props;
       closeRightClickMenu();
@@ -40,6 +46,7 @@ const styles = theme => ({
         classes={{paper : menuClasess}}
       >
         <MenuItem onClick={this.zoomTo}>Zoom To</MenuItem>
+        <MenuItem onClick={this.openAtributeTable}>Attribute Table</MenuItem>
 
       </Menu>
       );

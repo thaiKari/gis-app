@@ -46,6 +46,12 @@ const DrawerBtn = Loadable({
   loading: LoadingFullPage
 });
 
+const AttributeTable = Loadable({
+  loader: () => import('./layout/AttributeTable'),
+  delay: 300, // 0.3 seconds
+  loading: LoadingFullPage
+});
+
 
 const theme = createMuiTheme({
   palette: {
@@ -98,7 +104,10 @@ const theme = createMuiTheme({
     deletedLayers:[],
     drawerWidth: 240,
     acceptedTypes: ['Polygon', 'MultiPolygon', 'Point', 'LineString'],
-    zoomTo: ''
+    zoomTo: '',
+    lastClickedLayer: '',
+    AttributeTableOpen: true
+
   };
   
   changeDrawerWidth = (newWidth) => {
@@ -224,6 +233,17 @@ const theme = createMuiTheme({
     this.setState({zoomTo: layerId})
   }
 
+  openAttribTable = (layerId) => {
+    this.setState({
+      lastClickedLayer: layerId,
+      AttributeTableOpen: true});
+  }
+
+  closeAttribTable = () => {
+    this.setState({
+      AttributeTableOpen: false});
+  }
+
   checkLayerName = (name) => {
     let {layers} = this.state;
     let i = 1;
@@ -265,7 +285,9 @@ const theme = createMuiTheme({
       drawerWidth,
       snackbarMessages,
       acceptedTypes,
-      zoomTo } = this.state;
+      zoomTo,
+      AttributeTableOpen,
+      lastClickedLayer } = this.state;
 
     return (
 
@@ -306,13 +328,20 @@ const theme = createMuiTheme({
             deleteLayers={this.deleteLayers.bind(this)}
             submitChanges={this.submitChanges.bind(this)}
             acceptedTypes={acceptedTypes}
-            zoomTo = {this.zoomTo.bind(this)}/>
+            zoomTo = {this.zoomTo.bind(this)}
+            openAttribTable={this.openAttribTable.bind(this)}/>
           {toolDrawerOpen ?
           <ToolkitBar
             toolDrawerOpen={toolDrawerOpen}
             layers={layers}
             receiveNewJson={this.receiveNewJson.bind(this)}/>
           : null}
+
+          <AttributeTable
+            open={AttributeTableOpen}
+            layerId={lastClickedLayer}
+            layers={layers}
+            closeAttribTable={this.closeAttribTable.bind(this)}/>
 
           <main className={classes.content}>      
                <Map
