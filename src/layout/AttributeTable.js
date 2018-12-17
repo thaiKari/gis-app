@@ -1,31 +1,63 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Drawer, Divider } from '@material-ui/core';
-import AttributeTableToolbar from '../components/AttributeTableContent/AttributeTableToolbar'
+import AttributeTableToolbar from '../components/AttributeTableContent/AttributeTableToolbar';
+import AttributeTableTable from '../components/AttributeTableContent/AttributeTableTable';
 
 const styles = theme => ({
     drawer: {
         width: '100%',
         flexShrink: 0,
       },
-      drawerHeader: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 8px',
-        ...theme.mixins.toolbar,
-        justifyContent: 'flex-end',
-      },
       drawerPaper: {
         width: '100%',
       },
+      tableRoot: {
+        display: 'flex',
+        justifyContent: 'center'
+      },
+      tableContent: {
+        backgroundColor: theme.palette.action.hover,
+        maxWidth: 1500,
+        minWidth: 500,
+        height: 500
+      }
   });
 
   class AttributeTable extends Component {
+
+    constructor(props) {
+        super(props)
+        const {layerId, layers} = props;
+        let layer = this.getLayerWithId(layerId, layers);
+
+        this.state = {
+            layer: layer ? layer: ''
+         };  
+      }
+    
+    componentDidUpdate(prevProps) {
+        if(prevProps.layerId !== this.props.layerId) {
+            this.setNewLayer();
+        }
+    }
+
+    setNewLayer = () => {
+        const {layerId, layers} = this.props;
+        let layer = this.getLayerWithId(layerId, layers);
+        this.setState({
+            layer: layer ? layer: ''
+        });
+    }
+
+    getLayerWithId(layerId, layers) {
+        return layers.find(l => l.id === layerId)
+    }
     
     render() {
-    console.log(this.props)
-      const { classes,open, closeAttribTable } = this.props;
-  
+      const { classes,open, closeAttribTable, layers } = this.props;
+      const { layer } = this.state;
+
       return (
         <div>
         <Drawer
@@ -39,7 +71,17 @@ const styles = theme => ({
         >
           <AttributeTableToolbar closeAttribTable={closeAttribTable}/>
           <Divider />
-          content
+
+          {layer ? 
+            <div className={classes.tableRoot}>
+                <div className={classes.tableContent}>
+                    <AttributeTableTable layer={layer}/>
+                </div>
+            </div>
+            :null}
+
+
+          
         </Drawer>
         </div>
       );

@@ -15,7 +15,6 @@ const styles = theme => ({
     render() {
 
       const { classes, closeAttribTable } = this.props;
-      console.log(this.props)
   
       return (
         <Toolbar className={classes.content} disableGutters={true}>
