@@ -164,7 +164,13 @@ const styles = theme => ({
     
 
     handleListItemRightClick = (layerId, anchorEl) => {
-      this.handleListItemClick(layerId);
+      let {selectedLayers}  = this.state;
+      if(selectedLayers[layerId]) {
+        this.setState({lastClickedLayer: layerId });
+      } else {
+        this.handleListItemClick(layerId)
+      }
+
       this.setState({RightClickMenuOpen: true,
                       anchorEl: anchorEl});
       return false;
