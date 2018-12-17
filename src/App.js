@@ -106,7 +106,7 @@ const theme = createMuiTheme({
     acceptedTypes: ['Polygon', 'MultiPolygon', 'Point', 'LineString'],
     zoomTo: '',
     lastClickedLayer: '',
-    AttributeTableOpen: true
+    AttributeTableOpen: false
 
   };
   
