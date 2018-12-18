@@ -21,7 +21,6 @@ class EnhancedTableHead extends React.Component {
 
   render() {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount, rowHeaders, classes } = this.props;
-    console.log(this.props.theme.palette)
 
     return (
       <TableHead className={classes.head}>

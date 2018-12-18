@@ -24,38 +24,9 @@ const styles = theme => ({
   });
 
   class AttributeTable extends Component {
-
-    constructor(props) {
-        super(props)
-        const {layerId, layers} = props;
-        let layer = this.getLayerWithId(layerId, layers);
-
-        this.state = {
-            layer: layer ? layer: ''
-         };  
-      }
-    
-    componentDidUpdate(prevProps) {
-        if(prevProps.layerId !== this.props.layerId) {
-            this.setNewLayer();
-        }
-    }
-
-    setNewLayer = () => {
-        const {layerId, layers} = this.props;
-        let layer = this.getLayerWithId(layerId, layers);
-        this.setState({
-            layer: layer ? layer: ''
-        });
-    }
-
-    getLayerWithId(layerId, layers) {
-        return layers.find(l => l.id === layerId)
-    }
     
     render() {
-      const { classes,open, closeAttribTable, layers } = this.props;
-      const { layer } = this.state;
+      const { classes,open, closeAttribTable, layerId, layers } = this.props;
 
       return (
         <div>
@@ -71,10 +42,10 @@ const styles = theme => ({
           <AttributeTableToolbar closeAttribTable={closeAttribTable}/>
           <Divider />
 
-          {layer ? 
+          {layerId ? 
             <div className={classes.tableRoot}>
                 <div className={classes.tableContent}>
-                    <AttributeTableTable layer={layer}/>
+                    <AttributeTableTable layerId={layerId} layers={layers}/>
                 </div>
             </div>
             :null}

@@ -37,37 +37,58 @@ const styles = theme => ({
     
     constructor(props) {
         super(props)
-        const {layer} = props;
-        
-        let data = [];
-        let rowHeaderSet = new Set([]);
+        const {layers, layerId} = props;
 
-         layer.data.features.forEach((feature, index) => {
-            let dataObj = {'id': index}
-            Object.assign(dataObj, feature.properties);
-            data.push(dataObj);
-            Object.keys(feature.properties).forEach(key => {
-                 rowHeaderSet.add(key + ' ' + typeof feature.properties[key]);
-            })
-        });
-
-        let rowHeaders = [...rowHeaderSet].map((header) => {
-            let headerSplit = header.split(' ');
-            return {label: headerSplit[0], numeric: headerSplit[0] === 'number' };
-
-        });
-        
+        let layer = layers.find(l => l.id === layerId);        
+        let data = layer ? this.getRowHeadersAndData(layer): '';
 
         this.state = {
             order: 'asc',
             orderBy: 'id',
             selected: [],
-            data: data,
-            rowHeaders: rowHeaders,
+            data: data ? data.data: '',
+            rowHeaders:  data ? data.rowHeaders: '',
             page: 0,
             rowsPerPage: 5,
+            layer: layer
           };
       }
+
+    componentDidUpdate(prevProps) {
+      if(prevProps.layerId !== this.props.layerId) {
+        const {layers, layerId} = this.props;
+        let layer = layers.find(l => l.id === layerId);        
+        let data = layer ? this.getRowHeadersAndData(layer): '' ;
+        this.setState({
+          data: data ? data.data: '',
+          rowHeaders:  data ? data.rowHeaders: '',
+          layer: layer});
+      }
+    }
+
+    getRowHeadersAndData = (layer) => {
+      let data = [];
+      let rowHeaderSet = new Set([]);
+
+       layer.data.features.forEach((feature, index) => {
+          let dataObj = {'id': index}
+          Object.assign(dataObj, feature.properties);
+          data.push(dataObj);
+          Object.keys(feature.properties).forEach(key => {
+               rowHeaderSet.add(key + ' ' + typeof feature.properties[key]);
+          })
+      });
+
+      let rowHeaders = [...rowHeaderSet].map((header) => {
+          let headerSplit = header.split(' ');
+          return {label: headerSplit[0], numeric: headerSplit[1] === 'number' };
+      });
+
+      return {
+        data: data,
+        rowHeaders: rowHeaders
+      }
+    }
     
     handleChangePage = (event, page) => {
     this.setState({ page });
@@ -76,10 +97,6 @@ const styles = theme => ({
     handleChangeRowsPerPage = event => {
     this.setState({ rowsPerPage: event.target.value });
     };
-    
-    componentDidUpdate(prevProps) {
-        console.log('componentDidUpdate', prevProps, this.props)
-    }
 
     handleSelectAllClick = event => {
         if (event.target.checked) {
@@ -130,8 +147,8 @@ const styles = theme => ({
     }
     
     render() {
-      const { classes, layer } = this.props;
-      const { data, order, orderBy, selected, rowsPerPage, page, rowHeaders } = this.state;
+      const { classes } = this.props;
+      const { data, order, orderBy, selected, rowsPerPage, page, rowHeaders, layer } = this.state;
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
   
       return (
@@ -153,7 +170,6 @@ const styles = theme => ({
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
                   const isSelected = this.isSelected(n.id);
-                  console.log('n', n)
                   return (
                     <TableRow
                       hover
