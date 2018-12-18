@@ -164,7 +164,13 @@ const styles = theme => ({
     
 
     handleListItemRightClick = (layerId, anchorEl) => {
-      this.handleListItemClick(layerId);
+      let {selectedLayers}  = this.state;
+      if(selectedLayers[layerId]) {
+        this.setState({lastClickedLayer: layerId });
+      } else {
+        this.handleListItemClick(layerId)
+      }
+
       this.setState({RightClickMenuOpen: true,
                       anchorEl: anchorEl});
       return false;
@@ -251,7 +257,8 @@ const styles = theme => ({
         submitChanges,
         drawerWidth,
         acceptedTypes,
-        zoomTo} = this.props;
+        zoomTo,
+        openAttribTable} = this.props;
       const {selectedLayers,
         deleteLayersDialogOpen,
         editLayersDialogOpen,
@@ -279,7 +286,7 @@ const styles = theme => ({
       <div className={classes.drawerHeader}>
         <Toolbar variant="dense">
           <Typography color='primary' variant="h4" gutterBottom style={{flex: 1}}>
-              MapitApp
+              Gis-App
           </Typography>  
         </Toolbar>
             
@@ -291,7 +298,8 @@ const styles = theme => ({
           closeRightClickMenu={this.closeRightClickMenu.bind(this)}
           drawerWidth={drawerWidth}
           layerId={lastClickedLayer}
-          zoomTo={zoomTo}/>
+          zoomTo={zoomTo}
+          openAttribTable={openAttribTable}/>
         
         {deleteLayersDialogOpen ?
         <DeleteLayerDialog closeDialog={this.closeDeleteLayersDialog.bind(this)}
