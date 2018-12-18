@@ -35,7 +35,7 @@ const styles = theme => ({
     
     render() {
 
-        const { numSelected, classes, layer } = this.props;
+        const { displayFilter, numSelected, classes, layer } = this.props;
 
         return (
             <Toolbar
@@ -64,18 +64,15 @@ const styles = theme => ({
                 </Tooltip>
                 ) : (
                 <Tooltip title="Filter list">
-                    <IconButton aria-label="Filter list">
+                    <IconButton aria-label="Filter list" onClick={displayFilter}>
                     <FilterListIcon />
                     </IconButton>
                 </Tooltip>
                 )}
             </div>
             </Toolbar>
-        );
-  
-  
+        ); 
     }
-
   }
 
 export default withStyles(styles, { withTheme: true })(SecondaryTableToolbar);

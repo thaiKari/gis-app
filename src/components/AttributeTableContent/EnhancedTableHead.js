@@ -16,7 +16,7 @@ class EnhancedTableHead extends Component {
   };
 
   render() {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, rowHeaders, classes } = this.props;
+    const {onSelectAllClick, order, orderBy, numSelected, rowCount, rowHeaders, classes } = this.props;
 
     return (
       <TableHead className={classes.head}>

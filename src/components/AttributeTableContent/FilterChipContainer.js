@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Typography, Tooltip, IconButton, Toolbar} from '@material-ui/core';
+import { Typography, Tooltip, IconButton, Toolbar, Button} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close'
+import AddIcon from '@material-ui/icons/Add';
 import FilterChip from './FilterChip';
 
 const styles = theme => ({
@@ -16,6 +17,10 @@ const styles = theme => ({
       },
       chip: {
         margin: theme.spacing.unit,
+      },
+      button: {
+        margin: theme.spacing.unit,
+        minWidth: 0
       }
   });
 
@@ -23,7 +28,7 @@ const styles = theme => ({
     
     render() {
 
-      const { classes, filterSentences, addNewFilter, deleteFilterSentence  } = this.props;
+      const { classes, filterSentences, addNewFilter, deleteFilterSentence, removeAllFilters  } = this.props;
   
       return (
         <div>
@@ -36,16 +41,26 @@ const styles = theme => ({
             <div className={classes.spacer} />
             <div className={classes.actions}>
                 <Tooltip title="Remove Filters">
-                    <IconButton aria-label="Close">
+                    <IconButton aria-label="Close" onClick={removeAllFilters}>
                         <CloseIcon />
                     </IconButton>
                 </Tooltip>
             </div>
             </Toolbar>
 
+            <Tooltip title="Add Filter">
+                <Button 
+                    variant="fab"
+                    size="small"
+                    color="primary"
+                    className={classes.button}
+                    onClick={()=> console.log('add')}>
+                    <AddIcon />
+                </Button>
+            </Tooltip>
+
             {
                 filterSentences.map( (s, i) => {
-                    console.log('hi', s)
                     return (
                         <FilterChip
                         key={i}

@@ -40,7 +40,8 @@ const styles = theme => ({
           data: data ? data.data: '',
           rowHeaders:  data ? data.rowHeaders: '',
           selected: [],
-          filterSentences: ['SSBID === 20550006450000', 'SSBID === 20550006450000']
+          filterSentences: ['SSBID === 20550006450000', 'SSBID === 20550006450000'],
+          showFilter: false
         };
     }
 
@@ -80,6 +81,10 @@ const styles = theme => ({
       }
     }
 
+    displayFilter = () => {
+      this.setState({showFilter: true});
+    }
+
     addNewFilter = (sentence) => {
       // TODO apply to select
       console.log('new filter', sentence);
@@ -89,8 +94,14 @@ const styles = theme => ({
       this.setState({filterSentences: filterSentences});
     }
 
+    removeAllFilters = () => {
+      this.setState({
+        filterSentences: [],
+        showFilter: false
+      })
+    }
+
     deleteFilterSentence = (i) => {
-      console.log('delete sentence', i);
       let {filterSentences} = this.state;
       filterSentences.splice(i, 1);
       this.setState(filterSentences);
@@ -127,7 +138,7 @@ const styles = theme => ({
     
     render() {
       const { classes,open, closeAttribTable, layerId, layers,} = this.props;
-      const { data, selected, rowHeaders, filterSentences } = this.state;
+      const { data, selected, rowHeaders, filterSentences, showFilter } = this.state;
 
       return (
         <div>
@@ -145,13 +156,16 @@ const styles = theme => ({
 
           {layerId ? 
             <div className={classes.tableRoot}>
+                {showFilter ?
                 <div className={classes.tableContent}>
                   <FilterChipContainer
                     addNewFilter={this.addNewFilter.bind(this)}
                     filterSentences={filterSentences}
                     deleteFilterSentence={this.deleteFilterSentence.bind(this)}
+                    removeAllFilters={this.removeAllFilters.bind(this)}
                     />
                 </div>
+                : null}
                 <div className={classes.tableContent}>
                     <AttributeTableTable
                       layerId={layerId}
@@ -161,6 +175,7 @@ const styles = theme => ({
                       selected={selected}
                       handleSelectAllClick={this.handleSelectAllClick.bind(this)}
                       handleClick={this.handleClick.bind(this)}
+                      displayFilter={this.displayFilter.bind(this)}
                       />
                 </div>
             </div>
