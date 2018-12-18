@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, Checkbox, TableRow, TablePagination } from '@material-ui/core';
 import EnhancedTableHead from './EnhancedTableHead';
+import SecondaryTableToolbar from './SecondaryTableToolbar';
 
 
 const styles = theme => ({
@@ -135,6 +136,7 @@ const styles = theme => ({
   
       return (
         <div>
+          <SecondaryTableToolbar numSelected={selected.length} layer={layer} />
             <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
@@ -146,7 +148,7 @@ const styles = theme => ({
               rowHeaders={rowHeaders}
             />
 
-                        <TableBody>
+              <TableBody>
               {stableSort(data, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {

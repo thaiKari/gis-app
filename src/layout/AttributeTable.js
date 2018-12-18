@@ -18,7 +18,6 @@ const styles = theme => ({
       },
       tableContent: {
         backgroundColor: theme.palette.action.hover,
-        maxWidth: 1500,
         minWidth: 500,
         height: '100%'
       }

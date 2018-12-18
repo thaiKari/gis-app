@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { TableHead, TableRow, TableCell, Checkbox, Tooltip, TableSortLabel } from "@material-ui/core";
+import { TableHead, TableRow, TableCell, Checkbox, Tooltip, TableSortLabel, Divider } from "@material-ui/core";
 
 const styles = theme => ({
   head: {
-    backgroundColor: theme.palette.primary[700],
+    backgroundColor: theme.palette.primary.dark,
+    //opacity: 0.6
   }
   
 });
