@@ -3,6 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { Drawer, Divider } from '@material-ui/core';
 import AttributeTableToolbar from '../components/AttributeTableContent/AttributeTableToolbar';
 import AttributeTableTable from '../components/AttributeTableContent/AttributeTableTable';
+import FilterChipContainer from '../components/AttributeTableContent/FilterChipContainer';
+
 
 const styles = theme => ({
     drawer: {
@@ -15,12 +17,14 @@ const styles = theme => ({
       },
       tableRoot: {
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flexWrap:'wrap'
       },
       tableContent: {
         backgroundColor: theme.palette.action.hover,
         minWidth: 500,
-        height: '100%'
+        height: '100%',
+        margin: theme.spacing.unit,
       }
   });
 
@@ -36,6 +40,7 @@ const styles = theme => ({
           data: data ? data.data: '',
           rowHeaders:  data ? data.rowHeaders: '',
           selected: [],
+          filterSentences: ['SSBID === 20550006450000', 'SSBID === 20550006450000']
         };
     }
 
@@ -75,6 +80,22 @@ const styles = theme => ({
       }
     }
 
+    addNewFilter = (sentence) => {
+      // TODO apply to select
+      console.log('new filter', sentence);
+      let {filterSentences} = this.state;
+      filterSentences.push(sentence);
+
+      this.setState({filterSentences: filterSentences});
+    }
+
+    deleteFilterSentence = (i) => {
+      console.log('delete sentence', i);
+      let {filterSentences} = this.state;
+      filterSentences.splice(i, 1);
+      this.setState(filterSentences);
+    }
+
     handleSelectAllClick = event => {
       if (event.target.checked) {
         this.setState(state => ({ selected: state.data.map(n => n.id) }));
@@ -106,7 +127,7 @@ const styles = theme => ({
     
     render() {
       const { classes,open, closeAttribTable, layerId, layers,} = this.props;
-      const { data, selected, rowHeaders } = this.state;
+      const { data, selected, rowHeaders, filterSentences } = this.state;
 
       return (
         <div>
@@ -124,6 +145,13 @@ const styles = theme => ({
 
           {layerId ? 
             <div className={classes.tableRoot}>
+                <div className={classes.tableContent}>
+                  <FilterChipContainer
+                    addNewFilter={this.addNewFilter.bind(this)}
+                    filterSentences={filterSentences}
+                    deleteFilterSentence={this.deleteFilterSentence.bind(this)}
+                    />
+                </div>
                 <div className={classes.tableContent}>
                     <AttributeTableTable
                       layerId={layerId}
