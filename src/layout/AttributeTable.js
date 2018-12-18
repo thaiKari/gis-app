@@ -11,6 +11,7 @@ const styles = theme => ({
       },
       drawerPaper: {
         width: '100%',
+        zIndex: 20000
       },
       tableRoot: {
         display: 'flex',

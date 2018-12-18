@@ -337,11 +337,14 @@ const theme = createMuiTheme({
             receiveNewJson={this.receiveNewJson.bind(this)}/>
           : null}
 
-          <AttributeTable
+          {AttributeTableOpen?
+            <AttributeTable
             open={AttributeTableOpen}
             layerId={lastClickedLayer}
             layers={layers}
-            closeAttribTable={this.closeAttribTable.bind(this)}/>
+            closeAttribTable={this.closeAttribTable.bind(this)}/>          
+          :null}
+
 
           <main className={classes.content}>      
                <Map
