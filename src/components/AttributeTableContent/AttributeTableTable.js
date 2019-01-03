@@ -36,59 +36,18 @@ const styles = theme => ({
   class AttributeTableTable extends Component {
     
     constructor(props) {
-        super(props)
+        super(props);
         const {layers, layerId} = props;
-
-        let layer = layers.find(l => l.id === layerId);        
-        let data = layer ? this.getRowHeadersAndData(layer): '';
+        let layer = layers.find(l => l.id === layerId);   
 
         this.state = {
             order: 'asc',
             orderBy: 'id',
-            selected: [],
-            data: data ? data.data: '',
-            rowHeaders:  data ? data.rowHeaders: '',
             page: 0,
             rowsPerPage: 5,
             layer: layer
           };
       }
-
-    componentDidUpdate(prevProps) {
-      if(prevProps.layerId !== this.props.layerId) {
-        const {layers, layerId} = this.props;
-        let layer = layers.find(l => l.id === layerId);        
-        let data = layer ? this.getRowHeadersAndData(layer): '' ;
-        this.setState({
-          data: data ? data.data: '',
-          rowHeaders:  data ? data.rowHeaders: '',
-          layer: layer});
-      }
-    }
-
-    getRowHeadersAndData = (layer) => {
-      let data = [];
-      let rowHeaderSet = new Set([]);
-
-       layer.data.features.forEach((feature, index) => {
-          let dataObj = {'id': index}
-          Object.assign(dataObj, feature.properties);
-          data.push(dataObj);
-          Object.keys(feature.properties).forEach(key => {
-               rowHeaderSet.add(key + ' ' + typeof feature.properties[key]);
-          })
-      });
-
-      let rowHeaders = [...rowHeaderSet].map((header) => {
-          let headerSplit = header.split(' ');
-          return {label: headerSplit[0], numeric: headerSplit[1] === 'number' };
-      });
-
-      return {
-        data: data,
-        rowHeaders: rowHeaders
-      }
-    }
     
     handleChangePage = (event, page) => {
     this.setState({ page });
@@ -97,35 +56,6 @@ const styles = theme => ({
     handleChangeRowsPerPage = event => {
     this.setState({ rowsPerPage: event.target.value });
     };
-
-    handleSelectAllClick = event => {
-        if (event.target.checked) {
-          this.setState(state => ({ selected: state.data.map(n => n.id) }));
-          return;
-        }
-        this.setState({ selected: [] });
-      };
-
-    handleClick = (event, id) => {
-        const { selected } = this.state;
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
-    
-        if (selectedIndex === -1) {
-          newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-          newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-          newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-          newSelected = newSelected.concat(
-            selected.slice(0, selectedIndex),
-            selected.slice(selectedIndex + 1),
-          );
-        }
-    
-        this.setState({ selected: newSelected });
-      };
 
       handleRequestSort = (event, property) => {
         const orderBy = property;
@@ -138,28 +68,28 @@ const styles = theme => ({
         this.setState({ order, orderBy });
       };
 
-    isSelected = id => this.state.selected.indexOf(id) !== -1;
+    isSelected = id => this.props.selected.indexOf(id) !== -1;
     
     getCells = (row) => {
-        return this.state.rowHeaders.map((header, index) => {
+        return this.props.rowHeaders.map((header, index) => {
             return <TableCell key={index} numeric={header.numeric} >{row[header.label]}</TableCell>
         });
     }
     
     render() {
-      const { classes } = this.props;
-      const { data, order, orderBy, selected, rowsPerPage, page, rowHeaders, layer } = this.state;
+      const { classes, data, selected, rowHeaders, handleSelectAllClick, handleClick, displayFilter, handleNewLayerFromSelected, handleDeleteSelected } = this.props;
+      const { order, orderBy, rowsPerPage, page, layer } = this.state;
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
   
       return (
         <div>
-          <SecondaryTableToolbar numSelected={selected.length} layer={layer} />
+          <SecondaryTableToolbar handleNewLayerFromSelected={handleNewLayerFromSelected} handleDeleteSelected={handleDeleteSelected} displayFilter={displayFilter} numSelected={selected.length} layer={layer} />
             <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
+              onSelectAllClick={handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
               rowCount={data.length}
               rowHeaders={rowHeaders}
@@ -173,7 +103,7 @@ const styles = theme => ({
                   return (
                     <TableRow
                       hover
-                      onClick={event => this.handleClick(event, n.id)}
+                      onClick={event => handleClick(event, n.id)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}

@@ -56,7 +56,13 @@ class Map extends Component {
   }
 
 componentDidUpdate(prevProps) {
-  if (prevProps.moveLayerUnder !== this.props.moveLayerUnder) {
+  if(prevProps.dataChange !== this.props.dataChange){
+    let layerId = this.props.dataChangeId;
+    this._map.removeLayer(layerId);
+    this._map.removeSource(layerId);
+    this.updateLayerVisibility();
+  }
+  else if (prevProps.moveLayerUnder !== this.props.moveLayerUnder) {
     let moveLayerUnder = this.props.moveLayerUnder;
     let layerId = moveLayerUnder[0];
     let layerAbove = moveLayerUnder[1];

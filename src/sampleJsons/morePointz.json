@@ -3,7 +3,10 @@
     "features": [
       {
         "type": "Feature",
-        "properties": {},
+        "properties": {
+          "pop_tot": 639,
+          "word": "Apple"
+      },
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -14,7 +17,10 @@
       },
       {
         "type": "Feature",
-        "properties": {},
+        "properties": {
+          "pop_tot": 1,
+          "word": "Banana"
+        },
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -25,7 +31,10 @@
       },
       {
         "type": "Feature",
-        "properties": {},
+        "properties": {
+          "pop_tot": 2,
+          "word": "Apple"
+        },
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -36,7 +45,10 @@
       },
       {
         "type": "Feature",
-        "properties": {},
+        "properties": {
+          "pop_tot": 3,
+          "word": "Apple"
+        },
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -47,7 +59,10 @@
       },
       {
         "type": "Feature",
-        "properties": {},
+        "properties": {
+          "pop_tot": 639,
+          "word": "Carrot"
+        },
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -58,7 +73,10 @@
       },
       {
         "type": "Feature",
-        "properties": {},
+        "properties": {
+          "pop_tot": 5,
+          "word": "Banana"
+        },
         "geometry": {
           "type": "Point",
           "coordinates": [

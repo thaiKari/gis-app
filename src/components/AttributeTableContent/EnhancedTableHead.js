@@ -1,26 +1,22 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { TableHead, TableRow, TableCell, Checkbox, Tooltip, TableSortLabel, Divider } from "@material-ui/core";
+import { TableHead, TableRow, TableCell, Checkbox, Tooltip, TableSortLabel } from "@material-ui/core";
 
 const styles = theme => ({
   head: {
     backgroundColor: theme.palette.primary.dark,
-    //opacity: 0.6
   }
   
 });
 
-class EnhancedTableHead extends React.Component {
-  constructor(props) {
-    super(props)     
-  }
+class EnhancedTableHead extends Component {
 
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
   };
 
   render() {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, rowHeaders, classes } = this.props;
+    const {onSelectAllClick, order, orderBy, numSelected, rowCount, rowHeaders, classes } = this.props;
 
     return (
       <TableHead className={classes.head}>

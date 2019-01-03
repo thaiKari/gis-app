@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {MuiThemeProvider, createMuiTheme, withStyles} from '@material-ui/core/styles';
 import './App.css';
-//import ToolbarIconButton from './layout/ToolbarIconButton';
 import reorder from './utils/reorderList'
 import {teal, amber} from '@material-ui/core/colors';
 import {IconButton} from '@material-ui/core';
@@ -11,7 +10,6 @@ import findIndexWithAttribute from './utils/findIndexWithAttribute';
 import Loadable from 'react-loadable'
 import LoadingFullPage from './utils/Loading/LoadingFullpageCirular';
 import checkIfLayerNameExists from './utils/checkIfLayerNameExists';
-//import DrawerBtn from './components/DrawerBtn';
 import { SnackbarProvider } from 'notistack';
 import SnackbarQuer from './components/SnackbarQuer';
 
@@ -102,7 +100,7 @@ const theme = createMuiTheme({
     layersChange: false, //needed to recognise change in layers
     moveLayerUnder: [], //Array with values [layerID, layerAboveID]. Change in state prompts map
     deletedLayers:[],
-    drawerWidth: 240,
+    drawerWidth: 270,
     acceptedTypes: ['Polygon', 'MultiPolygon', 'Point', 'LineString'],
     zoomTo: '',
     lastClickedLayer: '',
@@ -204,6 +202,26 @@ const theme = createMuiTheme({
      });
   }
 
+  receiveNewData = (layerId) => {
+    // Something ind the layer feature data json has been changed. Map needs to update.
+    let {layers} = this.state;
+
+    let layer = layers.find((l) => l.id === layerId);
+
+    if(layer.data.features.length < 1 ){
+      this.setState({ snackbarMessages: {message: 'No features remaining. Layer: ' + layer.displayName + ' will be deleted', options: {variant: 'info'}}  });
+      this.deleteLayers([layerId]);
+      this.closeAttribTable();      
+    }
+    else {
+      this.setState({
+        dataChange: !this.state.dataChange,
+        dataChangeId: layerId
+      });
+    }
+
+  }
+
   submitChanges = (layerId, color, opacity, layerName, strokeColor, strokeOpacity) => {
     let {layers} = this.state;
 
@@ -287,7 +305,9 @@ const theme = createMuiTheme({
       acceptedTypes,
       zoomTo,
       AttributeTableOpen,
-      lastClickedLayer } = this.state;
+      lastClickedLayer,
+      dataChange,
+      dataChangeId } = this.state;
 
     return (
 
@@ -342,7 +362,9 @@ const theme = createMuiTheme({
             open={AttributeTableOpen}
             layerId={lastClickedLayer}
             layers={layers}
-            closeAttribTable={this.closeAttribTable.bind(this)}/>          
+            closeAttribTable={this.closeAttribTable.bind(this)}
+            receiveNewData={this.receiveNewData.bind(this)}
+            receiveNewJson={this.receiveNewJson.bind(this)}/>          
           :null}
 
 
@@ -356,7 +378,9 @@ const theme = createMuiTheme({
                drawerOpen={drawerOpen}
                zoomTo={zoomTo}
                zoomToReset={this.zoomTo.bind(this)}
-               removeLayer={this.removeLayer.bind(this)}/>
+               removeLayer={this.removeLayer.bind(this)}
+               dataChange={dataChange}
+               dataChangeId={dataChangeId}/>
 
               <DrawerBtn 
               handleDrawerToggle={this.handleDrawerToggle.bind(this)}
