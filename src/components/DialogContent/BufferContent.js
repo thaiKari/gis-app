@@ -14,7 +14,6 @@ const styles = theme => ({
     
     handleChange = event => {
       const {changeDistance} = this.props;
-
       changeDistance(event.target.value);
     };
     

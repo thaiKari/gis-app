@@ -142,6 +142,7 @@ changeColor(colorChange) {
     case 'Point':
         map.setPaintProperty(layerId, 'circle-color', color);
         map.setPaintProperty(layerId, 'circle-opacity', opacity);
+        map.setPaintProperty(layerId, 'circle-radius',parseInt(colorChange.radius, 10) );
       break;
     default:
       console.log('unidentified layer type', layer.type);
@@ -232,7 +233,7 @@ changeColor(colorChange) {
         },
         'layout': {'visibility': visibility },
         'paint': {
-          'circle-radius': 4,
+          'circle-radius': layer.data.radius,
           'circle-color': layer.data.color,
           'circle-opacity': layer.data.opacity
         }
