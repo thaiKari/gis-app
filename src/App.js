@@ -202,6 +202,26 @@ const theme = createMuiTheme({
      });
   }
 
+  receiveNewData = (layerId) => {
+    // Something ind the layer feature data json has been changed. Map needs to update.
+    let {layers} = this.state;
+
+    let layer = layers.find((l) => l.id === layerId);
+
+    if(layer.data.features.length < 1 ){
+      this.setState({ snackbarMessages: {message: 'No features remaining. Layer: ' + layer.displayName + ' will be deleted', options: {variant: 'info'}}  });
+      this.deleteLayers([layerId]);
+      this.closeAttribTable();      
+    }
+    else {
+      this.setState({
+        dataChange: !this.state.dataChange,
+        dataChangeId: layerId
+      });
+    }
+
+  }
+
   submitChanges = (layerId, color, opacity, layerName, strokeColor, strokeOpacity) => {
     let {layers} = this.state;
 
@@ -285,7 +305,9 @@ const theme = createMuiTheme({
       acceptedTypes,
       zoomTo,
       AttributeTableOpen,
-      lastClickedLayer } = this.state;
+      lastClickedLayer,
+      dataChange,
+      dataChangeId } = this.state;
 
     return (
 
@@ -340,7 +362,8 @@ const theme = createMuiTheme({
             open={AttributeTableOpen}
             layerId={lastClickedLayer}
             layers={layers}
-            closeAttribTable={this.closeAttribTable.bind(this)}/>          
+            closeAttribTable={this.closeAttribTable.bind(this)}
+            receiveNewData={this.receiveNewData.bind(this)}/>          
           :null}
 
 
@@ -354,7 +377,9 @@ const theme = createMuiTheme({
                drawerOpen={drawerOpen}
                zoomTo={zoomTo}
                zoomToReset={this.zoomTo.bind(this)}
-               removeLayer={this.removeLayer.bind(this)}/>
+               removeLayer={this.removeLayer.bind(this)}
+               dataChange={dataChange}
+               dataChangeId={dataChangeId}/>
 
               <DrawerBtn 
               handleDrawerToggle={this.handleDrawerToggle.bind(this)}

@@ -35,7 +35,7 @@ const styles = theme => ({
     
     render() {
 
-        const { displayFilter, numSelected, classes, layer } = this.props;
+        const { displayFilter, numSelected, classes, layer, handleDeleteSelected } = this.props;
 
         return (
             <Toolbar
@@ -58,7 +58,7 @@ const styles = theme => ({
             <div className={classes.actions}>
                 {numSelected > 0 ? (
                 <Tooltip title="Delete">
-                    <IconButton aria-label="Delete">
+                    <IconButton aria-label="Delete" onClick={handleDeleteSelected}>
                     <DeleteIcon />
                     </IconButton>
                 </Tooltip>

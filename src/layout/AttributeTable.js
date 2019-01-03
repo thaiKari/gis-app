@@ -63,7 +63,8 @@ const styles = theme => ({
       let rowHeaderSet = new Set([]);
 
        layer.data.features.forEach((feature, index) => {
-          let dataObj = {'id': index}
+          feature.id = feature.id ? feature.id: index;
+          let dataObj = {'id': feature.id}
           Object.assign(dataObj, feature.properties);
           data.push(dataObj);
           Object.keys(feature.properties).forEach(key => {
@@ -109,7 +110,7 @@ const styles = theme => ({
           })
   
           if(selectElem) {
-            selected.push(index)
+            selected.push(dataElem.id);
           }
         });
       }
@@ -151,6 +152,25 @@ const styles = theme => ({
       this.setState({ selected: [] });
     };
 
+    handleDeleteSelected = () => {
+      let {receiveNewData, layerId, layers} = this.props;
+      let {selected} = this.state;
+
+      let layer = layers.find(l => l.id === layerId);
+      layer.data.features = layer.data.features.filter(feature => {
+        return !selected.includes(feature.id)});
+    
+      let data = layer ? this.getRowHeadersAndData(layer): '' ;
+      this.setState({
+        data: data ? data.data: '',
+        rowHeaders:  data ? data.rowHeaders: '',
+        layer: layer,
+        selected: []});
+
+    receiveNewData(layerId);
+
+    }
+
     handleClick = (event, id) => {
       const { selected } = this.state;
       const selectedIndex = selected.indexOf(id);
@@ -173,7 +193,7 @@ const styles = theme => ({
     };
     
     render() {
-      const { classes,open, closeAttribTable, layerId, layers,} = this.props;
+      const { classes, open, closeAttribTable, layerId, layers,} = this.props;
       const { data, selected, rowHeaders, filterSentences, showFilter } = this.state;
 
       return (
@@ -211,6 +231,7 @@ const styles = theme => ({
                       rowHeaders={rowHeaders}
                       selected={selected}
                       handleSelectAllClick={this.handleSelectAllClick.bind(this)}
+                      handleDeleteSelected={this.handleDeleteSelected.bind(this)}
                       handleClick={this.handleClick.bind(this)}
                       displayFilter={this.displayFilter.bind(this)}
                       />

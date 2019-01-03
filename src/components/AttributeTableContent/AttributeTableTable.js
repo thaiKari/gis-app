@@ -77,13 +77,13 @@ const styles = theme => ({
     }
     
     render() {
-      const { classes, data, selected, rowHeaders, handleSelectAllClick, handleClick, displayFilter } = this.props;
+      const { classes, data, selected, rowHeaders, handleSelectAllClick, handleClick, displayFilter, handleDeleteSelected } = this.props;
       const { order, orderBy, rowsPerPage, page, layer } = this.state;
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
   
       return (
         <div>
-          <SecondaryTableToolbar displayFilter={displayFilter} numSelected={selected.length} layer={layer} />
+          <SecondaryTableToolbar handleDeleteSelected={handleDeleteSelected} displayFilter={displayFilter} numSelected={selected.length} layer={layer} />
             <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
