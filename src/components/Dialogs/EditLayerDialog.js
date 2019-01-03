@@ -3,7 +3,8 @@ import {Dialog,
    Typography,
    DialogContent,
    DialogTitle,
-   Divider
+   Divider,
+   TextField
    } from '@material-ui/core';
 import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
 import OkAction from '../DialogActions/OkAction'
@@ -43,10 +44,12 @@ class EditLayerDialog extends React.Component {
     scroll: 'paper',
     color: {r:0, g: 0, b:0, a:0},
     strokeColor: {r:0, g: 0, b:0, a:0},
+    radius: '',
     colorChanged: false,
     layerId: null,
     layerName: '',
-    pickerOpen: false
+    pickerOpen: false,
+    hasError: false
   };
 
   setPickerOpen = (pickerOpen) => {
@@ -54,13 +57,13 @@ class EditLayerDialog extends React.Component {
   }
 
   submitChanges = () => {
-    const {color, strokeColor, layerId, layerName } = this.state;
+    const {color, strokeColor, layerId, layerName, radius } = this.state;
     const {submitChanges, closeDialog} = this.props;
     if(color && layerId) {
       let colorString = rgbObj2Css(color);
       let strokeColorString= strokeColor ? rgbObj2Css(strokeColor): '';
       let strokeOpacity = strokeColor ? strokeColor.a : ''
-      submitChanges(layerId, colorString, color.a, layerName, strokeColorString, strokeOpacity);
+      submitChanges(layerId, colorString, color.a, layerName, strokeColorString, strokeOpacity, radius);
     }
 
     closeDialog();
@@ -74,6 +77,10 @@ class EditLayerDialog extends React.Component {
       let colorString = layer.data.color;
       let color =  rgbCss2Obj(colorString, layer.data.opacity);
       let strokeColorString = layer.data.strokeColor;
+      let radius = layer.data.radius ? layer.data.radius : '';
+      if (radius) {
+        this.setState({radius});
+      }
       if (strokeColorString) {
         let strokeColor = rgbCss2Obj(strokeColorString, layer.data.strokeOpacity);
         this.setState({strokeColor: strokeColor});
@@ -153,12 +160,25 @@ class EditLayerDialog extends React.Component {
   }
 
   setName  = (name) => {
-    this.setState({layerName: name});
+    this.setState({layerName: name,
+    hasNameError: name.length===0});
   }
+
+  setRadius = event => {
+    let radius = event.target.value;
+    if (isNaN(radius) || radius <= 0 ) {
+      this.setState({hasRadiusError: true});
+    } else {
+      this.setState({hasRadiusError: false});
+    }
+    this.setState({radius});
+  };
   
   getContent = () => {
-    let {layerId, color, strokeColor, colorChanged, layerName, pickerOpen} = this.state;
+    let {layerId, color, strokeColor, colorChanged, layerName, pickerOpen, radius, hasNameError, hasRadiusError} = this.state;
     const {layers, classes, theme} = this.props;
+
+    let hasError = hasNameError || hasRadiusError;
 
     var paperClasses = classNames({
       [classes.dialogPaper]: true,
@@ -195,10 +215,37 @@ class EditLayerDialog extends React.Component {
           setPickerOpen={this.setPickerOpen.bind(this)}/>
           </div>
         </div>
-
-
           break;
-      
+
+          case 'Point':
+
+          styleContent =          
+          <div  style={{display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: "space-between",
+            margin: theme.spacing.unit * 2,
+            marginLeft: 0,
+            width:'100%'}}>
+          <div style={{width: '40%'}}>
+          <Typography variant="caption" gutterBottom>Fill Color</Typography>
+          <ColorPicker
+            setColor={this.setColor.bind(this)}
+            color={color}
+            colorChanged={colorChanged}
+            setPickerOpen={this.setPickerOpen.bind(this)}/>
+          </div>
+          <div style={{width: '40%'}}>
+
+          <TextField
+              error = {hasRadiusError}
+              value={radius}
+              label="Point Radius (px)"
+              onChange={this.setRadius}
+            />
+            </div>
+          </div>
+            break;
+
         default:
           styleContent =          
           <div  style={{ margin: theme.spacing.unit * 2, marginLeft: 0, width:'100%'}}>
@@ -250,8 +297,9 @@ class EditLayerDialog extends React.Component {
 
   render() {
     const {open, layers, classes, theme} = this.props;
-    const {layerName, pickerOpen} = this.state;
+    const {layerName, pickerOpen, hasNameError, hasRadiusError} = this.state;
     
+    let hasError = hasNameError || hasRadiusError;
 
     let content = layers.length > 0 ?
       this.getContent()
@@ -260,7 +308,7 @@ class EditLayerDialog extends React.Component {
         <Typography>Add some layers first</Typography>         
       </DialogContent>
 
-    let hasError= layerName.length===0;
+    //let hasError= layerName.length===0 || isError ;
 
     let actions = layers.length > 0 ?
       <SubmitOrCancelAction submitDisabled={hasError} submit={this.submitChanges} cancel={this.handleClose}/>

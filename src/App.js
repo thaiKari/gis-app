@@ -100,7 +100,7 @@ const theme = createMuiTheme({
     layersChange: false, //needed to recognise change in layers
     moveLayerUnder: [], //Array with values [layerID, layerAboveID]. Change in state prompts map
     deletedLayers:[],
-    drawerWidth: 270,
+    drawerWidth: 240,
     acceptedTypes: ['Polygon', 'MultiPolygon', 'Point', 'LineString'],
     zoomTo: '',
     lastClickedLayer: '',
@@ -222,7 +222,7 @@ const theme = createMuiTheme({
 
   }
 
-  submitChanges = (layerId, color, opacity, layerName, strokeColor, strokeOpacity) => {
+  submitChanges = (layerId, color, opacity, layerName, strokeColor, strokeOpacity, radius) => {
     let {layers} = this.state;
 
     let layer = layers.find((l) => l.id === layerId);
@@ -232,6 +232,7 @@ const theme = createMuiTheme({
     layer.data.opacity = opacity;
     layer.data.strokeColor = strokeColor;
     layer.data.strokeOpacity = strokeOpacity;
+    layer.data.radius = radius;
     let i = 1;
     let newLayerName = layerName;
     while(checkIfLayerNameExists(newLayerName, layers, index)){
@@ -243,7 +244,7 @@ const theme = createMuiTheme({
 
     this.setState({
       layers: layers,
-      colorChange: {layerId: layerId, color: color, opacity: opacity, strokeColor:strokeColor, strokeOpacity:strokeOpacity}
+      colorChange: {layerId: layerId, color: color, opacity: opacity, strokeColor:strokeColor, strokeOpacity:strokeOpacity, radius:radius}
     });
   }
 

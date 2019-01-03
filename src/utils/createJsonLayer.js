@@ -22,6 +22,10 @@ const createJsonLayer = (json, name, index) => {
       json.strokeOpacity = json.strokeOpacity ? json.strokeOpacity: 1;
       json.opacity = json.opacity? json.opacity: 0.8;
     }
+
+    if(type === 'Point' ) {
+      json.radius = json.radius ? json.radius: 5;
+    }
     
 
     var layer = {
