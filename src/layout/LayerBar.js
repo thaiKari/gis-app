@@ -299,7 +299,9 @@ const styles = theme => ({
           drawerWidth={drawerWidth}
           layerId={lastClickedLayer}
           zoomTo={zoomTo}
-          openAttribTable={openAttribTable}/>
+          openAttribTable={openAttribTable}
+          openDeleteLayersDialog={this.openDeleteLayersDialog.bind(this)}
+          openEditLayersDialog={this.openEditLayersDialog.bind(this)}/>
         
         {deleteLayersDialogOpen ?
         <DeleteLayerDialog closeDialog={this.closeDeleteLayersDialog.bind(this)}
