@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { Toolbar, Typography, Tooltip, IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import NewLayerIcon from '@material-ui/icons/InsertDriveFile';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 
@@ -29,13 +30,16 @@ const styles = theme => ({
       title: {
         flex: '0 0 auto',
       },
+      actionDiv: {
+        display: 'inline-flex'
+      }
   });
 
   class SecondaryTableToolbar extends Component {
     
     render() {
 
-        const { displayFilter, numSelected, classes, layer, handleDeleteSelected } = this.props;
+        const { displayFilter, numSelected, classes, layer, handleDeleteSelected, handleNewLayerFromSelected } = this.props;
 
         return (
             <Toolbar
@@ -57,11 +61,18 @@ const styles = theme => ({
             <div className={classes.spacer} />
             <div className={classes.actions}>
                 {numSelected > 0 ? (
-                <Tooltip title="Delete">
-                    <IconButton aria-label="Delete" onClick={handleDeleteSelected}>
-                    <DeleteIcon />
+                <div className={classes.actionDiv}>
+                <Tooltip title="New Layer From Selection">
+                    <IconButton aria-label="New" onClick={handleNewLayerFromSelected}>
+                        <NewLayerIcon/>
                     </IconButton>
                 </Tooltip>
+                <Tooltip title="Delete Selection">
+                    <IconButton aria-label="Delete" onClick={handleDeleteSelected}>
+                        <DeleteIcon />
+                    </IconButton>
+                </Tooltip>
+                </div>
                 ) : (
                 <Tooltip title="Filter list">
                     <IconButton aria-label="Filter list" onClick={displayFilter}>

@@ -100,7 +100,7 @@ const theme = createMuiTheme({
     layersChange: false, //needed to recognise change in layers
     moveLayerUnder: [], //Array with values [layerID, layerAboveID]. Change in state prompts map
     deletedLayers:[],
-    drawerWidth: 240,
+    drawerWidth: 270,
     acceptedTypes: ['Polygon', 'MultiPolygon', 'Point', 'LineString'],
     zoomTo: '',
     lastClickedLayer: '',
@@ -363,7 +363,8 @@ const theme = createMuiTheme({
             layerId={lastClickedLayer}
             layers={layers}
             closeAttribTable={this.closeAttribTable.bind(this)}
-            receiveNewData={this.receiveNewData.bind(this)}/>          
+            receiveNewData={this.receiveNewData.bind(this)}
+            receiveNewJson={this.receiveNewJson.bind(this)}/>          
           :null}
 
 

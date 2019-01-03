@@ -171,6 +171,23 @@ const styles = theme => ({
 
     }
 
+    handleNewLayerFromSelected = () => {
+      let {receiveNewJson, layerId, layers, closeAttribTable} = this.props;
+      let {selected} = this.state;
+      let layer = layers.find(l => l.id === layerId);   
+      let features = JSON.parse(JSON.stringify(layer.data.features)); // Create a deep clone copy
+      
+      features = features.filter(feature => selected.includes(feature.id));
+
+      let json = {
+        "type": "FeatureCollection",
+        "features": features
+      }
+
+      receiveNewJson(json, layer.displayName + '_filtered');
+      closeAttribTable();
+    }
+
     handleClick = (event, id) => {
       const { selected } = this.state;
       const selectedIndex = selected.indexOf(id);
@@ -232,6 +249,7 @@ const styles = theme => ({
                       selected={selected}
                       handleSelectAllClick={this.handleSelectAllClick.bind(this)}
                       handleDeleteSelected={this.handleDeleteSelected.bind(this)}
+                      handleNewLayerFromSelected={this.handleNewLayerFromSelected.bind(this)}
                       handleClick={this.handleClick.bind(this)}
                       displayFilter={this.displayFilter.bind(this)}
                       />
