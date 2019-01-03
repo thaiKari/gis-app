@@ -9,6 +9,7 @@ import FilterChipContainer from '../components/AttributeTableContent/FilterChipC
 const styles = theme => ({
     drawer: {
         width: '100%',
+        maxHeight: '70%',
         flexShrink: 0,
       },
       drawerPaper: {
@@ -40,7 +41,7 @@ const styles = theme => ({
           data: data ? data.data: '',
           rowHeaders:  data ? data.rowHeaders: '',
           selected: [],
-          filterSentences: ['SSBID === 20550006450000', 'SSBID === 20550006450000'],
+          filterSentences: [],
           showFilter: false
         };
     }
@@ -85,13 +86,47 @@ const styles = theme => ({
       this.setState({showFilter: true});
     }
 
-    addNewFilter = (sentence) => {
-      // TODO apply to select
-      console.log('new filter', sentence);
-      let {filterSentences} = this.state;
-      filterSentences.push(sentence);
+    filterSelection = (filterSentences) => {
+      const {data} = this.state;
+      let selected = [];
+      
+      if(filterSentences.length > 0 ) {
+        data.forEach((dataElem, index) => {
+          let selectElem = true;
+          filterSentences.forEach(filterElem => {
+            //Must match all criteria
+            let query = filterElem.isNumeric ?
+                  dataElem[filterElem.attrib] + filterElem.operator + filterElem.val
+                  : '"' + dataElem[filterElem.attrib] + '"' + '.' + filterElem.operator + '("' + filterElem.val.toString() + '")';
+  
+            if (filterElem.operator  === 'equals') {
+              query =  '"' + dataElem[filterElem.attrib] + '"' + '===' +  '"' + filterElem.val.toString() + '"';
+            }
+  
+            if(!eval( query)){
+              selectElem = false;
+            }
+          })
+  
+          if(selectElem) {
+            selected.push(index)
+          }
+        });
+      }
 
-      this.setState({filterSentences: filterSentences});
+
+      this.setState({selected: selected});
+    }
+
+    addNewFilter = (filter) => {
+      let {filterSentences} = this.state;
+      filterSentences.push(filter);
+
+      this.filterSelection(filterSentences)
+
+      this.setState({
+        filterSentences: filterSentences,
+      });
     }
 
     removeAllFilters = () => {
@@ -104,6 +139,7 @@ const styles = theme => ({
     deleteFilterSentence = (i) => {
       let {filterSentences} = this.state;
       filterSentences.splice(i, 1);
+      this.filterSelection(filterSentences)
       this.setState(filterSentences);
     }
 
@@ -163,6 +199,7 @@ const styles = theme => ({
                     filterSentences={filterSentences}
                     deleteFilterSentence={this.deleteFilterSentence.bind(this)}
                     removeAllFilters={this.removeAllFilters.bind(this)}
+                    rowHeaders={rowHeaders}
                     />
                 </div>
                 : null}

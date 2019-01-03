@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Typography, Tooltip, IconButton, Toolbar, Button} from '@material-ui/core';
+import { Typography, Tooltip, IconButton, Toolbar} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close'
-import AddIcon from '@material-ui/icons/Add';
+//import AddIcon from '@material-ui/icons/Add';
 import FilterChip from './FilterChip';
 
 const styles = theme => ({
@@ -25,11 +25,27 @@ const styles = theme => ({
   });
 
   class FilterChipContainer extends Component {
+    constructor(props) {
+        super(props)
+  
+        this.state = {
+           // wipSentences: [''],
+          };
+      }
+
+    //   submitFilter = (filter) => {
+    //       const {addNewFilter} = this.props;
+    //       console.log('submit', filter);
+    //       //let {wipSentences} = this.state;
+    //       //wipSentences.splice(filter.index, 1);
+    //       addNewFilter(filter);
+    
+    //   }
     
     render() {
 
-      const { classes, filterSentences, addNewFilter, deleteFilterSentence, removeAllFilters  } = this.props;
-  
+      const { classes, filterSentences, addNewFilter, deleteFilterSentence, removeAllFilters, rowHeaders  } = this.props;
+
       return (
         <div>
             <Toolbar className={classes.root}>
@@ -47,20 +63,17 @@ const styles = theme => ({
                 </Tooltip>
             </div>
             </Toolbar>
-
-            <Tooltip title="Add Filter">
-                <Button 
-                    variant="fab"
-                    size="small"
-                    color="primary"
-                    className={classes.button}
-                    onClick={()=> console.log('add')}>
-                    <AddIcon />
-                </Button>
-            </Tooltip>
+            
+            <FilterChip
+                label={'wip'}
+                submitFilter={addNewFilter}
+                rowHeaders={rowHeaders}
+            />
+   
 
             {
-                filterSentences.map( (s, i) => {
+                filterSentences.map( (filter, i) => {                    
+                    let s = filter.attrib + ' ' + filter.operator + ' ' + filter.val;
                     return (
                         <FilterChip
                         key={i}
@@ -82,3 +95,16 @@ const styles = theme => ({
   }
 
 export default withStyles(styles, { withTheme: true })(FilterChipContainer);
+
+/**
+ *             <Tooltip title="Add Filter">
+                <Button 
+                    variant="fab"
+                    size="small"
+                    color="primary"
+                    className={classes.button}
+                    onClick={()=> console.log('add')}>
+                    <AddIcon />
+                </Button>
+            </Tooltip>
+ */
