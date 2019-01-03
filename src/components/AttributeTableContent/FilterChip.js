@@ -41,6 +41,19 @@ const styles = theme => ({
         };
     }
 
+    componentDidMount() {
+      document.addEventListener('keyup',this.keyupHandler.bind(this));
+    }
+    componentWillUnmount(){
+      document.removeEventListener('keyup',this.keyupHandler.bind(this));
+    }
+
+    keyupHandler(e){
+      if(e.keyCode === 13){
+        this.submitFilter();
+      }
+    }
+
     handleChange = name => event => {
       const {isNumeric} = this.state
       const {rowHeaders} = this.props;
@@ -67,13 +80,16 @@ const styles = theme => ({
 
     submitFilter = () => {
       const { attrib, operator, val, isNumeric} = this.state;
-      this.setState({
-        attrib: '',
-        operator: '',
-        val: ''
-      })
 
-      this.props.submitFilter({ attrib: attrib, operator:operator, val: val, isNumeric: isNumeric})
+      if( attrib && operator && val){
+        this.setState({
+          attrib: '',
+          operator: '',
+          val: ''
+        });
+        this.props.submitFilter({ attrib: attrib, operator:operator, val: val, isNumeric: isNumeric});
+      }
+      
     }
     
     render() {
