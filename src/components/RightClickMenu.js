@@ -28,10 +28,23 @@ const styles = theme => ({
       const {closeRightClickMenu} = this.props;
       closeRightClickMenu();
     }
+
+    openEditLayersDialog = () => {
+      const {closeRightClickMenu, openEditLayersDialog} = this.props;
+      openEditLayersDialog();
+      closeRightClickMenu();
+    }
+
+    openDeleteLayersDialog = () => {
+      const {closeRightClickMenu, openDeleteLayersDialog} = this.props;
+      openDeleteLayersDialog();
+      closeRightClickMenu();
+    }
+
     
     render() {
 
-      const { classes, anchorEl, open, drawerWidth } = this.props;
+      const { classes, anchorEl, open, drawerWidth} = this.props;
 
         var menuClasess = classNames({
           [classes.menuAlign]: drawerWidth > 220,
@@ -47,6 +60,8 @@ const styles = theme => ({
       >
         <MenuItem onClick={this.zoomTo}>Zoom To</MenuItem>
         <MenuItem onClick={this.openAtributeTable}>Attribute Table</MenuItem>
+        <MenuItem onClick={this.openEditLayersDialog}>Edit Layer</MenuItem>
+        <MenuItem onClick={this.openDeleteLayersDialog}>Delete Layers</MenuItem>
 
       </Menu>
       );
