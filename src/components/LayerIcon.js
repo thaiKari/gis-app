@@ -39,8 +39,14 @@ import { withStyles } from '@material-ui/core/styles';;
       var color = this.getColor(layer);
       var icon;
 
+      console.log(layer.type.length, 'MultiPolygon'.length);
+      console.log(typeof layer.type, typeof 'MultiPolygon');
+      console.log(layer.type === 'MultiPolygon');
+
       switch (layer.type) {
-        case 'Polygon' || 'MultiPolygon' :
+        case 'Polygon':
+        case 'MultiPolygon' :
+        console.log('MultiPolygon')
           iconStyles.backgroundColor = color;
           iconStyles.borderStyle = 'solid';
           iconStyles.borderWidth = 'thin';
