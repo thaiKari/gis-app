@@ -11,6 +11,10 @@ const intersectFunction = (geojson1, geojson2) => {
   }
   
   let newGeojson = performActionOnAllFeaturePairs(geojson1, geojson2, intersect)
+  //Remove null or undefined features:
+  newGeojson.features = newGeojson.features.filter(f => f != null);
+
+  console.log(newGeojson)
     if (!newGeojson.features[0]) {
       return 'The geometries do not overlap'
     }
