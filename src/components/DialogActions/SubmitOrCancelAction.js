@@ -12,16 +12,24 @@ const styles = theme => ({
 
   class SubmitOrCancelAction extends Component {
 
-    componentDidMount() {
-      document.addEventListener('keyup',this.keyupHandler.bind(this));
+    constructor(props) {
+      super(props);
+      this.keyupHandler = this.keyupHandler.bind(this);
     }
-    componentWillUnmount(){
-      document.removeEventListener('keyup',this.keyupHandler.bind(this));
+  
+    componentDidMount() {
+      console.log('componentDidMount')
+      document.addEventListener('keyup', this.keyupHandler, false);
+    }
+    componentWillUnmount() {
+      console.log('componentWillUnmount')
+      document.removeEventListener('keyup', this.keyupHandler, false);
     }
 
-    keyupHandler(e){
+    keyupHandler(e) {
       const {submit} = this.props;
       if(e.keyCode === 13) {
+        e.preventDefault();
         submit();
       }
     }

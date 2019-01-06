@@ -37,6 +37,7 @@ const styles = theme => ({
 
       let layer = layers.find(l => l.id === layerId);        
       let data = layer ? this.getRowHeadersAndData(layer): '';
+      console.log(data);
 
       this.state = {
           data: data ? data.data: '',
@@ -65,8 +66,9 @@ const styles = theme => ({
 
        layer.data.features.forEach((feature, index) => {
           feature.id = feature.id ? feature.id: index;
-          let dataObj = {'id': feature.id}
+          let dataObj = {};         
           Object.assign(dataObj, feature.properties);
+          dataObj['id'] = feature.id;
           data.push(dataObj);
           Object.keys(feature.properties).forEach(key => {
                rowHeaderSet.add(key + ' ' + typeof feature.properties[key]);
@@ -174,6 +176,7 @@ const styles = theme => ({
 
     handleNewLayerFromSelected = () => {
       let {receiveNewJson, layerId, layers, closeAttribTable} = this.props;
+      console.log('handleNewLayerFromSelected', layerId, layers)
       let {selected} = this.state;
       let layer = layers.find(l => l.id === layerId);   
       let features = JSON.parse(JSON.stringify(layer.data.features)); // Create a deep clone copy

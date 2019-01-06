@@ -41,8 +41,6 @@ const styles = theme => ({
     render() {
 
         const { displayFilter, numSelected, classes, layer, addAreaColumn, handleDeleteSelected, handleNewLayerFromSelected } = this.props;
-        console.log((layer.type === 'Polygon' || layer.type === 'MultiPolygon'));
-        console.log(this.props.layer.type)
         return (
             <Toolbar
             className={classNames(classes.root, {

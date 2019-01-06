@@ -190,7 +190,8 @@ class EditLayerDialog extends React.Component {
       let layer = layers.find(l => l.id == layerId);
           
       switch (layer.type) {
-        case 'Polygon' || 'MultiPolygon':
+        case 'Polygon':
+        case 'MultiPolygon':
         styleContent =          
         <div  style={{display: 'flex',
           flexWrap: 'wrap',

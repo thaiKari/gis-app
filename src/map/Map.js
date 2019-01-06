@@ -126,7 +126,8 @@ changeColor(colorChange) {
   let map = this._map;
 
   switch (layer.type) {
-    case 'Polygon' || 'MultiPolygon':
+    case 'Polygon':
+    case 'MultiPolygon':
         map.setPaintProperty(layerId, 'fill-color', color);
         map.setPaintProperty(layerId, 'fill-opacity', opacity);
         if(map.getSource(layerId +'_outline')) {

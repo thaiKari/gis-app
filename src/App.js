@@ -125,6 +125,8 @@ const theme = createMuiTheme({
   }
 
   receiveNewJson = (json, name) => {
+
+    console.log('receiveNewJson', json, name)
     let {layers, layersChange, acceptedTypes} = this.state;
     let newName = this.checkLayerName(name)
     var layer = createJsonLayer(json, newName, layers.length -1)
