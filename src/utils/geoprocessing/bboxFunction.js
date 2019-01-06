@@ -10,7 +10,6 @@ const bboxFunction = (geojsonList) => {
     }
 
     let combinedgeojsons = combineFeatures(geojsonList);
-    console.log(combinedgeojsons)
     let bbox_res = bbox(combinedgeojsons);
     let bboxPolygon_res = bboxPolygon(bbox_res);
     // returns a feature... we want all jsons as feature collections

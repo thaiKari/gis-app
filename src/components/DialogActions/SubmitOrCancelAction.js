@@ -18,18 +18,15 @@ const styles = theme => ({
     }
   
     componentDidMount() {
-      console.log('componentDidMount')
       document.addEventListener('keyup', this.keyupHandler, false);
     }
     componentWillUnmount() {
-      console.log('componentWillUnmount')
       document.removeEventListener('keyup', this.keyupHandler, false);
     }
 
     keyupHandler(e) {
       const {submit} = this.props;
       if(e.keyCode === 13) {
-        e.preventDefault();
         submit();
       }
     }
