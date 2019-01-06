@@ -4,6 +4,7 @@ import { Drawer, Divider } from '@material-ui/core';
 import AttributeTableToolbar from '../components/AttributeTableContent/AttributeTableToolbar';
 import AttributeTableTable from '../components/AttributeTableContent/AttributeTableTable';
 import FilterChipContainer from '../components/AttributeTableContent/FilterChipContainer';
+import areaOfPolygons from '../utils/geoprocessing/areaOfPolygons';
 
 
 const styles = theme => ({
@@ -208,6 +209,23 @@ const styles = theme => ({
   
       this.setState({ selected: newSelected });
     };
+
+    addAreaColumn = () => {
+      const {layers, layerId} = this.props;
+
+      let layer = layers.find(l => l.id === layerId);
+
+      console.log (areaOfPolygons(layer.data));
+      layer.data = areaOfPolygons(layer.data);
+      let data = layer ? this.getRowHeadersAndData(layer): '';
+
+      console.log(data)
+
+      this.setState({
+          data: data ? data.data: '',
+          rowHeaders:  data ? data.rowHeaders: '',
+        });
+    }
     
     render() {
       const { classes, open, closeAttribTable, layerId, layers,} = this.props;
@@ -252,6 +270,7 @@ const styles = theme => ({
                       handleNewLayerFromSelected={this.handleNewLayerFromSelected.bind(this)}
                       handleClick={this.handleClick.bind(this)}
                       displayFilter={this.displayFilter.bind(this)}
+                      addAreaColumn={this.addAreaColumn.bind(this)}
                       />
                 </div>
             </div>

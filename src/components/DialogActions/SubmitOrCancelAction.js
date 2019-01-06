@@ -11,6 +11,20 @@ const styles = theme => ({
   });
 
   class SubmitOrCancelAction extends Component {
+
+    componentDidMount() {
+      document.addEventListener('keyup',this.keyupHandler.bind(this));
+    }
+    componentWillUnmount(){
+      document.removeEventListener('keyup',this.keyupHandler.bind(this));
+    }
+
+    keyupHandler(e){
+      const {submit} = this.props;
+      if(e.keyCode === 13) {
+        submit();
+      }
+    }
     
     render() {
 

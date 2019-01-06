@@ -5,6 +5,7 @@ import { Toolbar, Typography, Tooltip, IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import NewLayerIcon from '@material-ui/icons/InsertDriveFile';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import MeasureIcon from '@material-ui/icons/Straighten';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 
 const styles = theme => ({
@@ -39,8 +40,9 @@ const styles = theme => ({
     
     render() {
 
-        const { displayFilter, numSelected, classes, layer, handleDeleteSelected, handleNewLayerFromSelected } = this.props;
-
+        const { displayFilter, numSelected, classes, layer, addAreaColumn, handleDeleteSelected, handleNewLayerFromSelected } = this.props;
+        console.log((layer.type === 'Polygon' || layer.type === 'MultiPolygon'));
+        console.log(this.props.layer.type)
         return (
             <Toolbar
             className={classNames(classes.root, {
@@ -74,11 +76,22 @@ const styles = theme => ({
                 </Tooltip>
                 </div>
                 ) : (
+                <div className={classes.actionDiv}>
+                {(layer.type === 'Polygon' || layer.type === 'MultiPolygon') ? 
+                <Tooltip title="Calculate Area">
+                    <IconButton aria-label="calculate" onClick={addAreaColumn}>
+                        <MeasureIcon />
+                    </IconButton>
+                </Tooltip>
+                : null
+                }
                 <Tooltip title="Filter list">
                     <IconButton aria-label="Filter list" onClick={displayFilter}>
                     <FilterListIcon />
                     </IconButton>
                 </Tooltip>
+                
+                </div>
                 )}
             </div>
             </Toolbar>
