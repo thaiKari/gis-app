@@ -28,6 +28,7 @@ class EnhancedTableHead extends Component {
               onChange={onSelectAllClick}
             />
           </TableCell>
+          
           {rowHeaders.map(row => {
             return (
               <TableCell

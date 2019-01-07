@@ -42,7 +42,6 @@ import { withStyles } from '@material-ui/core/styles';;
       switch (layer.type) {
         case 'Polygon':
         case 'MultiPolygon' :
-        console.log('MultiPolygon')
           iconStyles.backgroundColor = color;
           iconStyles.borderStyle = 'solid';
           iconStyles.borderWidth = 'thin';
@@ -53,6 +52,7 @@ import { withStyles } from '@material-ui/core/styles';;
           break;
 
         case 'LineString':
+        case 'MultiLineString':
           iconStyles.color = color;
           iconStyles.backgroundColor = 'rgba(255, 255, 255, 0.1)';
           icon = <Timeline style={iconStyles}/>

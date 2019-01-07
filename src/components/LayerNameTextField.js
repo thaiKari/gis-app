@@ -11,7 +11,7 @@ const styles = theme => ({
 
     componentDidMount() {
         const {defaultName} = this.props;
-        this.setState({layerName: defaultName})
+        this.setState({layerName: defaultName});
     }
 
     nameChange = name => event => {
@@ -40,6 +40,11 @@ const styles = theme => ({
         <form>
             <TextField
             id="outlined-full-width"
+            onKeyPress={(ev) => {
+              if (ev.key === 'Enter') {
+                ev.preventDefault();
+              }
+            }}
             label={promtText}
             value={layerName}
             fullWidth={true}

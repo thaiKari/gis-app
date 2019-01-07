@@ -4,6 +4,7 @@ import { Drawer, Divider } from '@material-ui/core';
 import AttributeTableToolbar from '../components/AttributeTableContent/AttributeTableToolbar';
 import AttributeTableTable from '../components/AttributeTableContent/AttributeTableTable';
 import FilterChipContainer from '../components/AttributeTableContent/FilterChipContainer';
+import areaOfPolygons from '../utils/geoprocessing/areaOfPolygons';
 
 
 const styles = theme => ({
@@ -61,20 +62,23 @@ const styles = theme => ({
     getRowHeadersAndData = (layer) => {
       let data = [];
       let rowHeaderSet = new Set([]);
+      let rowHeaderType = {};
+
 
        layer.data.features.forEach((feature, index) => {
           feature.id = feature.id ? feature.id: index;
-          let dataObj = {'id': feature.id}
+          let dataObj = {};         
           Object.assign(dataObj, feature.properties);
+          dataObj['id'] = feature.id;
           data.push(dataObj);
           Object.keys(feature.properties).forEach(key => {
-               rowHeaderSet.add(key + ' ' + typeof feature.properties[key]);
+               rowHeaderSet.add(key);
+               rowHeaderType[key] = typeof feature.properties[key]
           })
       });
 
       let rowHeaders = [...rowHeaderSet].map((header) => {
-          let headerSplit = header.split(' ');
-          return {label: headerSplit[0], numeric: headerSplit[1] === 'number' };
+          return {label: header, numeric: rowHeaderType[header] === 'number' };
       });
 
       return {
@@ -208,6 +212,19 @@ const styles = theme => ({
   
       this.setState({ selected: newSelected });
     };
+
+    addAreaColumn = () => {
+      const {layers, layerId} = this.props;
+
+      let layer = layers.find(l => l.id === layerId);
+      layer.data = areaOfPolygons(layer.data);
+      let data = layer ? this.getRowHeadersAndData(layer): '';
+
+      this.setState({
+          data: data ? data.data: '',
+          rowHeaders:  data ? data.rowHeaders: '',
+        });
+    }
     
     render() {
       const { classes, open, closeAttribTable, layerId, layers,} = this.props;
@@ -252,6 +269,7 @@ const styles = theme => ({
                       handleNewLayerFromSelected={this.handleNewLayerFromSelected.bind(this)}
                       handleClick={this.handleClick.bind(this)}
                       displayFilter={this.displayFilter.bind(this)}
+                      addAreaColumn={this.addAreaColumn.bind(this)}
                       />
                 </div>
             </div>

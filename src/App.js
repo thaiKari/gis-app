@@ -101,7 +101,7 @@ const theme = createMuiTheme({
     moveLayerUnder: [], //Array with values [layerID, layerAboveID]. Change in state prompts map
     deletedLayers:[],
     drawerWidth: 240,
-    acceptedTypes: ['Polygon', 'MultiPolygon', 'Point', 'LineString'],
+    acceptedTypes: ['Polygon', 'MultiPolygon', 'Point', 'LineString', 'MultiLineString' ],
     zoomTo: '',
     lastClickedLayer: '',
     AttributeTableOpen: false

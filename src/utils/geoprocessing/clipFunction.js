@@ -19,7 +19,7 @@ const clipFunction = (geojsonList, clipArea) => {
         }
         if (type === 'Point') {
             newJson = pointsWithinPolygon(data, clipArea);
-        }if (type === 'LineString'){
+        }if (type === 'LineString' || type === 'MultiLineString' ){
             newJson = {
                 "type": "FeatureCollection",
                 "features": []

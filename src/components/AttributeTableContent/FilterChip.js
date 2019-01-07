@@ -34,22 +34,24 @@ const styles = theme => ({
     constructor(props) {
       super(props)
 
+      this.keyupHandler = this.keyupHandler.bind(this);
+
       this.state = {
           attrib: '',
           operator: '',
           val: ''
         };
     }
-
+  
     componentDidMount() {
-      document.addEventListener('keyup',this.keyupHandler.bind(this));
+      document.addEventListener('keyup', this.keyupHandler, false);
     }
-    componentWillUnmount(){
-      document.removeEventListener('keyup',this.keyupHandler.bind(this));
+    componentWillUnmount() {
+      document.removeEventListener('keyup', this.keyupHandler, false);
     }
 
-    keyupHandler(e){
-      if(e.keyCode === 13){
+    keyupHandler(e) {
+      if(e.keyCode === 13) {
         this.submitFilter();
       }
     }

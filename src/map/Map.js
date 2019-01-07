@@ -32,9 +32,6 @@ class Map extends Component {
   constructor(props) {
     super ();
     mapboxgl.accessToken = getSetting('REACT_APP_MAPBOX_ACCESTOKEN');
-    this.state = {
-      unidentifiedLayerType: []
-    };
   }
 
     componentDidMount() {
@@ -126,7 +123,8 @@ changeColor(colorChange) {
   let map = this._map;
 
   switch (layer.type) {
-    case 'Polygon' || 'MultiPolygon':
+    case 'Polygon':
+    case 'MultiPolygon':
         map.setPaintProperty(layerId, 'fill-color', color);
         map.setPaintProperty(layerId, 'fill-opacity', opacity);
         if(map.getSource(layerId +'_outline')) {
@@ -136,6 +134,7 @@ changeColor(colorChange) {
       
       break;
     case 'LineString':
+    case 'MultiLineString':
         map.setPaintProperty(layerId, 'line-color', color);
         map.setPaintProperty(layerId, 'line-opacity', opacity);
       break;
@@ -159,12 +158,11 @@ changeColor(colorChange) {
     }
 
     handleSingleLayerVisibility(layer, i) {
-      let {unidentifiedLayerType} = this.state;
       const {layers} = this.props;
 
       if (!this._map.isStyleLoaded()) {
          this.waitForSomething(this._map.isStyleLoaded(), this.handleSingleLayerVisibility.bind(this), layer, i);
-      } else if ( i > 0 && !this._map.getSource(layers[i-1].id) && !unidentifiedLayerType[layers[i-1].id] ) {
+      } else if ( i > 0 && !this._map.getSource(layers[i-1].id)) {
         this.waitForSomething(this._map.getSource(layers[i-1].id), this.handleSingleLayerVisibility.bind(this), layer, i)
       }
 
@@ -178,6 +176,7 @@ changeColor(colorChange) {
               this.addPolygonLayer(layer, i);
               break;
             case 'LineString':
+            case 'MultiLineString':
               this.addLineLayer(layer, i);
               break;
             case 'Point':
@@ -187,8 +186,6 @@ changeColor(colorChange) {
               console.log('unidentified layer type', layer.type);
               const {removeLayer} = this.props;
               removeLayer(layer.id);
-              //unidentifiedLayerType.push(layer.id);
-              //this.setState({unidentifiedLayerType: unidentifiedLayerType})
           }
           
         } else {
