@@ -32,9 +32,6 @@ class Map extends Component {
   constructor(props) {
     super ();
     mapboxgl.accessToken = getSetting('REACT_APP_MAPBOX_ACCESTOKEN');
-    this.state = {
-      unidentifiedLayerType: []
-    };
   }
 
     componentDidMount() {
@@ -161,12 +158,11 @@ changeColor(colorChange) {
     }
 
     handleSingleLayerVisibility(layer, i) {
-      let {unidentifiedLayerType} = this.state;
       const {layers} = this.props;
 
       if (!this._map.isStyleLoaded()) {
          this.waitForSomething(this._map.isStyleLoaded(), this.handleSingleLayerVisibility.bind(this), layer, i);
-      } else if ( i > 0 && !this._map.getSource(layers[i-1].id) && !unidentifiedLayerType[layers[i-1].id] ) {
+      } else if ( i > 0 && !this._map.getSource(layers[i-1].id)) {
         this.waitForSomething(this._map.getSource(layers[i-1].id), this.handleSingleLayerVisibility.bind(this), layer, i)
       }
 
@@ -190,8 +186,6 @@ changeColor(colorChange) {
               console.log('unidentified layer type', layer.type);
               const {removeLayer} = this.props;
               removeLayer(layer.id);
-              //unidentifiedLayerType.push(layer.id);
-              //this.setState({unidentifiedLayerType: unidentifiedLayerType})
           }
           
         } else {

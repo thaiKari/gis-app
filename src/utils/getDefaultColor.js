@@ -5,10 +5,8 @@ import colorPalette from './colorPalette';
  * @param {*} index the index of the object in the list
  */
 
-const getDefaultColor = (index) => {
+const getDefaultColor = (index) => {  
     var colorChoices = Object.keys(colorPalette);
-    //var scaledIndex = index * 3;
-    //var colorIndex = (scaledIndex- Math.floor(scaledIndex /colorChoices.length)*colorChoices.length);
     var colorIndex = (index- Math.floor(index /colorChoices.length)*colorChoices.length);
     return colorPalette[colorChoices[colorIndex]];
   };

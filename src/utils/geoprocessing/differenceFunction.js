@@ -1,5 +1,4 @@
 import  difference from '@turf/difference';
-import performActionOnAllFeaturePairs from './performActionOnAllFeaturePairs';
 
 const differenceFunction = (geojson1, geojson2) => {
   if( !(geojson1 && geojson2) ) {

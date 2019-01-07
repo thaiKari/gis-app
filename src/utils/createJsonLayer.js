@@ -2,7 +2,7 @@ import getJsonType from './getJsonType';
 import generateUniqueID from './generateUniqueID';
 import getDefaultColor from './getDefaultColor';
 import createFeatureCollectionFromFeature from "./geoprocessing/createFeatureCollectionFromFeature";
-import multiPolygonToPolygon from './geoprocessing/multiPolygonToPolygon'
+// import multiPolygonToPolygon from './geoprocessing/multiPolygonToPolygon'
 
 
 const createJsonLayer = (json, name, index) => {

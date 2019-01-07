@@ -51,7 +51,6 @@ const styles = theme => ({
     }
 
     keyupHandler(e) {
-      const {submit} = this.props;
       if(e.keyCode === 13) {
         this.submitFilter();
       }

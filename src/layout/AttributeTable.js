@@ -37,7 +37,6 @@ const styles = theme => ({
 
       let layer = layers.find(l => l.id === layerId);        
       let data = layer ? this.getRowHeadersAndData(layer): '';
-      console.log(data);
 
       this.state = {
           data: data ? data.data: '',
@@ -63,6 +62,8 @@ const styles = theme => ({
     getRowHeadersAndData = (layer) => {
       let data = [];
       let rowHeaderSet = new Set([]);
+      let rowHeaderType = {};
+
 
        layer.data.features.forEach((feature, index) => {
           feature.id = feature.id ? feature.id: index;
@@ -71,13 +72,13 @@ const styles = theme => ({
           dataObj['id'] = feature.id;
           data.push(dataObj);
           Object.keys(feature.properties).forEach(key => {
-               rowHeaderSet.add(key + ' ' + typeof feature.properties[key]);
+               rowHeaderSet.add(key);
+               rowHeaderType[key] = typeof feature.properties[key]
           })
       });
 
       let rowHeaders = [...rowHeaderSet].map((header) => {
-          let headerSplit = header.split(' ');
-          return {label: headerSplit[0], numeric: headerSplit[1] === 'number' };
+          return {label: header, numeric: rowHeaderType[header] === 'number' };
       });
 
       return {
@@ -176,7 +177,6 @@ const styles = theme => ({
 
     handleNewLayerFromSelected = () => {
       let {receiveNewJson, layerId, layers, closeAttribTable} = this.props;
-      console.log('handleNewLayerFromSelected', layerId, layers)
       let {selected} = this.state;
       let layer = layers.find(l => l.id === layerId);   
       let features = JSON.parse(JSON.stringify(layer.data.features)); // Create a deep clone copy
@@ -217,12 +217,8 @@ const styles = theme => ({
       const {layers, layerId} = this.props;
 
       let layer = layers.find(l => l.id === layerId);
-
-      console.log (areaOfPolygons(layer.data));
       layer.data = areaOfPolygons(layer.data);
       let data = layer ? this.getRowHeadersAndData(layer): '';
-
-      console.log(data)
 
       this.setState({
           data: data ? data.data: '',

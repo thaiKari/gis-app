@@ -175,10 +175,8 @@ class EditLayerDialog extends React.Component {
   };
   
   getContent = () => {
-    let {layerId, color, strokeColor, colorChanged, layerName, pickerOpen, radius, hasNameError, hasRadiusError} = this.state;
+    let {layerId, color, strokeColor, colorChanged, layerName, pickerOpen, radius, hasRadiusError} = this.state;
     const {layers, classes, theme} = this.props;
-
-    let hasError = hasNameError || hasRadiusError;
 
     var paperClasses = classNames({
       [classes.dialogPaper]: true,
@@ -298,7 +296,7 @@ class EditLayerDialog extends React.Component {
 
   render() {
     const {open, layers, classes, theme} = this.props;
-    const {layerName, pickerOpen, hasNameError, hasRadiusError} = this.state;
+    const { pickerOpen, hasNameError, hasRadiusError} = this.state;
     
     let hasError = hasNameError || hasRadiusError;
 

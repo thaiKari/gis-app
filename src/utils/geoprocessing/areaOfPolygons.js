@@ -1,6 +1,4 @@
 import area from '@turf/area';
-import combineFeatures from './combineFeatures';
-import createFeatureCollectionFromFeature from './createFeatureCollectionFromFeature';
 
 const areaOfPolygons = (geojson) => {
 
