@@ -9,11 +9,28 @@ const differenceFunction = (geojson1, geojson2) => {
   } else if (geojson1 === geojson2) {
     return 'The geometries cannot be identical'
   }
-    let newGeojson = performActionOnAllFeaturePairs(geojson1, geojson2, difference)
-    if (!newGeojson.features[0]) {
+
+  let newFeatures = []
+
+   geojson1.features.forEach((f1, i) => {
+    let f1_temp = JSON.parse(JSON.stringify(f1));
+     geojson2.features.forEach((f2) => {
+        f1_temp = difference(f1_temp, f2)
+     });
+      
+     newFeatures.push(f1_temp)
+    });
+
+    newFeatures.forEach( (f, i) => {
+      geojson1.features[i] = f;
+    });
+
+    geojson1.features = geojson1.features.filter(f => f != null);
+
+    if (!geojson1.features[0]) {
       return 'There is no geometry left after performing the difference operation. Try swapping the order'
     }
-    return(newGeojson);
+    return(geojson1);
     
   }
 

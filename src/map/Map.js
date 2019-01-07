@@ -137,6 +137,7 @@ changeColor(colorChange) {
       
       break;
     case 'LineString':
+    case 'MultiLineString':
         map.setPaintProperty(layerId, 'line-color', color);
         map.setPaintProperty(layerId, 'line-opacity', opacity);
       break;
@@ -179,6 +180,7 @@ changeColor(colorChange) {
               this.addPolygonLayer(layer, i);
               break;
             case 'LineString':
+            case 'MultiLineString':
               this.addLineLayer(layer, i);
               break;
             case 'Point':
