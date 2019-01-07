@@ -6,7 +6,9 @@ import AttributeTableTable from '../components/AttributeTableContent/AttributeTa
 import FilterChipContainer from '../components/AttributeTableContent/FilterChipContainer';
 import areaOfPolygons from '../utils/geoprocessing/areaOfPolygons';
 
-
+/**
+ * Shows up at bottom of page if Attribute table is opened.
+ */
 const styles = theme => ({
     drawer: {
         width: '100%',

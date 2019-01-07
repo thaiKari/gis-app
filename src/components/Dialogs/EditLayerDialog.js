@@ -8,13 +8,14 @@ import {Dialog,
    } from '@material-ui/core';
 import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
 import OkAction from '../DialogActions/OkAction'
-import LayersSelect from '../LayersSelectSimple2';
+import LayersSelect from '../LayersSelect';
 import { withStyles } from '@material-ui/core/styles';
 import rgbCss2Obj from '../../utils/rgbCss2Obj';
 import rgbObj2Css from '../../utils/rgbObj2Css';
 import ColorPicker from '../ColorPicker';
 import LayerNameTextField from '../LayerNameTextField';
 import classNames from 'classnames';
+import EditPolygonOptions from '../DialogContent/EditPolygonOptions';
 
 const styles = theme => ({
   dialogPaper: {
@@ -106,13 +107,6 @@ class EditLayerDialog extends React.Component {
       colorChanged: !this.state.colorChanged})
   }
 
-  /*setOpacity = (opactity) => {
-    let {color} = this.state;
-    color.a = opactity
-
-    this.setState({color: color})
-  } */
-
   handleClose = () => {
     const {closeDialog} = this.props;
     closeDialog();
@@ -190,30 +184,14 @@ class EditLayerDialog extends React.Component {
       switch (layer.type) {
         case 'Polygon':
         case 'MultiPolygon':
-        styleContent =          
-        <div  style={{display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: "space-between",
-          margin: theme.spacing.unit * 2,
-          marginLeft: 0,
-          width:'100%'}}>
-        <div style={{width: '40%'}}>
-        <Typography variant="caption" gutterBottom>Fill Color</Typography>
-        <ColorPicker
-          setColor={this.setColor.bind(this)}
-          color={color}
-          colorChanged={colorChanged}
-          setPickerOpen={this.setPickerOpen.bind(this)}/>
-        </div>
-        <div style={{width: '40%'}}>
-        <Typography variant="caption" gutterBottom>Outline Color</Typography>
-        <ColorPicker
-          setColor={this.setstrokeColor.bind(this)}
-          color={strokeColor}
-          colorChanged={colorChanged}
-          setPickerOpen={this.setPickerOpen.bind(this)}/>
-          </div>
-        </div>
+        styleContent =  <EditPolygonOptions
+                        setColor={this.setColor.bind(this)}
+                        color={color}
+                        colorChanged={colorChanged}
+                        setPickerOpen={this.setPickerOpen.bind(this)}
+                        setstrokeColor={this.setstrokeColor.bind(this)}
+                        strokeColor={strokeColor}
+                        />      
           break;
 
           case 'Point':
@@ -306,8 +284,6 @@ class EditLayerDialog extends React.Component {
       <DialogContent classes={{root: classes.dialogPaper}}>
         <Typography>Add some layers first</Typography>         
       </DialogContent>
-
-    //let hasError= layerName.length===0 || isError ;
 
     let actions = layers.length > 0 ?
       <SubmitOrCancelAction submitDisabled={hasError} submit={this.submitChanges} cancel={this.handleClose}/>

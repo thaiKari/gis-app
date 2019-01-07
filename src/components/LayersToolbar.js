@@ -6,6 +6,9 @@ import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
 import Loadable from 'react-loadable'
 import downloadJsons from '../utils/downloadJsons';
 
+/**
+ * Toolbar at top of sidebar (under logo). contains create, download, edit and delete options
+ */
 
 const AddLayerDialog = Loadable({
   loader: () => import('./Dialogs/AddLayerDialog'),

@@ -9,6 +9,10 @@ const styles = theme => ({
   
 });
 
+/**
+ * The top row of the Attribute Table
+ */
+
 class EnhancedTableHead extends Component {
 
   createSortHandler = property => event => {

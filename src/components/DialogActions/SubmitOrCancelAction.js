@@ -10,6 +10,11 @@ const styles = theme => ({
     }
   });
 
+  /**
+   * Contains two buttons. One for submit and one to cancel. Used many places. For example EditLayerDialog
+   * and geoprocessing dialog.
+   */
+
   class SubmitOrCancelAction extends Component {
 
     constructor(props) {
@@ -18,6 +23,7 @@ const styles = theme => ({
     }
   
     componentDidMount() {
+      //Press of enter button will trigger submit function
       document.addEventListener('keyup', this.keyupHandler, false);
     }
     componentWillUnmount() {

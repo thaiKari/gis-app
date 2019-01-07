@@ -2,8 +2,11 @@ import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, Tooltip, IconButton, Toolbar} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close'
-//import AddIcon from '@material-ui/icons/Add';
 import FilterChip from './FilterChip';
+
+/**
+ * Container for all the filterChips (containing the filter sentences)
+ */
 
 const styles = theme => ({
     spacer: {
@@ -25,22 +28,6 @@ const styles = theme => ({
   });
 
   class FilterChipContainer extends Component {
-    constructor(props) {
-        super(props)
-  
-        this.state = {
-           // wipSentences: [''],
-          };
-      }
-
-    //   submitFilter = (filter) => {
-    //       const {addNewFilter} = this.props;
-    //       console.log('submit', filter);
-    //       //let {wipSentences} = this.state;
-    //       //wipSentences.splice(filter.index, 1);
-    //       addNewFilter(filter);
-    
-    //   }
     
     render() {
 
@@ -95,16 +82,3 @@ const styles = theme => ({
   }
 
 export default withStyles(styles, { withTheme: true })(FilterChipContainer);
-
-/**
- *             <Tooltip title="Add Filter">
-                <Button 
-                    variant="fab"
-                    size="small"
-                    color="primary"
-                    className={classes.button}
-                    onClick={()=> console.log('add')}>
-                    <AddIcon />
-                </Button>
-            </Tooltip>
- */

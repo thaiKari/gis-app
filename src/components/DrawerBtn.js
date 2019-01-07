@@ -5,6 +5,10 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {DragIndicator} from '@material-ui/icons'
 import classNames from 'classnames';
 
+/**
+ * Button next to the sidebar that allows users to resize and hide the sidebar
+ */
+
 const styles = theme => ({
     drawerButton: {
         margin: 0,
@@ -44,7 +48,6 @@ const styles = theme => ({
         alignItems: 'center',
         justifyContent: 'center',
         flexWrap: 'wrap',
-        //zIndex: 10000,
       },
       openDiv:{
         width: 10,
@@ -67,10 +70,14 @@ const styles = theme => ({
 
 
 class DrawerBtn extends React.Component {
-  state = {
-    width: 240,
-    isDragging: false
-  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+        isDragging: false,
+        width: props.drawerWidth
+  }}
 
   
   handleResize = (event) => {

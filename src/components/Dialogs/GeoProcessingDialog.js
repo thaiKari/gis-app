@@ -23,7 +23,11 @@ import roundToNdecimals from '../../utils/roundToNdecimals';
 import DialogFeedback from '../DialogContent/DialogFeedback';
 import BboxTextField from '../BboxTextField';
 import findLayerById from '../../utils/findLayerById';
-import LayersSelect from '../LayersSelectSimple2';
+import LayersSelect from '../LayersSelect';
+
+/**
+ * Contains content of All geoprocessing.
+ */
 
 
 const BufferContent = Loadable({
@@ -124,9 +128,12 @@ const styles = theme => ({
     for (var i in layerIds ) {
       //let layer = layers.find( l => l.id === layerIds[i] );
       let layer = findLayerById(layerIds[i], layers);
-      let data = layer ? layer.data : null;
-      data.dispName = layer.displayName;
-      selectedLayersDataList.push( data ) 
+      if( layer) {
+        let data = layer ? layer.data : null;
+        data.dispName = layer.displayName;
+        selectedLayersDataList.push( data );
+      }
+       
     }
 
       let newJson;

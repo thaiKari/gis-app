@@ -7,6 +7,9 @@ import LayerIcon from './LayerIcon';
 import DeleteIcon from '@material-ui/icons/Delete';
 import classNames from 'classnames';
 
+/**
+ * Single Item in the layerList
+ */
 const styles = theme => ({
     hoverBox: {
      

@@ -12,6 +12,10 @@ import clip from '../icons/clip_primary2.png';
 import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
 import Loadable from 'react-loadable'
 
+/**
+ * Toolbar on right hand side of app. Contains geoprocessing options
+ */
+
 const GeoProcessingDialog = Loadable({
   loader: () => import('../components/Dialogs/GeoProcessingDialog'),
   delay: 300,

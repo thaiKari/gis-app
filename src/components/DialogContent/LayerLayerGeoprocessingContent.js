@@ -5,6 +5,11 @@ import DialogFeedback from './DialogFeedback';
 import DoubleLayerPicker from '../DoubleLayerPicker';
 import LayerNameTextField from '../LayerNameTextField';
 
+/**
+ * Content for geoprocessing dialog that does an action with two layers.
+ * For example Difference, Union and Intersect
+ */
+
 const styles = theme => ({
   
   });

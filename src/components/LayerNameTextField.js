@@ -3,6 +3,9 @@ import { withStyles } from '@material-ui/core/styles';
 import {TextField} from '@material-ui/core/';
 import checkIfLayerNameExists from '../utils/checkIfLayerNameExists';
 
+/**
+ * TextField to set layer name. Used in edit layer and also geoprocessing dialogs
+ */
 const styles = theme => ({
   
   });

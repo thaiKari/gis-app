@@ -1,6 +1,7 @@
 import React from 'react';
 import { List, Button, Dialog,  Typography, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 import SubmitOrCancelAction from '../DialogActions/SubmitOrCancelAction';
+import OkAction from '../DialogActions/OkAction';
 
 class DeleteLayerDialog extends React.Component {
 
@@ -33,11 +34,7 @@ class DeleteLayerDialog extends React.Component {
 
     <SubmitOrCancelAction submitText={'Agree'} submit={deleteLayers} cancel={closeDialog}/>
     :
-    <DialogActions>
-      <Button onClick={this.props.closeDialog} color="primary">
-        OK
-      </Button>
-    </DialogActions>
+    <OkAction ok={this.props.closeDialog}/>
 
 
 
