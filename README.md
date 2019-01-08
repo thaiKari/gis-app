@@ -3,6 +3,7 @@ This is a project made as part of the course TBA4251 Programming in Geomatics at
 
 Features include: Difference, Intersect, Union, Bbox, clip, voronoi, filtering on attributes.
 A live version can be found at: https://thaikari.github.io/gis-app/
+Demo video of use: https://youtu.be/xOLmTdqVv5g
 
 ## Built With
 * [React](https://reactjs.org//) - For Building user Interfaces
