@@ -4,6 +4,10 @@ import { DialogContent, Typography}  from '@material-ui/core'
 import DragNDropBox from '../DragNDropBox';
 import SimpleLayerList from '../SimpleLayerList';
 
+/**
+ * Conent of NewLayer dialog Upload tab.
+ */
+
 const styles = theme => ({
 
   });
@@ -30,7 +34,6 @@ const styles = theme => ({
                   
           <DragNDropBox modalDisp={true} receiveNewJson={handleFile}/>
           {uploadList}
-
           </DialogContent>
   
 

@@ -3,6 +3,10 @@ import { withStyles } from '@material-ui/core/styles';
 import { Tooltip, Button} from '@material-ui/core';
 import {Build, ChevronRight} from '@material-ui/icons';
 
+/**
+ * Button in top right corner to open the geoprocessing toolbar
+ */
+
 const styles = theme => ({
     button: {
         position: 'absolute',

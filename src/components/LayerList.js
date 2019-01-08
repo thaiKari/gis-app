@@ -3,6 +3,9 @@ import { withStyles } from '@material-ui/core/styles';
 import LayerListItem from './LayerListItem';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
+/**
+ * The list of layers shown in sidebar
+ */
 const styles = theme => ({
   
   });

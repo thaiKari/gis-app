@@ -6,6 +6,10 @@ import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import {getSetting} from 'config';
 import bbox from '@turf/bbox';
 
+/**
+ * The map.
+ */
+
 const styles = theme => ({
     map: {
       height: `100vh`,

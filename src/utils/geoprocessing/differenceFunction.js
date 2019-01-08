@@ -24,6 +24,7 @@ const differenceFunction = (geojson1, geojson2) => {
       geojson1.features[i] = f;
     });
 
+    //Remove all null or unidentified features
     geojson1.features = geojson1.features.filter(f => f != null);
 
     if (!geojson1.features[0]) {

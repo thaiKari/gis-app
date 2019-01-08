@@ -2,8 +2,12 @@ import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { DialogContent, TextField } from '@material-ui/core';
 import DialogFeedback from './DialogFeedback';
-import LayersSelectSimple from '../LayersSelectSimple2';
+import LayersSelectSimple from '../LayersSelect';
 import LayerNameTextField from '../LayerNameTextField';
+
+/**
+ * buffer options for the geoprocessing dialog
+ */
 
 const styles = theme => ({
   

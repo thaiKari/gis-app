@@ -1,3 +1,7 @@
+/**
+ * Returns the layer type. Eg. 'Polygon', 'MultiPolygon', 'Linestring' etc.
+ * Assumes all features are of same type as the first.
+ */
 const getJsonType = (json) => {
     var type;
 

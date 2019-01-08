@@ -8,9 +8,11 @@ import Loading from '../utils/Loading/Loading';
 import LoadingFullpageCirular from '../utils/Loading/LoadingFullpageCirular';
 import { withSnackbar } from 'notistack';
 import RightClickMenu from '../components/RightClickMenu'
-
 import Loadable from 'react-loadable'
 
+/**
+ * Sidebar
+ */
 
 const DeleteLayerDialog = Loadable({
   loader: () => import('../components/Dialogs/DeleteLayerDialog'),

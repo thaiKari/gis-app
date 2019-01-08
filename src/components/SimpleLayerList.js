@@ -3,6 +3,10 @@ import { withStyles } from '@material-ui/core/styles';
 import LayerListItem from './LayerListItem';
 import {List}  from '@material-ui/core'
 
+/**
+ * Simple Layer list without posibility to change order.
+ * Used to show layer when user uploads content via dialog
+ */
 
 const styles = theme => ({
   

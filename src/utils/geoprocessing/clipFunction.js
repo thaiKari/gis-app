@@ -5,6 +5,10 @@ import pointsWithinPolygon from '@turf/points-within-polygon';
 import lineSplit from '@turf/line-split';
 import polygonToLine from '@turf/polygon-to-line';
 
+/**
+ * Clips all geometry to fit inside the clipArea.
+ */
+
 const clipFunction = (geojsonList, clipArea) => {
     
     if (geojsonList.length === 0 || !clipArea) {
@@ -26,14 +30,19 @@ const clipFunction = (geojsonList, clipArea) => {
               }
             data.features.forEach(line => {
                 clipArea.features.forEach(poly => {
+                    //Transform Polygon layer to lines.
+                    //Split the lines where they intersect the polygon border lines
                     let splitLines = lineSplit(line, polygonToLine(poly));
                     
+                    //If line does not intersect with polygon border, it is either
+                    //completely inside or completely outside
                     if(splitLines.features.length === 0) {
                         if(isLineSegmentWithinPolygon(line, clipArea)) {
                             newJson.features.push(line);
                         }
                     }
 
+                    //For all lines that intersect the polygon area, keep the parts that are inside
                     splitLines.features.forEach( lineSegment => {
                         if(isLineSegmentWithinPolygon(lineSegment, clipArea)) {
                             newJson.features.push(lineSegment);
@@ -43,6 +52,9 @@ const clipFunction = (geojsonList, clipArea) => {
               });
             });
         }
+
+        //Remove null or undefined features:
+        newJson.features = newJson.features.filter(f => f != null);
 
         if(newJson) {
            if (newJson.type === "FeatureCollection") {

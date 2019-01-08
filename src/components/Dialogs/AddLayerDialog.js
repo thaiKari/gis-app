@@ -33,12 +33,9 @@ class AddLayerDialog extends React.Component {
     let newName = checkLayerName(name);
 
     let layer =  createJsonLayer(json, newName, layers.length);
-   // console.log('lyr typ', layer.type);
     layers.push(layer);
 
     if( !(layer.type)) {
-      console.log('SUP', layer.type)
-      //enqueueSnackbar('something went wrong while reading ' + name, {variant: 'error'});
     } else if ( !acceptedTypes.includes(layer.type) ) {
       enqueueSnackbar( name + ': type ' + layer.type + ' is not supported', {variant: 'error'});
     } else {
@@ -86,6 +83,7 @@ class AddLayerDialog extends React.Component {
     this.setState({ uploadTypeIndex });
   };
   
+  // case for WMS and create are not yet complete
   getDialogContent() {
     const {uploadTypeIndex, layers} = this.state;
 

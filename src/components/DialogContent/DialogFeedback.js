@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography} from '@material-ui/core';
 
+/**
+ * Gives feedback message about input to dialogs. Displayed in stacks on top of dialog.
+ */
+
 const styles = theme => ({
     feedbackDiv: {
        padding: theme.spacing.unit,

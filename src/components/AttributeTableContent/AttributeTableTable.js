@@ -4,7 +4,6 @@ import { Table, TableBody, TableCell, Checkbox, TableRow, TablePagination } from
 import EnhancedTableHead from './EnhancedTableHead';
 import SecondaryTableToolbar from './SecondaryTableToolbar';
 
-
 const styles = theme => ({
   
   });

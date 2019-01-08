@@ -3,7 +3,9 @@ import React, {Component} from 'react';
 import { SvgIcon } from '@material-ui/core';
 import { Timeline, FiberManualRecord } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';;
-
+/**
+ * Icon showing color and type of a layer
+ */
   const PolygonIcon = (props) => (
     <SvgIcon {...props}>
         <path/>     

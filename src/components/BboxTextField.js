@@ -31,8 +31,6 @@ const styles = theme => ({
         } else {
             setError(res.newJson);
         }
-        
-        
     }
 
 

@@ -6,6 +6,10 @@ import Select from 'react-select';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
+/**
+ * Select that allows user to select multiple layers
+ */
+
 const styles = theme => ({
     root: {
         flexGrow: 1,

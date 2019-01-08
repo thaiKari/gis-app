@@ -36,6 +36,12 @@ const styles = theme => ({
       }
   });
 
+  /**
+   * displayed above the table. gives user ability to press filter button. Or if some features are selected
+   * it will show how many features are selected and give choices to delete selection or create a new layer 
+   * from selection.
+   */
+
   class SecondaryTableToolbar extends Component {
     
     render() {

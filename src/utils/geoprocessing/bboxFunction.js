@@ -3,6 +3,10 @@ import bboxPolygon from '@turf/bbox-polygon';
 import combineFeatures from './combineFeatures';
 import createFeatureCollectionFromFeature from './createFeatureCollectionFromFeature';
 
+/**
+ * uses bbox function from Turf to create a new geojson that is a bounding box around all the input layers
+ */
+
 const bboxFunction = (geojsonList) => {
 
     if(geojsonList.length < 1) {

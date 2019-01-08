@@ -4,6 +4,11 @@ import {
     Button} from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
 
+/**
+ * Ok button. Used for information dialogs.
+ */
+
+
 const styles = theme => ({
   
   });

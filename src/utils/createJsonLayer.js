@@ -2,8 +2,6 @@ import getJsonType from './getJsonType';
 import generateUniqueID from './generateUniqueID';
 import getDefaultColor from './getDefaultColor';
 import createFeatureCollectionFromFeature from "./geoprocessing/createFeatureCollectionFromFeature";
-// import multiPolygonToPolygon from './geoprocessing/multiPolygonToPolygon'
-
 
 const createJsonLayer = (json, name, index) => {
     var type = getJsonType(json);
@@ -13,12 +11,6 @@ const createJsonLayer = (json, name, index) => {
     } if (!type) {
       return 'Sorry, file type is not supported';
     }
-    
-    /*if( type === 'MultiPolygon') {
-      //console.log(multiPolygonToPolygon(json));
-      json = multiPolygonToPolygon(json);
-      type = getJsonType(json);
-    } */
 
     var id = generateUniqueID(name);
     json.color= json.color ?json.color: getDefaultColor(index);

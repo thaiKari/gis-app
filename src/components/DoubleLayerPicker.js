@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import LayersSelect from './LayersSelectSimple2';
+import LayersSelect from './LayersSelect';
 
 const styles = theme => ({
     spaced: {

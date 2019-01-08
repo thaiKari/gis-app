@@ -30,6 +30,11 @@ const styles = theme => ({
     }
   });
 
+  /**
+   * Filter chip contains a single filter sentence. If it has label 'wip', this meens that the sentence is
+   * currently being constructed. Otherwise it is a completed sentence.
+   */
+
   class FilterChip extends Component {
     constructor(props) {
       super(props)

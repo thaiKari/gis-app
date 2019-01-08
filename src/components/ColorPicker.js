@@ -64,12 +64,6 @@ class ColorPicker extends React.Component {
     setColor(color.rgb);
   };
 
- /* handleAlphaChange = (color) => {
-    let {setOpacity} = this.props;
-    setOpacity(color.rgb.a);
-  }; */
-
-
   render() {
     let {color, classes} = this.props;
 

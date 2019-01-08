@@ -3,6 +3,10 @@ import Dropzone from 'react-dropzone'
 import { withStyles } from '@material-ui/core/styles';
 import { withSnackbar } from 'notistack';
 
+/**
+ * Contains the drag n drop box and handles processing of the dropped files
+ */
+
 const styles = theme => ({
   
   });
