@@ -1,12 +1,6 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {Dialog,
-  Typography,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  TextField
-  } from '@material-ui/core';
+import {  Typography  } from '@material-ui/core';
   import ColorPicker from '../ColorPicker';
 
   /**

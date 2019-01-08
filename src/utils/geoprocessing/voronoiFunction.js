@@ -1,5 +1,8 @@
 import voronoi from '@turf/voronoi';
 import combineFeatures from './combineFeatures';
+/**
+ * Creates voronoi area for a list of points
+ */
 
 const voronoiFunction = (geojsonList, bbox) => {
 
@@ -17,10 +20,8 @@ const voronoiFunction = (geojsonList, bbox) => {
         newJson = voronoi(combinedgeojsons, {bbox: bbox});
     }
 
-    
-    newJson.features = newJson.features.filter(function (el) {
-        return el != null;
-      });
+    //Remove null or undefined features:
+    newJson.features = newJson.features.filter(f => f != null);
 
   return newJson;
 

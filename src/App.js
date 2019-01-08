@@ -12,8 +12,13 @@ import LoadingFullPage from './utils/Loading/LoadingFullpageCirular';
 import checkIfLayerNameExists from './utils/checkIfLayerNameExists';
 import { SnackbarProvider } from 'notistack';
 import SnackbarQuer from './components/SnackbarQuer';
+ /**
+  * Main page of the application. All components stem from here.
+  */
 
 
+
+//Use of Loadable reduces bundle sizes, making the application lauch faster.
 const ToolkitBar = Loadable({
   loader: () => import('./layout/ToolkitBar'),
   delay: 300, // 0.3 seconds
@@ -50,7 +55,7 @@ const AttributeTable = Loadable({
   loading: LoadingFullPage
 });
 
-
+//Decide color codes and theme for entire app
 const theme = createMuiTheme({
   palette: {
     primary: teal,
@@ -62,9 +67,9 @@ const theme = createMuiTheme({
     useNextVariants: true,
   },
   overrides: {
-    SnackbarItem: { // Name of the component ⚛️ / style sheet
-      root: { // Name of the rule
-        color: 'white', // Some CSS
+    SnackbarItem: { 
+      root: { 
+        color: 'white', 
       },
     },
   }
@@ -136,6 +141,7 @@ const theme = createMuiTheme({
       this.setState({ snackbarMessages: {message: name + ': type ' + layer.type + ' is not supported', options: {variant: 'error'}}  });
     }
     
+    //Append new layer to the front of the list
     else {
       layers.unshift(layer);
       layersChange = !layersChange;
@@ -222,6 +228,7 @@ const theme = createMuiTheme({
 
   }
 
+  //Implements changes received when layer is edited.
   submitChanges = (layerId, color, opacity, layerName, strokeColor, strokeOpacity, radius) => {
     let {layers} = this.state;
 
@@ -248,6 +255,7 @@ const theme = createMuiTheme({
     });
   }
 
+  //zoomTo is passed to map component
   zoomTo = (layerId) => {
     this.setState({zoomTo: layerId})
   }
@@ -263,6 +271,7 @@ const theme = createMuiTheme({
       AttributeTableOpen: false});
   }
 
+  //Changes name to avoid duplicates
   checkLayerName = (name) => {
     let {layers} = this.state;
     let i = 1;
@@ -310,12 +319,13 @@ const theme = createMuiTheme({
       dataChange,
       dataChangeId } = this.state;
 
+      //Main layout of application is seen here:
     return (
 
       <MuiThemeProvider theme={theme}>
         <SnackbarProvider
           classes={{
-            message: classes.snackbarMessage, // class name, e.g. `classes-nesting-root-x`
+            message: classes.snackbarMessage, 
             variantSuccess: classes.allowFullWidth,
             variantError: classes.allowFullWidth,
             variantWarning: classes.allowFullWidth,

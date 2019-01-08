@@ -1,5 +1,5 @@
 /**
- * Checks if there exists a layer with a different index than layerIndex
+ * Checks if there exists a layer with a different index
  * that has the same name
  */ 
 const checkIfLayerNameExists = (name, layers, acceptedLayerId) => {
