@@ -3,7 +3,7 @@ import generateUniqueID from './generateUniqueID';
 import getDefaultColor from './getDefaultColor';
 import createFeatureCollectionFromFeature from "./geoprocessing/createFeatureCollectionFromFeature";
 
-const createJsonLayer = (json, name, index) => {
+const createJsonLayer = (json, name) => {
     var type = getJsonType(json);
     if (type === 'Feature') {
       json = createFeatureCollectionFromFeature([json]);
@@ -13,7 +13,7 @@ const createJsonLayer = (json, name, index) => {
     }
 
     var id = generateUniqueID(name);
-    json.color= json.color ?json.color: getDefaultColor(index);
+    json.color= json.color ?json.color: getDefaultColor();
     json.opacity = json.opacity? json.opacity: 1;
 
     if(type === 'Polygon' || type ==='MultiPolygon') {

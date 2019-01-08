@@ -32,7 +32,7 @@ class AddLayerDialog extends React.Component {
 
     let newName = checkLayerName(name);
 
-    let layer =  createJsonLayer(json, newName, layers.length);
+    let layer =  createJsonLayer(json, newName);
     layers.push(layer);
 
     if( !(layer.type)) {
