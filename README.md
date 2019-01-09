@@ -33,7 +33,7 @@ Features that I would have liked to develop but didnt have time are:
 * Support more coordinate systems.
 
 ## Acknowledgments
-In addition to the main COTS mention in the Buildt With section above, the application also makes use of various libraries and external components. These include:
+In addition to the main COTS mention above, the application also makes use of various libraries and external components. These include:
 * [file-saver](https://github.com/eligrey/) - For saving files
 * [jszip](https://github.com/Stuk/jszip) - For creating zip files
 * [notistack](https://github.com/iamhosseindhv/notistack) - For displaying highly customisable 'Snackbars' 
