@@ -14,7 +14,7 @@ Demo video of use: https://youtu.be/xOLmTdqVv5g
 ## Usage
 The Application supports upploading of geojson files. To use the application simply drag and drop your geojson files onto the space indicated. The map is sentered in Trondheim, however you can easily find your data anywhere in the world by using the 'zoomTo' function. Some sample data and an example exercise can be found in the data.zip folder. 
 
-Note that:
+###### Note that:
 * The filename extension must be '.json' and not '.geojson'. Simply renaming the file will make it work. 
 * Supported Coordinate system is 
         Projection: latlnt
