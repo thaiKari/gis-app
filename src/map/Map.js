@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
-import {getSetting} from 'config';
+import {getSetting} from '../config';
 import bbox from '@turf/bbox';
 
 /**
@@ -17,7 +17,7 @@ const styles = theme => ({
 
     },
     noneShiftContent: {
-      marginLeft: -theme.drawerWidth,
+      marginLeft: -(theme.drawerWidth),
     },
     contentShift: {
       transition: theme.transitions.create('margin', {
@@ -328,16 +328,15 @@ changeColor(colorChange) {
           <div>
             <div style={{marginLeft: 0}}>
             <div ref={el => this._mapContainer = el} className={classes.map} id='map'/>
-            </div>            
-         
-            <div style = {mapControllerDivStyle}
-             id='mapControllers' className={classNames(classes.contentShift, {
-              [classes.drawerClosed]: !drawerOpen,
-            })}></div>
-         
+            </div>                     
           </div>);
         }
   }
 
   export default withStyles(styles, { withTheme: true })(Map);
+
+  // <div style = {mapControllerDivStyle}
+  //            id='mapControllers' className={classNames(classes.contentShift, {
+  //             [classes.drawerClosed]: !drawerOpen,
+  //           })}></div>
   
